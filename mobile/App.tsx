@@ -13,7 +13,7 @@ export default function App() {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: '#8f35cf',
+		backgroundColor: '#78cf35',
 		color: '#fff',
 		alignItems: 'center',
 		justifyContent: 'center',
