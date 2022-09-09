@@ -1,33 +1,29 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet } from 'react-native';
 import { NativeBaseProvider, View, Text } from 'native-base';
+import { NavigationContainer } from '@react-navigation/native';
+// import { NativeStackNavigationOptions } from '@react-navigation/stack';
 import theme from './src/theme';
+import Stack from './src/navigation';
+import Home from './src/components/Home/Home';
 
-export default function App() {
+const App = () => {
+	const globalScreenOptions: any = {
+		/** TODO: Delete once top nav is complete */
+		headerShown: true,
+		gestureEnabled: false,
+	};
+
 	return (
 		<NativeBaseProvider theme={theme()}>
-			<View flex={1} alignItems={'flex-end'} style={styles.container}>
-				<Text
-					color='#FFF'
-					lineHeight={24}
-					fontSize={24}
-					textAlign='center'
-					fontWeight='bold'
-					textTransform={'uppercase'}
-				>
-					Open up App.js to start working on your app!
-				</Text>
-				<StatusBar style='auto' />
-			</View>
+			<NavigationContainer>
+				<Stack.Navigator initialRouteName='Home'>
+					<Stack.Screen
+						name='Home'
+						component={Home}
+						options={globalScreenOptions}
+					/>
+				</Stack.Navigator>
+			</NavigationContainer>
 		</NativeBaseProvider>
 	);
-}
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		color: '#fff',
-		alignItems: 'center',
-		justifyContent: 'center',
-	},
-});
+};
+export default App;
