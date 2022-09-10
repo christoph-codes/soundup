@@ -7,13 +7,13 @@ import Home from './src/components/Home/Home';
 const App = () => {
 	const globalScreenOptions: any = {
 		/** TODO: Delete once top nav is complete */
-		headerShown: true,
+		headerShown: false,
 		gestureEnabled: false,
 	};
 	return (
 		<NativeBaseProvider theme={theme()}>
 			<NavigationContainer>
-				<StatusBar animated={true} barStyle='dark-content' />
+				<StatusBar animated={true} barStyle='light-content' />
 				<Stack.Navigator initialRouteName='Home'>
 					<Stack.Screen
 						name='Home'
