@@ -10,7 +10,7 @@ const App = () => {
 	const [loading, setLoading] = useState<boolean>(true);
 
 	useEffect(() => {
-		setTimeout(() => setLoading(false), 10000);
+		setTimeout(() => setLoading(false), 100);
 	}, []);
 
 	const globalScreenOptions: any = {
@@ -20,8 +20,11 @@ const App = () => {
 	};
 	return (
 		<NativeBaseProvider theme={theme()}>
-			{loading ? (
-				<Splash />
+			{!loading ? (
+				<>
+					<StatusBar animated={true} barStyle='light-content' />
+					<Splash />
+				</>
 			) : (
 				<NavigationContainer>
 					<StatusBar animated={true} barStyle='light-content' />

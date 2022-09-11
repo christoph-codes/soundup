@@ -1,31 +1,17 @@
-import { Text } from 'native-base';
+import { Image } from 'native-base';
 import { StyleSheet } from 'react-native';
-import Video from 'react-native-video';
-// @ts-ignore
-import splashvideo from '../../assets/soundup_splash.mp4';
+import splash from '../../assets/splash3.png';
 
 const styles = StyleSheet.create({
 	Splash: {
-		backgroundColor: '#F50f09',
-		position: 'absolute',
-		top: 0,
-		left: 0,
-		bottom: 0,
-		right: 0,
+		// backgroundColor: '#F50f09',
+		flex: 1,
 	},
 });
 
 const Splash = () => {
-	return (
-		<Video
-			source={{ uri: splashvideo }}
-			fullscreen
-			fullscreenOrientation='portrait'
-			style={styles.Splash}
-			resizeMode='cover'
-		/>
-		// <Text style={styles.Splash}>Hello</Text>
-	);
+	const img = require('../../assets/splash3.png');
+	return <Image source={img} alt='Splash Screen' style={styles.Splash} />;
 };
 
 export default Splash;
