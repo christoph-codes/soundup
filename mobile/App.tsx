@@ -1,8 +1,9 @@
+import { useState, useEffect } from 'react';
 import { NativeBaseProvider, StatusBar } from 'native-base';
 import { NavigationContainer } from '@react-navigation/native';
 import theme from './src/theme';
 import Stack from './src/navigation';
-import Home from './src/components/Home/Home';
+import Home from './src/screens/Home';
 
 const App = () => {
 	const globalScreenOptions: any = {

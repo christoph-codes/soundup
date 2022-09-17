@@ -1,9 +1,17 @@
 import { Text, View } from 'native-base';
 import { StyleSheet } from 'react-native';
+import { useFonts } from 'expo-font';
 const Home = () => {
+	const [fontsLoaded] = useFonts({
+		Norwester: require('../../assets/fonts/norwester.otf'),
+	});
+	if (!fontsLoaded) {
+		return null;
+	}
 	return (
 		<View flex={1} alignItems={'flex-end'} style={styles.container}>
 			<Text
+				fontFamily='Norwester'
 				color='#FFF'
 				lineHeight={24}
 				fontSize={24}

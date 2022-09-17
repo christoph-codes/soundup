@@ -2301,9 +2301,9 @@
     "@react-types/shared" "^3.14.1"
 
 "@react-stately/layout@^3.7.0":
-  version "3.7.0"
-  resolved "https://registry.yarnpkg.com/@react-stately/layout/-/layout-3.7.0.tgz#9a5271585b390676446ce881a5b7c3a36b102a24"
-  integrity sha512-8jUIpsgcKmpvSTUxpXTi7pvkPg6IR4hNQb5VQaOAuzuQRPAfafl7OmIKFggUeeiUgBie/6O7CWXgy/jcORnq8A==
+  version "3.7.1"
+  resolved "https://registry.yarnpkg.com/@react-stately/layout/-/layout-3.7.1.tgz#9f6c750c5706b101ad1e9bc428ffd0a02596486a"
+  integrity sha512-lJpvRryEwatfKaI3ZoUtWMhEIBFAR/w8v0GeD68+LOixSgr/ROB7nCrsbHt8IYzB/olmPa/PwAolf+Yhiu5UxQ==
   dependencies:
     "@babel/runtime" "^7.6.2"
     "@react-stately/virtualizer" "^3.3.0"
@@ -2677,7 +2677,15 @@
   resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.7.5.tgz#5f19d2b85a98e9558036f6a3cacc8819420f05cf"
   integrity sha512-JCB8C6SnDoQf0cNycqd/35A7MjcnK+ZTqE7judS6o7utxUCg6imJg3QK2qzHKszlTjcj2cn+NwMB2i96ubpj7w==
 
-"@types/react-native@~0.69.1":
+"@types/react-native-video@^5.0.14":
+  version "5.0.14"
+  resolved "https://registry.yarnpkg.com/@types/react-native-video/-/react-native-video-5.0.14.tgz#275d08f836280ace088462b2cb267925a6a915f3"
+  integrity sha512-KdcyY4HY/Q1l6f5qQA337BNVN+GsdZy836j9CXbWHZ008VVNzSlnJypJQPsnUgI0EPBw/uG/lyJk6cg9Jj1syg==
+  dependencies:
+    "@types/react" "*"
+    "@types/react-native" "*"
+
+"@types/react-native@*", "@types/react-native@~0.69.1":
   version "0.69.8"
   resolved "https://registry.yarnpkg.com/@types/react-native/-/react-native-0.69.8.tgz#524e770e2bc6ac478ab5179b4446c43602142b7e"
   integrity sha512-KW5KQdg4vjG7Mo2muCTRSe3CwVNEROa4Hlh7wIkfv+be92jdFwq6tf+i1q7dD3wDnUinc/cVi/6/PJbGpbshEA==
@@ -2685,9 +2693,9 @@
     "@types/react" "*"
 
 "@types/react@*", "@types/react@~18.0.0":
-  version "18.0.18"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-18.0.18.tgz#9f16f33d57bc5d9dca848d12c3572110ff9429ac"
-  integrity sha512-6hI08umYs6NaiHFEEGioXnxJ+oEhY3eRz8VCUaudZmGdtvPviCJB8mgaMxaDWAdPSYd4eFavrPk2QIolwbLYrg==
+  version "18.0.19"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-18.0.19.tgz#269a5f35b9a73c69dfb0c7189017013ab02acbaa"
+  integrity sha512-BDc3Q+4Q3zsn7k9xZrKfjWyJsSlEDMs38gD1qp2eDazLCdcPqAT+vq1ND+Z8AGel/UiwzNUk8ptpywgNQcJ1MQ==
   dependencies:
     "@types/prop-types" "*"
     "@types/scheduler" "*"
@@ -3510,9 +3518,9 @@ ci-info@^2.0.0:
   integrity sha512-5tK7EtrZ0N+OLFMthtqOj4fI2Jeb88C4CAZPu25LDVUgXJ0A3Js4PMGqrn0JU1W0Mh1/Z8wZzYPxqUrXeBboCQ==
 
 ci-info@^3.2.0, ci-info@^3.3.0:
-  version "3.3.2"
-  resolved "https://registry.yarnpkg.com/ci-info/-/ci-info-3.3.2.tgz#6d2967ffa407466481c6c90b6e16b3098f080128"
-  integrity sha512-xmDt/QIAdeZ9+nfdPsaBCpMvHNLFiLdjj59qjqn+6iPe6YmHGQ35sBnQ8uslRBXFmXkiZQOJRjvQeoGppoTjjg==
+  version "3.4.0"
+  resolved "https://registry.yarnpkg.com/ci-info/-/ci-info-3.4.0.tgz#b28484fd436cbc267900364f096c9dc185efb251"
+  integrity sha512-t5QdPT5jq3o262DOQ8zA6E1tlH2upmUc4Hlvrbx1pGYJuiiHl7O7rvVNI+l8HTVhd/q3Qc9vqimkNk5yiXsAug==
 
 class-utils@^0.3.5:
   version "0.3.6"
@@ -4056,9 +4064,9 @@ ee-first@1.1.1:
   integrity sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==
 
 electron-to-chromium@^1.4.202:
-  version "1.4.246"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.246.tgz#802132d1bbd3ff32ce82fcd6a6ed6ab59b4366dc"
-  integrity sha512-/wFCHUE+Hocqr/LlVGsuKLIw4P2lBWwFIDcNMDpJGzyIysQV4aycpoOitAs32FT94EHKnNqDR/CVZJFbXEufJA==
+  version "1.4.247"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.247.tgz#cc93859bc5fc521f611656e65ce17eae26a0fd3d"
+  integrity sha512-FLs6R4FQE+1JHM0hh3sfdxnYjKvJpHZyhQDjc2qFq/xFvmmRt/TATNToZhrcGUFzpF2XjeiuozrA8lI0PZmYYw==
 
 emoji-regex@^8.0.0:
   version "8.0.0"
