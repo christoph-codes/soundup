@@ -1,6 +1,7 @@
 import { Text, View } from 'native-base';
-import { StyleSheet } from 'react-native';
+import { SafeAreaView, StyleSheet } from 'react-native';
 import { useFonts } from 'expo-font';
+import Header from '../components/Header';
 const Home = () => {
 	const [fontsLoaded] = useFonts({
 		Norwester: require('../../assets/fonts/norwester.otf'),
@@ -9,29 +10,35 @@ const Home = () => {
 		return null;
 	}
 	return (
-		<View flex={1} alignItems={'flex-end'} style={styles.container}>
-			<Text
-				fontFamily='Norwester'
-				color='#FFF'
-				lineHeight={24}
-				fontSize={24}
-				textAlign='center'
-				fontWeight='bold'
-				textTransform={'uppercase'}
-			>
-				Open up App.js to start working on your app!
-			</Text>
-		</View>
+		<SafeAreaView style={styles.page}>
+			<View alignItems={'flex-end'} style={styles.Home}>
+				<Header />
+				<Text
+					fontFamily='Norwester'
+					color='#FFF'
+					lineHeight={24}
+					fontSize={24}
+					textAlign='center'
+					fontWeight='bold'
+					textTransform={'uppercase'}
+				>
+					Open up App.js to start working on your app!
+				</Text>
+			</View>
+		</SafeAreaView>
 	);
 };
 
 export default Home;
 
 const styles = StyleSheet.create({
-	container: {
+	page: {
 		flex: 1,
-		color: '#fff',
+		backgroundColor: '#252525',
+	},
+	Home: {
+		backgroundColor: 'red',
+		flex: 1,
 		alignItems: 'center',
-		justifyContent: 'center',
 	},
 });
