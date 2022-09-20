@@ -1,18 +1,23 @@
-import { ReactElement } from 'react';
 import { Image, View } from 'native-base';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, TouchableHighlight } from 'react-native';
 
-const Header = () => {
+const Header = ({ navigation }) => {
 	return (
 		<View style={styles.Header}>
-			<Image
-				source={require('../../assets/soundup_logo.png')}
-				alt='Sound Up Logo'
-			/>
-			<Image
-				source={require('../../assets/cog.png')}
-				alt='Settings cog'
-			/>
+			<TouchableHighlight onPress={() => navigation.push('Home')}>
+				<Image
+					source={require('../../assets/soundup_logo.png')}
+					alt='Sound Up Logo'
+				/>
+			</TouchableHighlight>
+			<TouchableHighlight
+				onPress={() => navigation.push('AccountSettings')}
+			>
+				<Image
+					source={require('../../assets/cog.png')}
+					alt='Settings cog'
+				/>
+			</TouchableHighlight>
 		</View>
 	);
 };
