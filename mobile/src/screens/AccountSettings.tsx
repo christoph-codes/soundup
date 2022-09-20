@@ -2,7 +2,7 @@ import { Text, View } from 'native-base';
 import { SafeAreaView, StyleSheet } from 'react-native';
 import { useFonts } from 'expo-font';
 import Header from '../components/Header';
-const Home = ({ navigation }) => {
+const AccountSettings = ({ navigation }) => {
 	const [fontsLoaded] = useFonts({
 		Norwester: require('../../assets/fonts/norwester.otf'),
 	});
@@ -11,7 +11,7 @@ const Home = ({ navigation }) => {
 	}
 	return (
 		<SafeAreaView style={styles.page}>
-			<View alignItems={'flex-end'} style={styles.Home}>
+			<View alignItems={'flex-end'} style={styles.AccountSettings}>
 				<Header navigation={navigation} />
 				<Text
 					fontFamily='Norwester'
@@ -22,21 +22,21 @@ const Home = ({ navigation }) => {
 					fontWeight='bold'
 					textTransform={'uppercase'}
 				>
-					Home
+					Account Settings
 				</Text>
 			</View>
 		</SafeAreaView>
 	);
 };
 
-export default Home;
+export default AccountSettings;
 
 const styles = StyleSheet.create({
 	page: {
 		flex: 1,
 		backgroundColor: '#252525',
 	},
-	Home: {
+	AccountSettings: {
 		backgroundColor: 'red',
 		flex: 1,
 		alignItems: 'center',

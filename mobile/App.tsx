@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import theme from './src/theme';
 import Stack from './src/navigation';
 import Home from './src/screens/Home';
+import AccountSettings from './src/screens/AccountSettings';
 
 const App = () => {
 	const globalScreenOptions: any = {
@@ -19,6 +20,11 @@ const App = () => {
 					<Stack.Screen
 						name='Home'
 						component={Home}
+						options={globalScreenOptions}
+					/>
+					<Stack.Screen
+						name='AccountSettings'
+						component={AccountSettings}
 						options={globalScreenOptions}
 					/>
 				</Stack.Navigator>
