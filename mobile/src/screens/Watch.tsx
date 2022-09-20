@@ -2,22 +2,22 @@ import { Text } from 'native-base';
 import { StyleSheet } from 'react-native';
 import TemplateMain from '../templates/TemplateMain';
 
-const AccountSettings = ({ navigation }) => {
+const Watch = ({ navigation }) => {
 	return (
 		<TemplateMain
-			style={styles.AccountSettings}
-			title='Account Settings'
+			style={styles.Watch}
+			title='Watch'
 			navigation={navigation}
 		>
-			<Text>Account Settings content goes here</Text>
+			<Text>Watch content goes here</Text>
 		</TemplateMain>
 	);
 };
 
-export default AccountSettings;
+export default Watch;
 
 const styles = StyleSheet.create({
-	AccountSettings: {
-		backgroundColor: 'orange',
+	Watch: {
+		backgroundColor: 'goldenrod',
 	},
 });

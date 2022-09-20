@@ -2,22 +2,22 @@ import { Text } from 'native-base';
 import { StyleSheet } from 'react-native';
 import TemplateMain from '../templates/TemplateMain';
 
-const AccountSettings = ({ navigation }) => {
+const Listen = ({ navigation }) => {
 	return (
 		<TemplateMain
-			style={styles.AccountSettings}
-			title='Account Settings'
+			style={styles.Listen}
+			title='Listen'
 			navigation={navigation}
 		>
-			<Text>Account Settings content goes here</Text>
+			<Text>Listen content goes here</Text>
 		</TemplateMain>
 	);
 };
 
-export default AccountSettings;
+export default Listen;
 
 const styles = StyleSheet.create({
-	AccountSettings: {
-		backgroundColor: 'orange',
+	Listen: {
+		backgroundColor: 'green',
 	},
 });

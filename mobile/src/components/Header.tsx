@@ -29,9 +29,12 @@ const styles = StyleSheet.create({
 		alignContent: 'flex-start',
 		flexDirection: 'row',
 		justifyContent: 'space-between',
+		paddingTop: 8,
 		paddingHorizontal: 16,
 		paddingBottom: 16,
 		height: 'auto',
 		backgroundColor: '#252525',
+		borderBottomWidth: 1,
+		borderBottomColor: '#161616',
 	},
 });

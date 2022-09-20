@@ -2,22 +2,22 @@ import { Text } from 'native-base';
 import { StyleSheet } from 'react-native';
 import TemplateMain from '../templates/TemplateMain';
 
-const AccountSettings = ({ navigation }) => {
+const SignIn = ({ navigation }) => {
 	return (
 		<TemplateMain
-			style={styles.AccountSettings}
-			title='Account Settings'
+			style={styles.SignIn}
+			title='SignIn'
 			navigation={navigation}
 		>
-			<Text>Account Settings content goes here</Text>
+			<Text>SignIn content goes here</Text>
 		</TemplateMain>
 	);
 };
 
-export default AccountSettings;
+export default SignIn;
 
 const styles = StyleSheet.create({
-	AccountSettings: {
-		backgroundColor: 'orange',
+	SignIn: {
+		backgroundColor: 'pink',
 	},
 });
