@@ -33,5 +33,7 @@ const styles = StyleSheet.create({
 		paddingBottom: 16,
 		height: 'auto',
 		backgroundColor: '#252525',
+		borderBottomWidth: 1,
+		borderBottomColor: '#161616',
 	},
 });
