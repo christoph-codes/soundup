@@ -23,34 +23,43 @@ const FooterNav = ({ navigation }) => {
 			icon: '🔒',
 			link: 'Sign In',
 		},
+		{
+			label: 'Logout',
+			icon: '✌🏾',
+			link: 'Logout',
+			private: true,
+		},
 	];
 	return (
 		<View style={styles.FooterNav}>
+			{/** TODO: Only return the private route if user is logged in. Must setup authentication */}
 			{items.map((item, index) => {
-				return (
-					<TouchableHighlight
-						key={index}
-						onPress={() => navigation.push(item.link)}
-					>
-						<View>
-							<Text
-								fontSize={24}
-								lineHeight={28}
-								textAlign={'center'}
-							>
-								{item.icon}
-							</Text>
-							<Text
-								fontSize={10}
-								textTransform={'uppercase'}
-								fontWeight={'bold'}
-								textAlign={'center'}
-							>
-								{item.label}
-							</Text>
-						</View>
-					</TouchableHighlight>
-				);
+				if (!item.private) {
+					return (
+						<TouchableHighlight
+							key={index}
+							onPress={() => navigation.push(item.link)}
+						>
+							<View>
+								<Text
+									fontSize={24}
+									lineHeight={28}
+									textAlign={'center'}
+								>
+									{item.icon}
+								</Text>
+								<Text
+									fontSize={10}
+									textTransform={'uppercase'}
+									fontWeight='bold'
+									textAlign={'center'}
+								>
+									{item.label}
+								</Text>
+							</View>
+						</TouchableHighlight>
+					);
+				}
 			})}
 		</View>
 	);
