@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
 		backgroundColor: '#252525',
 	},
 	TemplateMain: {
-		backgroundColor: '#252525',
+		backgroundColor: 'white',
 		flex: 1,
 	},
 	Container: {
