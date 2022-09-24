@@ -61,12 +61,13 @@ export default NewsArticle;
 
 const styles = StyleSheet.create({
 	NewsArticle: {
-		padding: 16,
+		paddingVerticaled: 16,
 		display: 'flex',
 		flex: 1,
 		flexDirection: 'row',
 		backgroundColor: 'white',
 		alignItems: 'center',
+		marginBottom: 16,
 	},
 	NewsArticleImage: {
 		marginRight: 16,
