@@ -15,6 +15,7 @@ const Home = ({ navigation }) => {
 	return (
 		<TemplateMain style={styles.Home} navigation={navigation} title='Home'>
 			<NewsArticle article={testArticle} navigation={navigation} />
+			<NewsArticle article={testArticle} navigation={navigation} />
 			<Text>Home Content Goes Here</Text>
 		</TemplateMain>
 	);
