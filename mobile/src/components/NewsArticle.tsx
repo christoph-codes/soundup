@@ -48,7 +48,11 @@ const NewsArticle = ({ style, article, navigation }: INewsArticleProps) => {
 					)}
 					{article?.postedDate && (
 						<Text style={styles.NewsArticlePostedDate}>
-							{new Date(article?.postedDate).toLocaleString('en')}
+							{
+								new Date(article?.postedDate)
+									.toLocaleString('en')
+									.split(',')[0]
+							}
 						</Text>
 					)}
 				</View>
