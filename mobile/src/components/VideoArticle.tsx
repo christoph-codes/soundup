@@ -3,6 +3,7 @@ import { View } from 'native-base';
 import { useState } from 'react';
 import { ViewStyle, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import YoutubePlayer from 'react-native-youtube-iframe';
+import Button from './Button';
 import TextDate from './TextDate';
 
 export interface IVideoArticleContent {
@@ -10,7 +11,7 @@ export interface IVideoArticleContent {
 	title?: string;
 	/** Posted date of the article as a date object */
 	postedDate?: Date | number;
-	/** Small description of the article as a string */
+	/** Link of the article as a string */
 	link?: string;
 	/** URL or path to the image source to be fetched as a string */
 	videoUrl?: string;
@@ -51,10 +52,19 @@ const VideoArticle = ({ style, article, navigation }: IVideoArticleProps) => {
 							<Text style={styles.VideoArticleTitle}>
 								{article?.title}
 							</Text>
+							{article?.postedDate && (
+								<TextDate date={article?.postedDate} />
+							)}
 						</TouchableOpacity>
 					)}
-					{article?.postedDate && (
-						<TextDate date={article?.postedDate} />
+					{article?.link && (
+						<Button
+							navigation={navigation}
+							link={article.link}
+							size='small'
+						>
+							Watch
+						</Button>
 					)}
 				</View>
 			</View>
