@@ -24,7 +24,5 @@ const Home = ({ navigation }) => {
 export default Home;
 
 const styles = StyleSheet.create({
-	Home: {
-		backgroundColor: 'blue',
-	},
+	Home: {},
 });
