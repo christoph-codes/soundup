@@ -11,8 +11,8 @@ const TextDate = ({ date }) => {
 
 const styles = StyleSheet.create({
 	TextDate: {
-		fontSize: 14,
-		color: 'grey',
+		fontSize: 12,
+		color: '#C0C0C0',
 		marginBottom: 0,
 	},
 });
