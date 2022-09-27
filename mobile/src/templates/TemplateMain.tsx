@@ -27,9 +27,9 @@ const TemplateMain = ({
 		return null;
 	}
 	return (
-		<ScrollView width={'100%'}>
+		<ScrollView width={'100%'} bounces={false}>
 			{carousel.length < 1 && (
-				<View color='#c60000' backgroundColor='#000' height={200}>
+				<View backgroundColor='#000' height={200}>
 					<Text>Carousel Placeholder</Text>
 				</View>
 			)}
