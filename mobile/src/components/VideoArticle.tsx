@@ -1,7 +1,8 @@
 import { NavigationProp } from '@react-navigation/native';
 import { View } from 'native-base';
+import { useState } from 'react';
 import { ViewStyle, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import Video from 'react-native-video';
+import YoutubePlayer from 'react-native-youtube-iframe';
 
 export interface IVideoArticleContent {
 	/** Title of the article as a string */
@@ -24,20 +25,32 @@ export interface IVideoArticleProps {
 }
 
 const VideoArticle = ({ style, article, navigation }: IVideoArticleProps) => {
+	const [playing, setPlaying] = useState(false);
 	return (
-		<TouchableOpacity onPress={() => navigation.navigate(article?.link)}>
+		<>
 			<View style={[styles.VideoArticle, style]}>
 				{article?.videoUrl && (
-					<Video
-						source={{ uri: article?.videoUrl }}
+					<TouchableOpacity
 						style={styles.VideoArticleVideo}
-					/>
+						onPress={() => setPlaying((prev) => !prev)}
+					>
+						<YoutubePlayer
+							play={playing}
+							height={200}
+							videoId={article?.videoUrl}
+						/>
+					</TouchableOpacity>
 				)}
+
 				<View style={styles.VideoArticleContent}>
 					{article?.title && (
-						<Text style={styles.VideoArticleTitle}>
-							{article?.title}
-						</Text>
+						<TouchableOpacity
+							onPress={() => navigation.navigate(article?.link)}
+						>
+							<Text style={styles.VideoArticleTitle}>
+								{article?.title}
+							</Text>
+						</TouchableOpacity>
 					)}
 					{article?.postedDate && (
 						<Text style={styles.VideoArticlePostedDate}>
@@ -75,8 +88,13 @@ const styles = StyleSheet.create({
 		flexShrink: 1,
 		backgroundColor: 'transparent',
 		height: 'auto',
-		padding: 0,
-		marginBottom: 0,
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		alignItems: 'center',
+		marginVertical: 8,
+	},
+	VideoArticleVideo: {
+		width: '100%',
 	},
 	VideoArticleTitle: {
 		fontSize: 21,
