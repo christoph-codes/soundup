@@ -1,6 +1,6 @@
 import { NavigationProp } from '@react-navigation/native';
 import { Image, View } from 'native-base';
-import { ViewStyle, Text, StyleSheet, TouchableHighlight } from 'react-native';
+import { ViewStyle, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 export interface IArticleContent {
 	/** Title of the article as a string */
@@ -26,7 +26,7 @@ export interface INewsArticleProps {
 
 const NewsArticle = ({ style, article, navigation }: INewsArticleProps) => {
 	return (
-		<TouchableHighlight onPress={() => navigation.navigate(article?.link)}>
+		<TouchableOpacity onPress={() => navigation.navigate(article?.link)}>
 			<View style={[styles.NewsArticle, style]}>
 				{article?.imgUrl && (
 					<Image
@@ -53,7 +53,7 @@ const NewsArticle = ({ style, article, navigation }: INewsArticleProps) => {
 					)}
 				</View>
 			</View>
-		</TouchableHighlight>
+		</TouchableOpacity>
 	);
 };
 
