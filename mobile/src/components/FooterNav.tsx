@@ -38,7 +38,7 @@ const FooterNav = ({ navigation }) => {
 					return (
 						<TouchableHighlight
 							key={index}
-							onPress={() => navigation.push(item.link)}
+							onPress={() => navigation.navigate(item.link)}
 						>
 							<View>
 								<Text
