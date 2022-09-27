@@ -7,7 +7,7 @@ const Watch = ({ navigation }) => {
 	const testArticle: IVideoArticleContent = {
 		title: 'Test article',
 		postedDate: Date.now(),
-		link: 'VideoArticle',
+		link: 'Home',
 		videoUrl: 'NmaM5VsZCJM',
 	};
 	return (

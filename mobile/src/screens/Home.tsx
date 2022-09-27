@@ -8,7 +8,7 @@ const Home = ({ navigation }) => {
 	const testVideoArticle: IVideoArticleContent = {
 		title: 'Test article',
 		postedDate: Date.now(),
-		link: 'VideoArticle',
+		link: 'Home',
 		videoUrl: 'NmaM5VsZCJM',
 	};
 	const testArticle: IArticleContent = {
