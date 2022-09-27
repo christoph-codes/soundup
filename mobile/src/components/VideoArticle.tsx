@@ -3,6 +3,7 @@ import { View } from 'native-base';
 import { useState } from 'react';
 import { ViewStyle, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import YoutubePlayer from 'react-native-youtube-iframe';
+import TextDate from './TextDate';
 
 export interface IVideoArticleContent {
 	/** Title of the article as a string */
@@ -53,17 +54,11 @@ const VideoArticle = ({ style, article, navigation }: IVideoArticleProps) => {
 						</TouchableOpacity>
 					)}
 					{article?.postedDate && (
-						<Text style={styles.VideoArticlePostedDate}>
-							{
-								new Date(article?.postedDate)
-									.toLocaleString('en')
-									.split(',')[0]
-							}
-						</Text>
+						<TextDate date={article?.postedDate} />
 					)}
 				</View>
 			</View>
-		</TouchableOpacity>
+		</>
 	);
 };
 
@@ -72,20 +67,12 @@ export default VideoArticle;
 const styles = StyleSheet.create({
 	VideoArticle: {
 		paddingVerticaled: 16,
-		display: 'flex',
 		flex: 1,
-		flexDirection: 'row',
-		backgroundColor: 'white',
+		backgroundColor: 'transparent',
 		alignItems: 'center',
-		marginBottom: 16,
-	},
-	VideoArticleVideo: {
-		marginRight: 16,
-		width: 116,
-		height: 116,
+		marginBottom: 32,
 	},
 	VideoArticleContent: {
-		flexShrink: 1,
 		backgroundColor: 'transparent',
 		height: 'auto',
 		flexDirection: 'row',
@@ -99,15 +86,5 @@ const styles = StyleSheet.create({
 	VideoArticleTitle: {
 		fontSize: 21,
 		fontWeight: 'bold',
-		marginBottom: 8,
-	},
-	VideoArticleDescription: {
-		fontSize: 16,
-		marginBottom: 8,
-	},
-	VideoArticlePostedDate: {
-		fontSize: 14,
-		color: 'grey',
-		marginBottom: 0,
 	},
 });

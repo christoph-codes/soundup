@@ -1,6 +1,7 @@
 import { NavigationProp } from '@react-navigation/native';
 import { Image, View } from 'native-base';
 import { ViewStyle, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import TextDate from './TextDate';
 
 export interface IArticleContent {
 	/** Title of the article as a string */
@@ -47,13 +48,7 @@ const NewsArticle = ({ style, article, navigation }: INewsArticleProps) => {
 						</Text>
 					)}
 					{article?.postedDate && (
-						<Text style={styles.NewsArticlePostedDate}>
-							{
-								new Date(article?.postedDate)
-									.toLocaleString('en')
-									.split(',')[0]
-							}
-						</Text>
+						<TextDate date={article?.postedDate} />
 					)}
 				</View>
 			</View>
@@ -93,10 +88,5 @@ const styles = StyleSheet.create({
 	NewsArticleDescription: {
 		fontSize: 16,
 		marginBottom: 8,
-	},
-	NewsArticlePostedDate: {
-		fontSize: 14,
-		color: 'grey',
-		marginBottom: 0,
 	},
 });
