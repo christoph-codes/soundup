@@ -27,38 +27,29 @@ const TemplateMain = ({
 		return null;
 	}
 	return (
-		<SafeAreaView style={styles.page}>
-			<View style={styles.TemplateMain}>
-				<Header navigation={navigation} />
-				<ScrollView width={'100%'}>
-					{carousel.length < 1 && (
-						<View
-							color='#c60000'
-							backgroundColor='#000'
-							height={200}
-						>
-							<Text>Carousel Placeholder</Text>
-						</View>
-					)}
-					<View style={[styles.Container, style]}>
-						{title && (
-							<Text
-								fontFamily='Norwester'
-								color='#252525'
-								lineHeight={24}
-								fontSize={24}
-								fontWeight='bold'
-								textTransform={'uppercase'}
-							>
-								{title}
-							</Text>
-						)}
-						{children}
-					</View>
-				</ScrollView>
-				<FooterNav navigation={navigation} />
+		<ScrollView width={'100%'}>
+			{carousel.length < 1 && (
+				<View color='#c60000' backgroundColor='#000' height={200}>
+					<Text>Carousel Placeholder</Text>
+				</View>
+			)}
+			<View style={[styles.Container, style]}>
+				{title && (
+					<Text
+						fontFamily='Norwester'
+						color='#252525'
+						lineHeight={24}
+						fontSize={24}
+						fontWeight='bold'
+						textTransform={'uppercase'}
+						marginBottom={4}
+					>
+						{title}
+					</Text>
+				)}
+				{children}
 			</View>
-		</SafeAreaView>
+		</ScrollView>
 	);
 };
 
