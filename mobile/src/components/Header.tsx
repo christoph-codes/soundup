@@ -4,14 +4,14 @@ import { StyleSheet, TouchableHighlight } from 'react-native';
 const Header = ({ navigation }) => {
 	return (
 		<View style={styles.Header}>
-			<TouchableHighlight onPress={() => navigation.push('Home')}>
+			<TouchableHighlight onPress={() => navigation.navigate('Home')}>
 				<Image
 					source={require('../../assets/soundup_logo.png')}
 					alt='Sound Up Logo'
 				/>
 			</TouchableHighlight>
 			<TouchableHighlight
-				onPress={() => navigation.push('AccountSettings')}
+				onPress={() => navigation.navigate('AccountSettings')}
 			>
 				<Image
 					source={require('../../assets/cog.png')}
