@@ -1,7 +1,12 @@
 import { NavigationProp } from '@react-navigation/native';
-import { View } from 'native-base';
 import { useState } from 'react';
-import { ViewStyle, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import {
+	ViewStyle,
+	Text,
+	View,
+	StyleSheet,
+	TouchableOpacity,
+} from 'react-native';
 import YoutubePlayer from 'react-native-youtube-iframe';
 import Button from './Button';
 import TextDate from './TextDate';
@@ -27,21 +32,16 @@ export interface IVideoArticleProps {
 }
 
 const VideoArticle = ({ style, article, navigation }: IVideoArticleProps) => {
-	const [playing, setPlaying] = useState(false);
 	return (
 		<>
 			<View style={[styles.VideoArticle, style]}>
 				{article?.videoUrl && (
-					<TouchableOpacity
-						style={styles.VideoArticleVideo}
-						onPress={() => setPlaying((prev) => !prev)}
-					>
+					<View style={styles.VideoArticleVideo}>
 						<YoutubePlayer
-							play={playing}
 							height={200}
 							videoId={article?.videoUrl}
 						/>
-					</TouchableOpacity>
+					</View>
 				)}
 
 				<View style={styles.VideoArticleContent}>
@@ -89,6 +89,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-between',
 		alignItems: 'center',
 		marginVertical: 8,
+		width: '100%',
 	},
 	VideoArticleVideo: {
 		width: '100%',
