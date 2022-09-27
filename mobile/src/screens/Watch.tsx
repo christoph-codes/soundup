@@ -7,8 +7,8 @@ const Watch = ({ navigation }) => {
 	const testArticle: IVideoArticleContent = {
 		title: 'Test article',
 		postedDate: Date.now(),
-		link: 'Home',
-		videoUrl: 'https://www.youtube.com/watch?v=NmaM5VsZCJM',
+		link: 'VideoArticle',
+		videoUrl: 'NmaM5VsZCJM',
 	};
 	return (
 		<TemplateMain
@@ -16,16 +16,16 @@ const Watch = ({ navigation }) => {
 			title='Watch'
 			navigation={navigation}
 		>
-			<Text>Watch content goes here</Text>
+			<VideoArticle navigation={navigation} article={testArticle} />
+			<VideoArticle navigation={navigation} article={testArticle} />
+			<VideoArticle navigation={navigation} article={testArticle} />
 			<VideoArticle navigation={navigation} article={testArticle} />
 		</TemplateMain>
 	);
 };
 
-export default Watch;
-
 const styles = StyleSheet.create({
-	Watch: {
-		backgroundColor: 'goldenrod',
-	},
+	Watch: {},
 });
+
+export default Watch;
