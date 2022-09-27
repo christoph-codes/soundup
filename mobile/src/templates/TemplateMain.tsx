@@ -70,10 +70,11 @@ const styles = StyleSheet.create({
 		backgroundColor: '#252525',
 	},
 	TemplateMain: {
-		backgroundColor: 'white',
 		flex: 1,
+		backgroundColor: 'white',
 	},
 	Container: {
+		backgroundColor: 'transparent',
 		flex: 1,
 		paddingHorizontal: 16,
 		paddingTop: 32,
