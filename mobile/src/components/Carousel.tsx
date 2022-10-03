@@ -96,20 +96,20 @@ const styles = StyleSheet.create({
 	},
 	CarouselDot: {
 		backgroundColor: "white",
-		height: 20,
-		width: 20,
-		borderRadius: 20,
+		height: 16,
+		width: 16,
+		borderRadius: 16,
 		position: "relative",
 		opacity: 0.5,
-		marginHorizontal: 2,
+		marginHorizontal: 8,
 	},
 	CarouselActiveDot: {
 		backgroundColor: "white",
-		height: 20,
-		width: 20,
-		borderRadius: 20,
+		height: 16,
+		width: 16,
+		borderRadius: 16,
 		opacity: 0.9,
-		marginHorizontal: 2,
+		marginHorizontal: 8,
 	},
 });
 
