@@ -32,11 +32,8 @@ const Carousel = ({ data, style }: ICarouselProps) => {
 		);
 	};
 	useEffect(() => {
-		console.log("changing?");
-		console.log("activeSlide", activeSlide);
-		console.log("index", carouselRef.current.getCurrentIndex());
-		carouselRef.current.scrollTo(activeSlide);
-	}, [activeSlide, carouselRef.current.getCurrentIndex()]);
+		carouselRef?.current?.scrollTo(activeSlide);
+	}, [activeSlide, carouselRef?.current?.getCurrentIndex()]);
 	return (
 		data.length > 1 && (
 			<View style={style}>
@@ -52,7 +49,7 @@ const Carousel = ({ data, style }: ICarouselProps) => {
 						ref={carouselRef}
 						onSnapToItem={() =>
 							setActiveSlide(
-								carouselRef.current.getCurrentIndex()
+								carouselRef?.current?.getCurrentIndex()
 							)
 						}
 					/>
@@ -64,7 +61,7 @@ const Carousel = ({ data, style }: ICarouselProps) => {
 							onPress={() => {
 								console.log("idx", idx);
 								setActiveSlide(idx);
-								carouselRef.current.scrollTo({
+								carouselRef?.current?.scrollTo({
 									index: idx,
 									animated: true,
 								});
