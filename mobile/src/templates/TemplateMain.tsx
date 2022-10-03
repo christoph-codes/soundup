@@ -29,7 +29,11 @@ const TemplateMain = ({
 		return null;
 	}
 	return (
-		<ScrollView width={"100%"} bounces={false}>
+		<ScrollView
+			showsVerticalScrollIndicator={false}
+			width={"100%"}
+			bounces={false}
+		>
 			<Carousel data={carousel} />
 			<View style={[styles.Container, style]}>
 				{title && (
