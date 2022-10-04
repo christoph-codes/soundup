@@ -1,9 +1,11 @@
 import { ScrollView, Text, View } from 'native-base';
-import { SafeAreaView, StyleSheet, ViewStyle } from 'react-native';
+import { StyleSheet, ViewStyle } from 'react-native';
 import { useFonts } from 'expo-font';
-import Header from '../components/Header';
-import FooterNav from '../components/FooterNav';
 import { NavigationProp } from '@react-navigation/native';
+import Carousel from '../components/Carousel';
+import testImage from '../../assets/sliders/testImage.png';
+import testImage2 from '../../assets/sliders/testImage2.png';
+import testImage3 from '../../assets/sliders/testImage3.png';
 
 export interface TemplateMainProps {
 	navigation: NavigationProp<any>;
@@ -16,7 +18,7 @@ export interface TemplateMainProps {
 const TemplateMain = ({
 	navigation,
 	children,
-	carousel = [],
+	carousel = [testImage, testImage2, testImage3],
 	title,
 	style,
 }: TemplateMainProps) => {
@@ -27,12 +29,12 @@ const TemplateMain = ({
 		return null;
 	}
 	return (
-		<ScrollView width={'100%'} bounces={false}>
-			{carousel.length < 1 && (
-				<View backgroundColor='#000' height={200}>
-					<Text>Carousel Placeholder</Text>
-				</View>
-			)}
+		<ScrollView
+			showsVerticalScrollIndicator={false}
+			width={'100%'}
+			bounces={false}
+		>
+			<Carousel data={carousel} />
 			<View style={[styles.Container, style]}>
 				{title && (
 					<Text
@@ -43,6 +45,7 @@ const TemplateMain = ({
 						fontWeight='bold'
 						textTransform={'uppercase'}
 						marginBottom={4}
+						marginTop={4}
 					>
 						{title}
 					</Text>

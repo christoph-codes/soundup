@@ -1,10 +1,6 @@
 {
-  "compilerOptions": {},
-  "extends": "expo/tsconfig.base",
-  "include": [
-    "**/*.tsx"
-  ],
-  "exclude": [
-    "**/*.mp4"
-  ],
+	"compilerOptions": {},
+	"extends": "expo/tsconfig.base",
+	"include": ["**/*.tsx", "**/*.png", "**/*.ts"],
+	"exclude": ["**/*.mp4"]
 }
