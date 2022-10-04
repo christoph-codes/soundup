@@ -1,14 +1,14 @@
-import { Image, Text } from "native-base";
-import { useEffect, useRef, useState } from "react";
+import { Image, Text } from 'native-base';
+import { useEffect, useRef, useState } from 'react';
 import {
 	Dimensions,
 	StyleSheet,
 	TouchableOpacity,
 	ViewStyle,
 	View,
-} from "react-native";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
-import ReanimatedCarousel from "react-native-reanimated-carousel";
+} from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import ReanimatedCarousel from 'react-native-reanimated-carousel';
 
 export interface ICarouselProps {
 	data?: string[];
@@ -16,17 +16,17 @@ export interface ICarouselProps {
 }
 
 const Carousel = ({ data, style }: ICarouselProps) => {
-	const width = Dimensions.get("window").width;
+	const width = Dimensions.get('window').width;
 	const carouselRef = useRef(null);
 	const [activeSlide, setActiveSlide] = useState(0);
 	const renderItem = ({ item }) => {
 		return (
-			<View style={{ backgroundColor: "#000", height: 200 }}>
+			<View style={{ backgroundColor: '#000', height: 200 }}>
 				<Image
 					source={item}
-					width="100%"
-					height={"200"}
-					alt="Carousel Image"
+					width='100%'
+					height={'200'}
+					alt='Carousel Image'
 				/>
 			</View>
 		);
@@ -49,7 +49,7 @@ const Carousel = ({ data, style }: ICarouselProps) => {
 						ref={carouselRef}
 						onSnapToItem={() =>
 							setActiveSlide(
-								carouselRef?.current?.getCurrentIndex()
+								carouselRef?.current?.getCurrentIndex(),
 							)
 						}
 					/>
@@ -59,7 +59,7 @@ const Carousel = ({ data, style }: ICarouselProps) => {
 						<TouchableOpacity
 							key={idx}
 							onPress={() => {
-								console.log("idx", idx);
+								console.log('idx', idx);
 								setActiveSlide(idx);
 								carouselRef?.current?.scrollTo({
 									index: idx,
@@ -83,25 +83,27 @@ const Carousel = ({ data, style }: ICarouselProps) => {
 };
 
 const styles = StyleSheet.create({
-	Carousel: {},
+	Carousel: {
+		marginBottom: 4,
+	},
 	CarouselDots: {
 		flex: 1,
-		flexDirection: "row",
-		justifyContent: "center",
-		marginTop: -48,
+		flexDirection: 'row',
+		justifyContent: 'center',
+		marginTop: -36,
 		flexGap: 8,
 	},
 	CarouselDot: {
-		backgroundColor: "white",
+		backgroundColor: 'white',
 		height: 16,
 		width: 16,
 		borderRadius: 16,
-		position: "relative",
+		position: 'relative',
 		opacity: 0.5,
 		marginHorizontal: 8,
 	},
 	CarouselActiveDot: {
-		backgroundColor: "white",
+		backgroundColor: 'white',
 		height: 16,
 		width: 16,
 		borderRadius: 16,

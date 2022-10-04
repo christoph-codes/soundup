@@ -1,11 +1,11 @@
-import { ScrollView, Text, View } from "native-base";
-import { StyleSheet, ViewStyle } from "react-native";
-import { useFonts } from "expo-font";
-import { NavigationProp } from "@react-navigation/native";
-import Carousel from "../components/Carousel";
-import testImage from "../../assets/sliders/testImage.png";
-import testImage2 from "../../assets/sliders/testImage2.png";
-import testImage3 from "../../assets/sliders/testImage3.png";
+import { ScrollView, Text, View } from 'native-base';
+import { StyleSheet, ViewStyle } from 'react-native';
+import { useFonts } from 'expo-font';
+import { NavigationProp } from '@react-navigation/native';
+import Carousel from '../components/Carousel';
+import testImage from '../../assets/sliders/testImage.png';
+import testImage2 from '../../assets/sliders/testImage2.png';
+import testImage3 from '../../assets/sliders/testImage3.png';
 
 export interface TemplateMainProps {
 	navigation: NavigationProp<any>;
@@ -23,7 +23,7 @@ const TemplateMain = ({
 	style,
 }: TemplateMainProps) => {
 	const [fontsLoaded] = useFonts({
-		Norwester: require("../../assets/fonts/norwester.otf"),
+		Norwester: require('../../assets/fonts/norwester.otf'),
 	});
 	if (!fontsLoaded) {
 		return null;
@@ -31,20 +31,21 @@ const TemplateMain = ({
 	return (
 		<ScrollView
 			showsVerticalScrollIndicator={false}
-			width={"100%"}
+			width={'100%'}
 			bounces={false}
 		>
 			<Carousel data={carousel} />
 			<View style={[styles.Container, style]}>
 				{title && (
 					<Text
-						fontFamily="Norwester"
-						color="#252525"
+						fontFamily='Norwester'
+						color='#252525'
 						lineHeight={24}
 						fontSize={24}
-						fontWeight="bold"
-						textTransform={"uppercase"}
+						fontWeight='bold'
+						textTransform={'uppercase'}
 						marginBottom={4}
+						marginTop={4}
 					>
 						{title}
 					</Text>
@@ -60,14 +61,14 @@ export default TemplateMain;
 const styles = StyleSheet.create({
 	page: {
 		flex: 1,
-		backgroundColor: "#252525",
+		backgroundColor: '#252525',
 	},
 	TemplateMain: {
 		flex: 1,
-		backgroundColor: "white",
+		backgroundColor: 'white',
 	},
 	Container: {
-		backgroundColor: "transparent",
+		backgroundColor: 'transparent',
 		flex: 1,
 		paddingHorizontal: 16,
 		paddingTop: 32,
