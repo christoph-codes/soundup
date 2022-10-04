@@ -59,7 +59,6 @@ const Carousel = ({ data, style }: ICarouselProps) => {
 						<TouchableOpacity
 							key={idx}
 							onPress={() => {
-								console.log('idx', idx);
 								setActiveSlide(idx);
 								carouselRef?.current?.scrollTo({
 									index: idx,
