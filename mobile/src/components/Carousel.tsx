@@ -90,6 +90,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'center',
 		marginTop: -36,
+		marginBottom: 6,
 		flexGap: 8,
 	},
 	CarouselDot: {
