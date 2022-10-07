@@ -1,4 +1,5 @@
 import {
+	GestureResponderEvent,
 	StyleProp,
 	StyleSheet,
 	TouchableOpacity,
@@ -11,13 +12,15 @@ export interface IButton {
 	/** Button text as a string */
 	children: string;
 	/** Size of the button as a string */
-	size: 'small' | 'medium';
+	size?: 'small' | 'medium';
 	/** Link of the article as a string */
 	link?: string;
 	/** Style object that will be passed to the View component */
 	style?: StyleProp<ViewStyle>[];
 	/** Navigation object that is passed from the react navigation router */
 	navigation?: NavigationProp<any>;
+	/** Tap event that fires functions */
+	onPress?: (event: GestureResponderEvent) => void;
 }
 
 const Button = ({
@@ -26,11 +29,15 @@ const Button = ({
 	style,
 	navigation,
 	link,
+	onPress,
 	...rest
 }: IButton) => {
 	return (
 		<TouchableOpacity
-			onPress={() => navigation.navigate(link)}
+			onPress={(e) => {
+				onPress(e);
+				link && navigation.navigate(link);
+			}}
 			{...rest}
 			style={[styles.Button, styles[`Button__${size}`], style]}
 		>
