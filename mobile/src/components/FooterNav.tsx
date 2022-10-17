@@ -1,7 +1,9 @@
 import { View, Text } from 'native-base';
 import { StyleSheet, TouchableHighlight } from 'react-native';
+import { useAuth } from '../providers/AuthProvider';
 
 const FooterNav = ({ navigation }) => {
+	const { user } = useAuth();
 	const items = [
 		{
 			label: 'News',
@@ -32,9 +34,10 @@ const FooterNav = ({ navigation }) => {
 	];
 	return (
 		<View style={styles.FooterNav}>
+			<Text>{user.name || 'No user is logged in'}</Text>
 			{/** TODO: Only return the private route if user is logged in. Must setup authentication */}
 			{items.map((item, index) => {
-				if (!item.private) {
+				if ((user.authId && item.private) || !item.private) {
 					return (
 						<TouchableHighlight
 							key={index}
