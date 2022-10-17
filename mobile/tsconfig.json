@@ -1,6 +1,6 @@
 {
 	"compilerOptions": {},
 	"extends": "expo/tsconfig.base",
-	"include": ["**/*.tsx", "**/*.png", "**/*.ts"],
+	"include": ["**/*.tsx", "**/*.png", "**/*.ts", "metro.config.js"],
 	"exclude": ["**/*.mp4"]
 }
