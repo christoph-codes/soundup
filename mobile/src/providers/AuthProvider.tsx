@@ -1,13 +1,10 @@
+import { createContext, ReactNode, useContext, useState } from 'react';
 import {
-	createContext,
-	ReactNode,
-	useContext,
-	useEffect,
-	useState,
-} from 'react';
-import { View, Text } from 'react-native';
-import auth from '@react-native-firebase/auth';
-import firestore from '@react-native-firebase/firestore';
+	onAuthStateChanged,
+	signInWithEmailAndPassword,
+	signOut,
+} from 'firebase/auth';
+import { auth, db } from '../config/firebase';
 
 export interface IAuthContext {
 	user: {
@@ -46,14 +43,15 @@ const AuthProvider = ({ children }: IAuthProviderProps) => {
 	);
 	const [loading, setLoading] = useState<IAuthContext['loading']>();
 	const [error, setError] = useState<IAuthContext['error']>('');
-	const onAuthStateChanged = (fireUser) => {
-		setLoading(true);
-		if (fireUser) {
+	// Listen for authentication state to change.
+	onAuthStateChanged(auth, (fireUser) => {
+		if (fireUser != null) {
+			console.log('We are authenticated now!');
 			// TODO: DB Lookup for user with authid to find additional details not found in firebase
-			const authUser = {
+			const authUser: IAuthContext['user'] = {
 				authId: fireUser.uid,
 				name: fireUser.displayName,
-				type: db.user.type,
+				type: 'default',
 				email: fireUser.email,
 			};
 			setUser(authUser);
@@ -63,10 +61,6 @@ const AuthProvider = ({ children }: IAuthProviderProps) => {
 				'There is no user in our database with these credentials.',
 			);
 		}
-	};
-	useEffect(() => {
-		const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-		return subscriber;
 	});
 	const login = (email: string, password: string) => {
 		if (!email || !password) {
@@ -76,12 +70,22 @@ const AuthProvider = ({ children }: IAuthProviderProps) => {
 		}
 		console.log('logging in user');
 		// TODO: Add login function with firebase for username and password
+		signInWithEmailAndPassword(auth, email, password).then((data) => {
+			console.log('data', data);
+			if (data.user) {
+				setUser({
+					authId: data.user.uid,
+					name: data.user.displayName,
+					type: 'default',
+					email: data.user.email,
+				});
+			}
+		});
 	};
 	const logout = () => {
-		auth()
-			.signOut()
-			.then(() => setUser(DefaultContext['user']));
+		signOut(auth).then(() => setUser(DefaultContext['user']));
 	};
+	console.log('user:', user);
 	return (
 		<AuthContext.Provider value={{ user, loading, login, logout, error }}>
 			{children}
