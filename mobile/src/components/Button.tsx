@@ -11,13 +11,15 @@ export interface IButton {
 	/** Button text as a string */
 	children: string;
 	/** Size of the button as a string */
-	size: 'small' | 'medium';
+	size?: 'small' | 'medium';
 	/** Link of the article as a string */
 	link?: string;
 	/** Style object that will be passed to the View component */
 	style?: StyleProp<ViewStyle>[];
 	/** Navigation object that is passed from the react navigation router */
 	navigation?: NavigationProp<any>;
+	/** Callback function for when the button is pressed */
+	onPress?: () => void;
 }
 
 const Button = ({
@@ -26,13 +28,17 @@ const Button = ({
 	style,
 	navigation,
 	link,
+	onPress,
 	...rest
 }: IButton) => {
 	return (
 		<TouchableOpacity
-			onPress={() => navigation.navigate(link)}
-			{...rest}
+			onPress={() => {
+				onPress();
+				navigation && navigation.navigate(link);
+			}}
 			style={[styles.Button, styles[`Button__${size}`], style]}
+			{...rest}
 		>
 			<Text style={[styles.ButtonText, styles[`ButtonText__${size}`]]}>
 				{children}
@@ -56,7 +62,7 @@ const styles = StyleSheet.create({
 		letterSpacing: -0.5,
 	},
 	Button__medium: {
-		paddingVertical: 8,
+		paddingVertical: 16,
 		paddingHorizontal: 24,
 	},
 	ButtonText__medium: {
