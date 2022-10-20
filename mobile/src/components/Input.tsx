@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import {
 	View,
 	Text,
@@ -91,7 +91,6 @@ const styles = StyleSheet.create({
 	},
 	InputFieldFocus: {
 		backgroundColor: 'rgba(141, 233, 254,0.1)',
-		// borderColor: 'transparent',
 	},
 	InputFieldError: {
 		borderColor: 'red',
