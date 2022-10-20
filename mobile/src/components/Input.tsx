@@ -77,6 +77,7 @@ const styles = StyleSheet.create({
 		color: '#252525',
 		fontSize: 12,
 		marginVertical: 4,
+		paddingLeft: 16,
 	},
 	InputLabelError: {
 		color: 'red',
