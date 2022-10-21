@@ -12,6 +12,7 @@ import News from './src/screens/News';
 import Watch from './src/screens/Watch';
 import Listen from './src/screens/Listen';
 import SignIn from './src/screens/SignIn';
+import CreateAccount from './src/screens/CreateAccount';
 import { SafeAreaView, StyleSheet } from 'react-native';
 import FooterNav from './src/components/FooterNav';
 import Header from './src/components/Header';
@@ -65,6 +66,11 @@ const App = () => {
 								<Stack.Screen
 									name='Sign In'
 									component={SignIn}
+									options={globalScreenOptions}
+								/>
+								<Stack.Screen
+									name='Create Account'
+									component={CreateAccount}
 									options={globalScreenOptions}
 								/>
 							</Stack.Navigator>
