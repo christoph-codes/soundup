@@ -20,6 +20,8 @@ export interface IButton {
 	navigation?: NavigationProp<any>;
 	/** Callback function for when the button is pressed */
 	onPress?: () => void;
+	/** The style of button */
+	variant?: 'primary' | 'ghost';
 }
 
 const Button = ({
@@ -29,6 +31,7 @@ const Button = ({
 	navigation,
 	link,
 	onPress,
+	variant,
 	...rest
 }: IButton) => {
 	return (
@@ -37,10 +40,21 @@ const Button = ({
 				onPress();
 				navigation && navigation.navigate(link);
 			}}
-			style={[styles.Button, styles[`Button__${size}`], style]}
+			style={[
+				styles.Button,
+				styles[`Button__${size}`],
+				styles[`Button__${variant}`],
+				style,
+			]}
 			{...rest}
 		>
-			<Text style={[styles.ButtonText, styles[`ButtonText__${size}`]]}>
+			<Text
+				style={[
+					styles.ButtonText,
+					styles[`ButtonText__${size}`],
+					styles[`ButtonText__${variant}`],
+				]}
+			>
 				{children}
 			</Text>
 		</TouchableOpacity>
@@ -60,6 +74,9 @@ const styles = StyleSheet.create({
 		textTransform: 'uppercase',
 		fontWeight: 'bold',
 		letterSpacing: -0.5,
+	},
+	Button__ghost: {
+		backgroundColor: 'transparent',
 	},
 	Button__medium: {
 		paddingVertical: 16,
