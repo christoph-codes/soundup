@@ -56,6 +56,12 @@ const SignIn = ({ navigation }) => {
 			/>
 			{formError && <Text style={styles.SignInError}>{formError}</Text>}
 			<Button onPress={() => submitLogin()}>Signin</Button>
+			<Button
+				variant='ghost'
+				onPress={() => navigation.navigate('Create Account')}
+			>
+				Sign up for an account?
+			</Button>
 		</TemplateMain>
 	);
 };
