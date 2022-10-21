@@ -11,7 +11,7 @@ export interface IInputProps {
 	label: string;
 	value: string;
 	setValue: Dispatch<SetStateAction<string>>;
-	validate: () => boolean;
+	validate?: () => boolean;
 	helperText?: string;
 }
 
@@ -25,7 +25,6 @@ const Input = ({
 }: IInputProps & TextInputProps) => {
 	const [focus, setFocus] = useState(false);
 	const [valid, setValid] = useState(null);
-	console.log('validation:', validate());
 	return (
 		<View style={styles.Input}>
 			<Text
