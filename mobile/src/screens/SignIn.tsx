@@ -3,10 +3,12 @@ import { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import Button from '../components/Button';
 import Input from '../components/Input';
+import { useAuth } from '../providers/AuthProvider';
 import TemplateMain from '../templates/TemplateMain';
 import inputValidations from '../utils/inputValidations';
 
 const SignIn = ({ navigation }) => {
+	const { login } = useAuth();
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [formError, setFormError] = useState('');
@@ -23,6 +25,7 @@ const SignIn = ({ navigation }) => {
 			setPassword('');
 		} else {
 			console.log('creds:', { email, password });
+			login(email, password);
 		}
 	};
 
