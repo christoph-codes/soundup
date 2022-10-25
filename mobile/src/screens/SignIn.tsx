@@ -26,6 +26,7 @@ const SignIn = ({ navigation }) => {
 		} else {
 			console.log('creds:', { email, password });
 			login(email, password);
+			navigation.navigate('Home');
 		}
 	};
 
