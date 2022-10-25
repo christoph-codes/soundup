@@ -3,7 +3,7 @@ import { StyleSheet, TouchableHighlight } from 'react-native';
 import { useAuth } from '../providers/AuthProvider';
 
 const FooterNav = ({ navigation }) => {
-	const { user } = useAuth();
+	const { user, logout } = useAuth();
 	const items = [
 		{
 			label: 'News',
@@ -24,45 +24,52 @@ const FooterNav = ({ navigation }) => {
 			label: 'Sign In',
 			icon: '🔒',
 			link: 'Sign In',
+			private: false,
 		},
 		{
 			label: 'Logout',
+			onClick: () => logout(),
 			icon: '✌🏾',
 			link: 'Logout',
 			private: true,
 		},
 	];
+	const footerLink = (item, index) => (
+		<TouchableHighlight
+			key={index}
+			onPress={() => {
+				item.onClick && item.onClick();
+				item.link && navigation.navigate(item.link);
+			}}
+		>
+			<View>
+				<Text fontSize={24} lineHeight={28} textAlign={'center'}>
+					{item.icon}
+				</Text>
+				<Text
+					fontSize={10}
+					textTransform={'uppercase'}
+					fontWeight='bold'
+					textAlign={'center'}
+				>
+					{item.label}
+				</Text>
+			</View>
+		</TouchableHighlight>
+	);
+	/** If user is authenticated filter for private */
+	const filteredLinks = items.filter((it) => {
+		if ('private' in it && !user.authId) {
+			return !it.private;
+		}
+		return true;
+	});
 	return (
 		<View style={styles.FooterNav}>
-			<Text>{user.name || 'No user is logged in'}</Text>
+			<Text>{user.email || 'No user is logged in'}</Text>
 			{/** TODO: Only return the private route if user is logged in. Must setup authentication */}
-			{items.map((item, index) => {
-				if ((user.authId && item.private) || !item.private) {
-					return (
-						<TouchableHighlight
-							key={index}
-							onPress={() => navigation.navigate(item.link)}
-						>
-							<View>
-								<Text
-									fontSize={24}
-									lineHeight={28}
-									textAlign={'center'}
-								>
-									{item.icon}
-								</Text>
-								<Text
-									fontSize={10}
-									textTransform={'uppercase'}
-									fontWeight='bold'
-									textAlign={'center'}
-								>
-									{item.label}
-								</Text>
-							</View>
-						</TouchableHighlight>
-					);
-				}
+			{filteredLinks.map((item, idx) => {
+				return footerLink(item, idx);
 			})}
 		</View>
 	);
