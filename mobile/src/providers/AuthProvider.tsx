@@ -1,4 +1,10 @@
-import { createContext, ReactNode, useContext, useState } from 'react';
+import {
+	createContext,
+	ReactNode,
+	useContext,
+	useEffect,
+	useState,
+} from 'react';
 import {
 	createUserWithEmailAndPassword,
 	onAuthStateChanged,
@@ -6,7 +12,7 @@ import {
 	signOut,
 } from 'firebase/auth';
 import { auth, db } from '../config/firebase';
-import { addDoc, collection } from 'firebase/firestore';
+import { addDoc, collection, doc, getDoc } from 'firebase/firestore';
 
 export interface IAuthContext {
 	user: {
@@ -83,15 +89,17 @@ const AuthProvider = ({ children }: IAuthProviderProps) => {
 		}
 		console.log('logging in user');
 		// TODO: Add login function with firebase for username and password
-		signInWithEmailAndPassword(auth, email, password).then((data) => {
+		signInWithEmailAndPassword(auth, email, password).then(async (data) => {
 			console.log('data', data);
 			if (data.user) {
-				setUser({
-					authId: data.user.uid,
-					name: data.user.displayName,
-					type: 'default',
-					email: data.user.email,
-				});
+				console.log('in there');
+				const docRef = doc(db, 'users');
+				const docSnap = await getDoc(docRef);
+				if (docSnap.exists) {
+					setUser(docSnap.data());
+				} else {
+					console.log('No user exists');
+				}
 			}
 		});
 	};
