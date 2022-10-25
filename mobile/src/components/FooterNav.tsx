@@ -28,9 +28,9 @@ const FooterNav = ({ navigation }) => {
 		},
 		{
 			label: 'Logout',
-			onClick: () => logout(),
+			onClick: () => logout(navigation),
 			icon: '✌🏾',
-			link: 'Logout',
+			link: 'Sign In',
 			private: true,
 		},
 	];
@@ -59,14 +59,16 @@ const FooterNav = ({ navigation }) => {
 	);
 	/** If user is authenticated filter for private */
 	const filteredLinks = items.filter((it) => {
-		if ('private' in it && !user.authId) {
+		if ('private' in it && user?.authId) {
+			return it.private;
+		}
+		if ('private' in it && !user?.authId) {
 			return !it.private;
 		}
 		return true;
 	});
 	return (
 		<View style={styles.FooterNav}>
-			<Text>{user.email || 'No user is logged in'}</Text>
 			{/** TODO: Only return the private route if user is logged in. Must setup authentication */}
 			{filteredLinks.map((item, idx) => {
 				return footerLink(item, idx);
