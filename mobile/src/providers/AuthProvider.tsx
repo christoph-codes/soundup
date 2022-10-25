@@ -12,11 +12,20 @@ import {
 	signOut,
 } from 'firebase/auth';
 import { auth, db } from '../config/firebase';
-import { addDoc, collection, doc, getDoc } from 'firebase/firestore';
+import {
+	addDoc,
+	collection,
+	doc,
+	getDoc,
+	getDocs,
+	query,
+	where,
+} from 'firebase/firestore';
+import { NavigationProp } from '@react-navigation/native';
 
 export interface IAuthContext {
 	user: {
-		type: 'default' | 'paid' | null;
+		type?: 'default' | 'paid';
 		name?: string;
 		email?: string;
 		authId?: string;
@@ -24,7 +33,7 @@ export interface IAuthContext {
 	loading: boolean;
 	error?: string;
 	login: (email: string, password: string) => void;
-	logout: () => void;
+	logout: (navigation: NavigationProp<any>) => void;
 	createAccountWithEmailAndPassword: (
 		name: string,
 		email: string,
@@ -57,19 +66,34 @@ const AuthProvider = ({ children }: IAuthProviderProps) => {
 	);
 	const [loading, setLoading] = useState<IAuthContext['loading']>();
 	const [error, setError] = useState<IAuthContext['error']>('');
+	console.log('user:', user);
+
+	const lookupUser = async (uid: string): Promise<IAuthContext['user']> => {
+		const userRef = collection(db, 'users');
+		const storedUser = query(userRef, where('authId', '==', uid));
+		const userGetter = await getDocs(storedUser);
+		if (userGetter.empty) {
+			return null;
+		} else {
+			userGetter.forEach((doc) => {
+				if (doc.exists) {
+					return doc.data();
+				}
+				return null;
+			});
+		}
+	};
+
 	// Listen for authentication state to change.
 	useEffect(() => {
-		onAuthStateChanged(auth, (fireUser) => {
+		onAuthStateChanged(auth, async (fireUser) => {
 			if (fireUser != null) {
 				console.log('We are authenticated now!');
-				// TODO: DB Lookup for user with authid to find additional details not found in firebase
-				const authUser: IAuthContext['user'] = {
-					authId: fireUser.uid,
-					name: fireUser.displayName,
-					type: 'default',
-					email: fireUser.email,
-				};
-				setUser(authUser);
+				const authenticatedUser = await lookupUser(fireUser.uid);
+				console.log('authUser:', authenticatedUser);
+				if (!authenticatedUser) {
+					setUser(authenticatedUser);
+				}
 				setLoading(false);
 			} else {
 				setError(
@@ -78,8 +102,6 @@ const AuthProvider = ({ children }: IAuthProviderProps) => {
 			}
 		});
 	}, []);
-
-	console.log('user:', user);
 
 	const login = (email: string, password: string) => {
 		if (!email || !password) {
@@ -90,21 +112,23 @@ const AuthProvider = ({ children }: IAuthProviderProps) => {
 		console.log('logging in user');
 		// TODO: Add login function with firebase for username and password
 		signInWithEmailAndPassword(auth, email, password).then(async (data) => {
-			console.log('data', data);
 			if (data.user) {
-				console.log('in there');
-				const docRef = doc(db, 'users');
-				const docSnap = await getDoc(docRef);
-				if (docSnap.exists) {
-					setUser(docSnap.data());
-				} else {
-					console.log('No user exists');
+				const authenticatedUser = await lookupUser(data.user.uid);
+				if (authenticatedUser !== null) {
+					setUser(authenticatedUser);
 				}
 			}
 		});
 	};
-	const logout = () => {
-		signOut(auth).then(() => setUser(DefaultContext['user']));
+	const logout = (navigation: NavigationProp<any>) => {
+		signOut(auth)
+			.then(() => {
+				setUser(DefaultContext['user']);
+				navigation.navigate('Sign In');
+			})
+			.catch((err) => {
+				throw new Error(err);
+			});
 	};
 	const createAccountWithEmailAndPassword = async (
 		name: string,
@@ -113,7 +137,7 @@ const AuthProvider = ({ children }: IAuthProviderProps) => {
 	) => {
 		await createUserWithEmailAndPassword(auth, email, password)
 			.then(async (data) => {
-				console.log('data', data.user);
+				console.log('create data:', data.user);
 				if (data.user) {
 					// Create a user in the database using the authid and email
 					await addDoc(collection(db, 'users'), {
