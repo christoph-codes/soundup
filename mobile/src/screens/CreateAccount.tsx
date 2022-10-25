@@ -3,10 +3,12 @@ import { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import Button from '../components/Button';
 import Input from '../components/Input';
+import { useAuth } from '../providers/AuthProvider';
 import TemplateMain from '../templates/TemplateMain';
 import inputValidations from '../utils/inputValidations';
 
 const CreateAccount = ({ navigation }) => {
+	const { createAccountWithEmailAndPassword } = useAuth();
 	const [name, setName] = useState<string>('');
 	const [email, setEmail] = useState<string>('');
 	const [password, setPassword] = useState<string>('');
@@ -30,6 +32,7 @@ const CreateAccount = ({ navigation }) => {
 			setConfirmPassword('');
 		} else {
 			console.log('creds:', { name, email, password });
+			createAccountWithEmailAndPassword(name, email, password);
 		}
 	};
 	console.log('emailVal:', inputValidations['email'](email));
