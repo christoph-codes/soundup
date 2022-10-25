@@ -63,7 +63,7 @@ const Input = ({
 const styles = StyleSheet.create({
 	Input: {
 		color: '#252525',
-		marginBottom: 24,
+		marginBottom: 20,
 	},
 	InputLabel: {
 		color: '#252525',
