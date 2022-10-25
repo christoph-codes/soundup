@@ -19,7 +19,11 @@ export interface IAuthContext {
 	error?: string;
 	login: (email: string, password: string) => void;
 	logout: () => void;
-	createAccount: (email: string, password: string) => void;
+	createAccountWithEmailAndPassword: (
+		name: string,
+		email: string,
+		password: string,
+	) => void;
 }
 
 export interface IAuthProviderProps {
@@ -36,7 +40,7 @@ export const DefaultContext: IAuthContext = {
 	login: () => {},
 	logout: () => {},
 	loading: false,
-	createAccount: () => {},
+	createAccountWithEmailAndPassword: () => {},
 };
 
 const AuthContext = createContext<IAuthContext>(DefaultContext);
@@ -90,15 +94,19 @@ const AuthProvider = ({ children }: IAuthProviderProps) => {
 	const logout = () => {
 		signOut(auth).then(() => setUser(DefaultContext['user']));
 	};
-	const createAccount = (email: string, password: string) => {
-		createUserWithEmailAndPassword(auth, email, password).then(
-			async (data) => {
-				console.log('data', data);
+	const createAccountWithEmailAndPassword = async (
+		name: string,
+		email: string,
+		password: string,
+	) => {
+		await createUserWithEmailAndPassword(auth, email, password)
+			.then(async (data) => {
+				console.log('data', data.user);
 				if (data.user) {
 					// Create a user in the database using the authid and email
-					await addDoc(collection(db, 'cities'), {
+					await addDoc(collection(db, 'users'), {
 						authId: data.user.uid,
-						name: data.user.displayName,
+						name: name,
 						type: 'default',
 						email: data.user.email,
 					})
@@ -106,7 +114,7 @@ const AuthProvider = ({ children }: IAuthProviderProps) => {
 							console.log('successful user addition', res);
 							setUser({
 								authId: data.user.uid,
-								name: data.user.displayName,
+								name: name,
 								type: 'default',
 								email: data.user.email,
 							});
@@ -115,12 +123,19 @@ const AuthProvider = ({ children }: IAuthProviderProps) => {
 							throw new Error(err);
 						});
 				}
-			},
-		);
+			})
+			.catch((err) => console.log('err:', err));
 	};
 	return (
 		<AuthContext.Provider
-			value={{ user, loading, login, logout, error, createAccount }}
+			value={{
+				user,
+				loading,
+				login,
+				logout,
+				error,
+				createAccountWithEmailAndPassword,
+			}}
 		>
 			{children}
 		</AuthContext.Provider>
