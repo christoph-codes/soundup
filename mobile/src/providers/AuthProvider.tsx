@@ -52,25 +52,29 @@ const AuthProvider = ({ children }: IAuthProviderProps) => {
 	const [loading, setLoading] = useState<IAuthContext['loading']>();
 	const [error, setError] = useState<IAuthContext['error']>('');
 	// Listen for authentication state to change.
-	onAuthStateChanged(auth, (fireUser) => {
-		if (fireUser != null) {
-			console.log('We are authenticated now!');
-			// TODO: DB Lookup for user with authid to find additional details not found in firebase
-			const authUser: IAuthContext['user'] = {
-				authId: fireUser.uid,
-				name: fireUser.displayName,
-				type: 'default',
-				email: fireUser.email,
-			};
-			setUser(authUser);
-			setLoading(false);
-		} else {
-			setError(
-				'There is no user in our database with these credentials.',
-			);
-		}
-		console.log('user:', user);
-	});
+	useEffect(() => {
+		onAuthStateChanged(auth, (fireUser) => {
+			if (fireUser != null) {
+				console.log('We are authenticated now!');
+				// TODO: DB Lookup for user with authid to find additional details not found in firebase
+				const authUser: IAuthContext['user'] = {
+					authId: fireUser.uid,
+					name: fireUser.displayName,
+					type: 'default',
+					email: fireUser.email,
+				};
+				setUser(authUser);
+				setLoading(false);
+			} else {
+				setError(
+					'There is no user in our database with these credentials.',
+				);
+			}
+		});
+	}, []);
+
+	console.log('user:', user);
+
 	const login = (email: string, password: string) => {
 		if (!email || !password) {
 			throw new Error(
