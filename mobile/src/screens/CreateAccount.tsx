@@ -33,9 +33,9 @@ const CreateAccount = ({ navigation }) => {
 		} else {
 			console.log('creds:', { name, email, password });
 			createAccountWithEmailAndPassword(name, email, password);
+			navigation.navigate('Home');
 		}
 	};
-	console.log('emailVal:', inputValidations['email'](email));
 
 	return (
 		<TemplateMain
