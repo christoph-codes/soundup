@@ -1,7 +1,9 @@
-import { Image, View } from 'native-base';
+import { Image, View, Text } from 'native-base';
 import { StyleSheet, TouchableHighlight } from 'react-native';
+import { useAuth } from '../providers/AuthProvider';
 
 const Header = ({ navigation }) => {
+	const { user } = useAuth();
 	return (
 		<View style={styles.Header}>
 			<TouchableHighlight onPress={() => navigation.navigate('Home')}>
@@ -10,14 +12,30 @@ const Header = ({ navigation }) => {
 					alt='Sound Up Logo'
 				/>
 			</TouchableHighlight>
-			<TouchableHighlight
-				onPress={() => navigation.navigate('AccountSettings')}
-			>
-				<Image
-					source={require('../../assets/cog.png')}
-					alt='Settings cog'
-				/>
-			</TouchableHighlight>
+
+			{user.name ? (
+				<TouchableHighlight
+					style={styles.HeaderProfileIcon}
+					onPress={() => {
+						navigation.navigate('AccountSettings');
+					}}
+				>
+					<Text style={styles.HeaderProfileIconText}>
+						{user.name.slice(0, 1)}
+					</Text>
+				</TouchableHighlight>
+			) : (
+				<TouchableHighlight
+					onPress={() => {
+						navigation.navigate('Sign In');
+					}}
+				>
+					<Image
+						source={require('../../assets/cog.png')}
+						alt='Settings cog'
+					/>
+				</TouchableHighlight>
+			)}
 		</View>
 	);
 };
@@ -36,5 +54,17 @@ const styles = StyleSheet.create({
 		backgroundColor: '#252525',
 		borderBottomWidth: 1,
 		borderBottomColor: '#161616',
+	},
+	HeaderProfileIcon: {
+		backgroundColor: '#8DE9FE',
+		borderRadius: 26,
+		height: 26,
+		width: 26,
+	},
+	HeaderProfileIconText: {
+		textAlign: 'center',
+		lineHeight: 26,
+		color: '#252525',
+		fontWeight: 'bold',
 	},
 });
