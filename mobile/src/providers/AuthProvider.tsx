@@ -12,15 +12,7 @@ import {
 	signOut,
 } from 'firebase/auth';
 import { auth, db } from '../config/firebase';
-import {
-	addDoc,
-	collection,
-	doc,
-	getDoc,
-	getDocs,
-	query,
-	where,
-} from 'firebase/firestore';
+import { addDoc, collection, getDocs, query, where } from 'firebase/firestore';
 import { NavigationProp } from '@react-navigation/native';
 
 export interface IAuthContext {
