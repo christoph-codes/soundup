@@ -13,7 +13,9 @@
       "backgroundColor": "#ffffff"
     },
     "packagerOpts": {
-      "sourceExts": ["cjs"]
+      "sourceExts": [
+        "cjs"
+      ]
     },
     "updates": {
       "fallbackToCacheTimeout": 0
