@@ -9,7 +9,7 @@ import testImage3 from '../../assets/sliders/testImage3.png';
 
 export interface TemplateMainProps {
 	navigation: NavigationProp<any>;
-	carousel?: string[];
+	carousel?: string[] | false;
 	title?: string;
 	children?: any;
 	style?: ViewStyle;
@@ -34,7 +34,7 @@ const TemplateMain = ({
 			width={'100%'}
 			bounces={false}
 		>
-			<Carousel data={carousel} />
+			{carousel !== false && <Carousel data={carousel} />}
 			<View style={[styles.Container, style]}>
 				{title && (
 					<Text
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
 	},
 	TemplateMain: {
 		flex: 1,
-		backgroundColor: 'white',
+		backgroundColor: 'transparent',
 	},
 	Container: {
 		backgroundColor: 'transparent',

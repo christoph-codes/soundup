@@ -11,13 +11,17 @@ export interface IButton {
 	/** Button text as a string */
 	children: string;
 	/** Size of the button as a string */
-	size: 'small' | 'medium';
+	size?: 'small' | 'medium';
 	/** Link of the article as a string */
 	link?: string;
 	/** Style object that will be passed to the View component */
 	style?: StyleProp<ViewStyle>[];
 	/** Navigation object that is passed from the react navigation router */
 	navigation?: NavigationProp<any>;
+	/** Callback function for when the button is pressed */
+	onPress?: () => void;
+	/** The style of button */
+	variant?: 'primary' | 'ghost';
 }
 
 const Button = ({
@@ -26,15 +30,31 @@ const Button = ({
 	style,
 	navigation,
 	link,
+	onPress,
+	variant,
 	...rest
 }: IButton) => {
 	return (
 		<TouchableOpacity
-			onPress={() => navigation.navigate(link)}
+			onPress={() => {
+				onPress();
+				navigation && navigation.navigate(link);
+			}}
+			style={[
+				styles.Button,
+				styles[`Button__${size}`],
+				styles[`Button__${variant}`],
+				style,
+			]}
 			{...rest}
-			style={[styles.Button, styles[`Button__${size}`], style]}
 		>
-			<Text style={[styles.ButtonText, styles[`ButtonText__${size}`]]}>
+			<Text
+				style={[
+					styles.ButtonText,
+					styles[`ButtonText__${size}`],
+					styles[`ButtonText__${variant}`],
+				]}
+			>
 				{children}
 			</Text>
 		</TouchableOpacity>
@@ -55,8 +75,11 @@ const styles = StyleSheet.create({
 		fontWeight: 'bold',
 		letterSpacing: -0.5,
 	},
+	Button__ghost: {
+		backgroundColor: 'transparent',
+	},
 	Button__medium: {
-		paddingVertical: 8,
+		paddingVertical: 16,
 		paddingHorizontal: 24,
 	},
 	ButtonText__medium: {

@@ -12,9 +12,11 @@ import News from './src/screens/News';
 import Watch from './src/screens/Watch';
 import Listen from './src/screens/Listen';
 import SignIn from './src/screens/SignIn';
+import CreateAccount from './src/screens/CreateAccount';
 import { SafeAreaView, StyleSheet } from 'react-native';
 import FooterNav from './src/components/FooterNav';
 import Header from './src/components/Header';
+import AuthProvider from './src/providers/AuthProvider';
 
 const App = () => {
 	const navigationRef = useNavigationContainerRef();
@@ -25,48 +27,58 @@ const App = () => {
 	};
 	return (
 		<NativeBaseProvider theme={theme()}>
-			<SafeAreaView style={styles.page}>
-				<View style={styles.TemplateMain}>
-					<Header navigation={navigationRef} />
-					<NavigationContainer ref={navigationRef}>
-						<StatusBar animated={true} barStyle='light-content' />
+			<AuthProvider>
+				<SafeAreaView style={styles.page}>
+					<View style={styles.TemplateMain}>
+						<Header navigation={navigationRef} />
+						<NavigationContainer ref={navigationRef}>
+							<StatusBar
+								animated={true}
+								barStyle='light-content'
+							/>
 
-						<Stack.Navigator initialRouteName='Home'>
-							<Stack.Screen
-								name='Home'
-								component={Home}
-								options={globalScreenOptions}
-							/>
-							<Stack.Screen
-								name='AccountSettings'
-								component={AccountSettings}
-								options={globalScreenOptions}
-							/>
-							<Stack.Screen
-								name='News'
-								component={News}
-								options={globalScreenOptions}
-							/>
-							<Stack.Screen
-								name='Watch'
-								component={Watch}
-								options={globalScreenOptions}
-							/>
-							<Stack.Screen
-								name='Listen'
-								component={Listen}
-								options={globalScreenOptions}
-							/>
-							<Stack.Screen
-								name='Sign In'
-								component={SignIn}
-								options={globalScreenOptions}
-							/>
-						</Stack.Navigator>
-					</NavigationContainer>
-					<FooterNav navigation={navigationRef} />
-				</View>
-			</SafeAreaView>
+							<Stack.Navigator initialRouteName='Home'>
+								<Stack.Screen
+									name='Home'
+									component={Home}
+									options={globalScreenOptions}
+								/>
+								<Stack.Screen
+									name='AccountSettings'
+									component={AccountSettings}
+									options={globalScreenOptions}
+								/>
+								<Stack.Screen
+									name='News'
+									component={News}
+									options={globalScreenOptions}
+								/>
+								<Stack.Screen
+									name='Watch'
+									component={Watch}
+									options={globalScreenOptions}
+								/>
+								<Stack.Screen
+									name='Listen'
+									component={Listen}
+									options={globalScreenOptions}
+								/>
+								<Stack.Screen
+									name='Sign In'
+									component={SignIn}
+									options={globalScreenOptions}
+								/>
+								<Stack.Screen
+									name='Create Account'
+									component={CreateAccount}
+									options={globalScreenOptions}
+								/>
+							</Stack.Navigator>
+						</NavigationContainer>
+						<FooterNav navigation={navigationRef} />
+					</View>
+				</SafeAreaView>
+			</AuthProvider>
 		</NativeBaseProvider>
 	);
 };

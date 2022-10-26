@@ -2,9 +2,11 @@ import { Text } from 'native-base';
 import { StyleSheet } from 'react-native';
 import NewsArticle, { IArticleContent } from '../components/NewsArticle';
 import VideoArticle, { IVideoArticleContent } from '../components/VideoArticle';
+import { useAuth } from '../providers/AuthProvider';
 import TemplateMain from '../templates/TemplateMain';
 
 const Home = ({ navigation }) => {
+	const { user } = useAuth();
 	const testVideoArticle: IVideoArticleContent = {
 		title: 'Test article',
 		postedDate: Date.now(),
@@ -23,7 +25,7 @@ const Home = ({ navigation }) => {
 		<TemplateMain
 			style={styles.Home}
 			navigation={navigation}
-			title='Latest Updates'
+			title={user?.name ? `Hey ${user.name}!` : 'Latest Updates'}
 		>
 			<VideoArticle navigation={navigation} article={testVideoArticle} />
 			<NewsArticle article={testArticle} navigation={navigation} />
