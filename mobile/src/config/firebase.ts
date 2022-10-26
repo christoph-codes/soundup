@@ -1,17 +1,16 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
-import fireStorage from 'firebase/storage';
 
 // Initialize Firebase
 const firebaseConfig = {
-	apiKey: 'AIzaSyB7l1NrtAoN-IYMPSt43UJ9LOWQC4yTGAc',
-	authDomain: 'soundup-d411e.firebaseapp.com',
-	projectId: 'soundup-d411e',
-	storageBucket: 'soundup-d411e.appspot.com',
-	messagingSenderId: '679984333060',
-	appId: '1:679984333060:web:b7f027a563eaa2ca4d9051',
-	measurementId: 'G-BDCGYCVL4W',
+	apiKey: process.env.REACT_APP_API_KEY,
+	authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+	projectId: process.env.REACT_APP_PROJECT_ID,
+	storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+	messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
+	appId: process.env.REACT_APP_APP_ID,
+	measurementId: process.env.REACT_APP_MEASUREMENT_ID,
 };
 
 export const app = initializeApp(firebaseConfig);
