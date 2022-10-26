@@ -8,7 +8,7 @@ import testImage2 from '../../assets/sliders/testImage2.png';
 import testImage3 from '../../assets/sliders/testImage3.png';
 
 export interface TemplateMainProps {
-	navigation: NavigationProp<any>;
+	navigation?: NavigationProp<any>;
 	carousel?: string[] | false;
 	title?: string;
 	children?: any;
@@ -33,6 +33,7 @@ const TemplateMain = ({
 			showsVerticalScrollIndicator={false}
 			width={'100%'}
 			bounces={false}
+			backgroundColor='white'
 		>
 			{carousel !== false && <Carousel data={carousel} />}
 			<View style={[styles.Container, style]}>
