@@ -94,7 +94,6 @@ const AuthProvider = ({ children }: IAuthProviderProps) => {
 	useEffect(() => {
 		const unsubscribe = onAuthStateChanged(auth, async (fireUser) => {
 			if (fireUser != null) {
-				console.log('We are authenticated now!', fireUser.uid);
 				await lookupUser(fireUser.uid);
 			} else {
 				setError(
@@ -152,7 +151,6 @@ const AuthProvider = ({ children }: IAuthProviderProps) => {
 	) => {
 		await createUserWithEmailAndPassword(auth, email, password)
 			.then(async (data) => {
-				console.log('create data:', data.user);
 				if (data.user) {
 					// Create a user in the database using the authid and email
 					await addDoc(collection(db, 'users'), {
@@ -162,7 +160,6 @@ const AuthProvider = ({ children }: IAuthProviderProps) => {
 						email: data.user.email,
 					})
 						.then((res) => {
-							console.log('successful user addition', res);
 							setUser({
 								authId: data.user.uid,
 								name: name,
@@ -175,7 +172,7 @@ const AuthProvider = ({ children }: IAuthProviderProps) => {
 						});
 				}
 			})
-			.catch((err) => console.log('err:', err));
+			.catch((err) => console.warn('err:', err));
 	};
 	return (
 		<AuthContext.Provider

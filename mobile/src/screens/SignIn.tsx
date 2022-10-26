@@ -24,7 +24,6 @@ const SignIn = ({ navigation }) => {
 			setFormError('You must enter a valid email and password');
 			setPassword('');
 		} else {
-			console.log('creds:', { email, password });
 			login(email, password);
 			navigation.navigate('Home');
 		}
@@ -56,7 +55,6 @@ const SignIn = ({ navigation }) => {
 						password.trim().replaceAll(' ', ''),
 					)
 				}
-				helperText='Minimum eight characters. At least one upper case English letter. One lower case English letter. One number and one special character.'
 			/>
 			{formError && <Text style={styles.SignInError}>{formError}</Text>}
 			<Button onPress={() => submitLogin()}>Signin</Button>

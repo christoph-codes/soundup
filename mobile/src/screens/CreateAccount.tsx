@@ -31,7 +31,6 @@ const CreateAccount = ({ navigation }) => {
 			setPassword('');
 			setConfirmPassword('');
 		} else {
-			console.log('creds:', { name, email, password });
 			createAccountWithEmailAndPassword(name, email, password);
 			navigation.navigate('Home');
 		}
