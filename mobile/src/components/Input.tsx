@@ -48,9 +48,10 @@ const Input = ({
 				}}
 				onChangeText={setValue}
 				onBlur={() => {
-					setValid(validate());
+					validate && setValid(validate());
 					setFocus(false);
 				}}
+				placeholderTextColor='rgba(37, 37, 37, 0.5)'
 				{...rest}
 			/>
 			{helperText && focus && (
@@ -67,23 +68,23 @@ const styles = StyleSheet.create({
 	},
 	InputLabel: {
 		color: '#252525',
-		fontSize: 16,
+		fontSize: 14,
 		fontWeight: 'bold',
-		paddingLeft: 16,
-		marginBottom: 8,
+		paddingLeft: 8,
+		marginBottom: 4,
 	},
 	InputHelperText: {
 		color: '#252525',
 		fontSize: 12,
 		marginVertical: 4,
-		paddingLeft: 16,
+		paddingLeft: 8,
 	},
 	InputLabelError: {
 		color: 'red',
 	},
 	InputField: {
-		backgroundColor: '#ffffff',
-		padding: 16,
+		backgroundColor: '#f1f1f1',
+		padding: 12,
 		borderRadius: 8,
 		borderWidth: 1,
 		borderColor: 'transparent',
