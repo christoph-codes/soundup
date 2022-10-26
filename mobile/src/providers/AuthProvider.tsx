@@ -70,25 +70,21 @@ const AuthProvider = ({ children }: IAuthProviderProps) => {
 	);
 	const [loading, setLoading] = useState<IAuthContext['loading']>();
 	const [error, setError] = useState<IAuthContext['error']>('');
-	console.log('user:', user);
 
 	/**
 	 * It takes a user id, looks up the user in the database, and returns the user if it exists
 	 * @param {string} uid - The user's unique ID from the authentication provider.
 	 * @returns The user object is being returned.
 	 */
-	const lookupUser = async (uid: string): Promise<IAuthContext['user']> => {
+	const lookupUser = async (uid: string) => {
 		const userRef = collection(db, 'users');
 		const storedUser = query(userRef, where('authId', '==', uid));
 		const userGetter = await getDocs(storedUser);
 		if (userGetter.empty) {
-			return null;
+			setUser(DefaultContext['user']);
 		} else {
 			userGetter.forEach((doc) => {
-				if (doc.exists) {
-					return doc.data();
-				}
-				return null;
+				setUser(doc.data());
 			});
 		}
 	};
@@ -96,21 +92,18 @@ const AuthProvider = ({ children }: IAuthProviderProps) => {
 	/* Checking to see if the user is authenticated. If they are, it will set the user to the
 	authenticated user. If not, it will set the error to the error message. */
 	useEffect(() => {
-		onAuthStateChanged(auth, async (fireUser) => {
+		const unsubscribe = onAuthStateChanged(auth, async (fireUser) => {
 			if (fireUser != null) {
-				console.log('We are authenticated now!');
-				const authenticatedUser = await lookupUser(fireUser.uid);
-				console.log('authUser:', authenticatedUser);
-				if (!authenticatedUser) {
-					setUser(authenticatedUser);
-				}
-				setLoading(false);
+				console.log('We are authenticated now!', fireUser.uid);
+				await lookupUser(fireUser.uid);
 			} else {
 				setError(
 					'There is no user in our database with these credentials.',
 				);
 			}
+			setLoading(false);
 		});
+		() => unsubscribe();
 	}, []);
 
 	/**
@@ -128,10 +121,7 @@ const AuthProvider = ({ children }: IAuthProviderProps) => {
 		// TODO: Add login function with firebase for username and password
 		signInWithEmailAndPassword(auth, email, password).then(async (data) => {
 			if (data.user) {
-				const authenticatedUser = await lookupUser(data.user.uid);
-				if (authenticatedUser !== null) {
-					setUser(authenticatedUser);
-				}
+				await lookupUser(data.user.uid);
 			}
 		});
 	};
