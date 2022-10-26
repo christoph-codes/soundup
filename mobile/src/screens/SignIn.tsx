@@ -32,7 +32,7 @@ const SignIn = ({ navigation }) => {
 	return (
 		<TemplateMain
 			style={styles.SignIn}
-			title='SignIn'
+			title='Sign In'
 			navigation={navigation}
 			carousel={[]}
 		>
