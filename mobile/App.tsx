@@ -64,6 +64,12 @@ const App = () => {
 									options={globalScreenOptions}
 								/>
 								<Stack.Screen
+								<Stack.Screen
+									name='Account Settings'
+									component={AccountSettings}
+									options={globalScreenOptions}
+								/>
+								<Stack.Screen
 									name='Sign In'
 									component={SignIn}
 									options={globalScreenOptions}

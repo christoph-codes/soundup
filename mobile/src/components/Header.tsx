@@ -17,7 +17,7 @@ const Header = ({ navigation }) => {
 				<TouchableHighlight
 					style={styles.HeaderProfileIcon}
 					onPress={() => {
-						navigation.navigate('AccountSettings');
+						navigation.navigate('Account Settings');
 					}}
 				>
 					<Text style={styles.HeaderProfileIconText}>
