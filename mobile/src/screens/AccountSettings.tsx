@@ -43,8 +43,7 @@ const AccountSettings = ({ navigation, route }) => {
 				await updateDoc(doc(db, 'users', user.authId), {
 					email,
 				})
-					.then((successData) => {
-						console.log('success', successData);
+					.then(() => {
 						setSuccessMessage('Email Successfully Updated');
 					})
 					.catch((err) => {
@@ -57,13 +56,11 @@ const AccountSettings = ({ navigation, route }) => {
 					err.message ===
 					'Firebase: Error (auth/requires-recent-login).'
 				) {
-					console.log('must reauthenticate the user');
 					navigation.navigate('Reauth', {
 						newEmail: email,
 					});
 				}
 			});
-		console.log('email', email);
 	};
 	const updateUserPassword = () => {
 		setPasswordError('');
@@ -87,7 +84,6 @@ const AccountSettings = ({ navigation, route }) => {
 					err.message ===
 					'Firebase: Error (auth/requires-recent-login).'
 				) {
-					console.log('must reauthenticate the user');
 					navigation.navigate('Reauth', {
 						newPassword,
 					});
@@ -95,9 +91,11 @@ const AccountSettings = ({ navigation, route }) => {
 			});
 	};
 	const deleteAccount = () => {
+		// TODO: Add delete account function to completely remove a user
 		console.log('delete account');
 	};
 	const openModal = () => {
+		// TODO: Add modal component. Existing issue on Github
 		console.log('opening Modal..');
 		deleteAccount();
 	};
