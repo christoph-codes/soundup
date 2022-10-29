@@ -26,6 +26,7 @@ const Home = ({ navigation }) => {
 			style={styles.Home}
 			navigation={navigation}
 			title={user?.name ? `Hey ${user.name}!` : 'Latest Updates'}
+			carousel
 		>
 			<VideoArticle navigation={navigation} article={testVideoArticle} />
 			<NewsArticle article={testArticle} navigation={navigation} />
