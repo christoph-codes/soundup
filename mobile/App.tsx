@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import { NativeBaseProvider, StatusBar, View } from 'native-base';
 import {
 	NavigationContainer,
@@ -6,17 +5,19 @@ import {
 } from '@react-navigation/native';
 import theme from './src/theme';
 import Stack from './src/navigation';
+import { SafeAreaView, StyleSheet } from 'react-native';
+import AuthProvider from './src/providers/AuthProvider';
 import Home from './src/screens/Home';
 import AccountSettings from './src/screens/AccountSettings';
 import News from './src/screens/News';
 import Watch from './src/screens/Watch';
 import Listen from './src/screens/Listen';
 import SignIn from './src/screens/SignIn';
+import Reauth from './src/screens/Reauth';
 import CreateAccount from './src/screens/CreateAccount';
-import { SafeAreaView, StyleSheet } from 'react-native';
 import FooterNav from './src/components/FooterNav';
 import Header from './src/components/Header';
-import AuthProvider from './src/providers/AuthProvider';
+import About from './src/screens/About';
 
 const App = () => {
 	const navigationRef = useNavigationContainerRef();
@@ -44,11 +45,6 @@ const App = () => {
 									options={globalScreenOptions}
 								/>
 								<Stack.Screen
-									name='AccountSettings'
-									component={AccountSettings}
-									options={globalScreenOptions}
-								/>
-								<Stack.Screen
 									name='News'
 									component={News}
 									options={globalScreenOptions}
@@ -64,6 +60,10 @@ const App = () => {
 									options={globalScreenOptions}
 								/>
 								<Stack.Screen
+									name='Create Account'
+									component={CreateAccount}
+									options={globalScreenOptions}
+								/>
 								<Stack.Screen
 									name='Account Settings'
 									component={AccountSettings}
@@ -75,8 +75,13 @@ const App = () => {
 									options={globalScreenOptions}
 								/>
 								<Stack.Screen
-									name='Create Account'
-									component={CreateAccount}
+									name='Reauth'
+									component={Reauth}
+									options={globalScreenOptions}
+								/>
+								<Stack.Screen
+									name='About'
+									component={About}
 									options={globalScreenOptions}
 								/>
 							</Stack.Navigator>
