@@ -12,7 +12,15 @@ import {
 	signOut,
 } from 'firebase/auth';
 import { auth, db } from '../config/firebase';
-import { addDoc, collection, getDocs, query, where } from 'firebase/firestore';
+import {
+	addDoc,
+	collection,
+	doc,
+	getDocs,
+	query,
+	setDoc,
+	where,
+} from 'firebase/firestore';
 import { NavigationProp } from '@react-navigation/native';
 
 export interface IAuthContext {
@@ -102,7 +110,10 @@ const AuthProvider = ({ children }: IAuthProviderProps) => {
 			}
 			setLoading(false);
 		});
-		() => unsubscribe();
+		() => {
+			auth.currentUser && auth.currentUser.getIdToken();
+			unsubscribe();
+		};
 	}, []);
 
 	/**
@@ -153,13 +164,13 @@ const AuthProvider = ({ children }: IAuthProviderProps) => {
 			.then(async (data) => {
 				if (data.user) {
 					// Create a user in the database using the authid and email
-					await addDoc(collection(db, 'users'), {
+					await setDoc(doc(db, 'users', data.user.uid), {
 						authId: data.user.uid,
 						name: name,
 						type: 'default',
 						email: data.user.email,
 					})
-						.then((res) => {
+						.then(() => {
 							setUser({
 								authId: data.user.uid,
 								name: name,
