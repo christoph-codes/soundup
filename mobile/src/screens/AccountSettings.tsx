@@ -13,7 +13,7 @@ import { doc, updateDoc } from 'firebase/firestore';
 import inputValidations from '../utils/inputValidations';
 
 const AccountSettings = ({ navigation, route }) => {
-	const { user, logout } = useAuth();
+	const { user, logout, deleteAccount } = useAuth();
 	const [email, setEmail] = useState(route?.params?.newEmail || user.email);
 	const [successMessage, setSuccessMessage] = useState('');
 	const [emailError, setEmailError] = useState('');
@@ -90,14 +90,10 @@ const AccountSettings = ({ navigation, route }) => {
 				}
 			});
 	};
-	const deleteAccount = () => {
-		// TODO: Add delete account function to completely remove a user
-		console.log('delete account');
-	};
 	const openModal = () => {
 		// TODO: Add modal component. Existing issue on Github
 		console.log('opening Modal..');
-		deleteAccount();
+		deleteAccount(navigation.navigate('Account Deleted'));
 	};
 	return (
 		<TemplateMain

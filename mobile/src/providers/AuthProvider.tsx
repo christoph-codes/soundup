@@ -7,14 +7,15 @@ import {
 } from 'react';
 import {
 	createUserWithEmailAndPassword,
+	deleteUser,
 	onAuthStateChanged,
 	signInWithEmailAndPassword,
 	signOut,
 } from 'firebase/auth';
 import { auth, db } from '../config/firebase';
 import {
-	addDoc,
 	collection,
+	deleteDoc,
 	doc,
 	getDocs,
 	query,
@@ -46,6 +47,7 @@ export interface IAuthContext {
 		email: string,
 		password: string,
 	) => void;
+	deleteAccount: (next: () => void) => void;
 }
 
 export interface IAuthProviderProps {
@@ -63,6 +65,7 @@ export const DefaultContext: IAuthContext = {
 	logout: () => {},
 	loading: false,
 	createAccountWithEmailAndPassword: () => {},
+	deleteAccount: () => {},
 };
 
 const AuthContext = createContext<IAuthContext>(DefaultContext);
@@ -129,11 +132,16 @@ const AuthProvider = ({ children }: IAuthProviderProps) => {
 			);
 		}
 		// TODO: Add login function with firebase for username and password
-		signInWithEmailAndPassword(auth, email, password).then(async (data) => {
-			if (data.user) {
-				await lookupUser(data.user.uid);
-			}
-		});
+		signInWithEmailAndPassword(auth, email, password)
+			.then(async (data) => {
+				if (data.user) {
+					await lookupUser(data.user.uid);
+				}
+			})
+			.catch((err) => {
+				console.log(err);
+				throw new Error(err);
+			});
 	};
 	/**
 	 * It logs the user out and navigates to the sign in screen.
@@ -185,6 +193,26 @@ const AuthProvider = ({ children }: IAuthProviderProps) => {
 			})
 			.catch((err) => console.warn('err:', err));
 	};
+	const deleteAccount = (next: () => void) => {
+		const firebaseUser = auth.currentUser;
+		deleteUser(firebaseUser)
+			.then(async (deleteUserResult) => {
+				// User deleted.
+				// Query Firestore to delete the user
+				console.log('user info', deleteUserResult);
+				await deleteDoc(doc(db, 'users', user.authId))
+					.then(() => {
+						next();
+					})
+					.catch((err) => {
+						throw new Error(err);
+					});
+			})
+			.catch((error) => {
+				// An error ocurred
+				console.log('delete user error: ', error);
+			});
+	};
 	return (
 		<AuthContext.Provider
 			value={{
@@ -194,6 +222,7 @@ const AuthProvider = ({ children }: IAuthProviderProps) => {
 				logout,
 				error,
 				createAccountWithEmailAndPassword,
+				deleteAccount,
 			}}
 		>
 			{children}
