@@ -210,7 +210,7 @@ const AuthProvider = ({ children }: IAuthProviderProps) => {
 			})
 			.catch((error) => {
 				// An error ocurred
-				console.log('delete user error: ', error);
+				throw new Error(error.message);
 			});
 	};
 	return (
