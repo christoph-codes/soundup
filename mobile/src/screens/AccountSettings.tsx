@@ -52,7 +52,9 @@ const AccountSettings = ({ navigation, route }) => {
 			})
 			.catch((err) => {
 				console.log('err:', err);
-				if (
+				if (err.message === 'Firebase: Error (auth/invalid-email).') {
+					setEmailError('You must enter a valid email and password');
+				} else if (
 					err.message ===
 					'Firebase: Error (auth/requires-recent-login).'
 				) {
