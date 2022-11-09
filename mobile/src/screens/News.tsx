@@ -4,7 +4,12 @@ import TemplateMain from '../templates/TemplateMain';
 
 const News = ({ navigation }) => {
 	return (
-		<TemplateMain style={styles.News} title='News' navigation={navigation}>
+		<TemplateMain
+			style={styles.News}
+			title='News'
+			navigation={navigation}
+			carousel
+		>
 			<Text>News content goes here</Text>
 		</TemplateMain>
 	);

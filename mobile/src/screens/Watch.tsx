@@ -15,6 +15,7 @@ const Watch = ({ navigation }) => {
 			style={styles.Watch}
 			title='Watch'
 			navigation={navigation}
+			carousel
 		>
 			<VideoArticle navigation={navigation} article={testArticle} />
 			<VideoArticle navigation={navigation} article={testArticle} />

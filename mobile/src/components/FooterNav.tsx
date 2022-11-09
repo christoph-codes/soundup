@@ -1,10 +1,16 @@
 import { View, Text } from 'native-base';
 import { StyleSheet, TouchableHighlight } from 'react-native';
+import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { useAuth } from '../providers/AuthProvider';
 
 const FooterNav = ({ navigation }) => {
-	const { user, logout } = useAuth();
+	const { user } = useAuth();
 	const items = [
+		{
+			label: 'Home',
+			icon: '🏠',
+			link: 'Home',
+		},
 		{
 			label: 'News',
 			icon: '📰',
@@ -19,19 +25,6 @@ const FooterNav = ({ navigation }) => {
 			label: 'Listen',
 			icon: '🎧',
 			link: 'Listen',
-		},
-		{
-			label: 'Sign In',
-			icon: '🔒',
-			link: 'Sign In',
-			private: false,
-		},
-		{
-			label: 'Logout',
-			onClick: () => logout(navigation),
-			icon: '✌🏾',
-			link: 'Sign In',
-			private: true,
 		},
 	];
 	const footerLink = (item, index) => (
@@ -57,20 +50,9 @@ const FooterNav = ({ navigation }) => {
 			</View>
 		</TouchableHighlight>
 	);
-	/** If user is authenticated filter for private */
-	const filteredLinks = items.filter((it) => {
-		if ('private' in it && user?.authId) {
-			return it.private;
-		}
-		if ('private' in it && !user?.authId) {
-			return !it.private;
-		}
-		return true;
-	});
 	return (
 		<View style={styles.FooterNav}>
-			{/** TODO: Only return the private route if user is logged in. Must setup authentication */}
-			{filteredLinks.map((item, idx) => {
+			{items.map((item, idx) => {
 				return footerLink(item, idx);
 			})}
 		</View>

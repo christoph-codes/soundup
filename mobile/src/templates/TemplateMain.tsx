@@ -8,8 +8,8 @@ import testImage2 from '../../assets/sliders/testImage2.png';
 import testImage3 from '../../assets/sliders/testImage3.png';
 
 export interface TemplateMainProps {
-	navigation: NavigationProp<any>;
-	carousel?: string[] | false;
+	navigation?: NavigationProp<any>;
+	carousel?: string[] | boolean;
 	title?: string;
 	children?: any;
 	style?: ViewStyle;
@@ -18,7 +18,7 @@ export interface TemplateMainProps {
 const TemplateMain = ({
 	navigation,
 	children,
-	carousel = [testImage, testImage2, testImage3],
+	carousel,
 	title,
 	style,
 }: TemplateMainProps) => {
@@ -33,8 +33,17 @@ const TemplateMain = ({
 			showsVerticalScrollIndicator={false}
 			width={'100%'}
 			bounces={false}
+			backgroundColor='white'
 		>
-			{carousel !== false && <Carousel data={carousel} />}
+			{carousel !== false && (
+				<Carousel
+					data={
+						carousel === true
+							? [testImage, testImage2, testImage3]
+							: carousel
+					}
+				/>
+			)}
 			<View style={[styles.Container, style]}>
 				{title && (
 					<Text

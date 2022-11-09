@@ -1,15 +1,16 @@
-import { Text } from 'native-base';
 import { useState } from 'react';
+import { Text } from 'native-base';
 import { StyleSheet } from 'react-native';
 import Button from '../components/Button';
 import Input from '../components/Input';
 import { useAuth } from '../providers/AuthProvider';
 import TemplateMain from '../templates/TemplateMain';
 import inputValidations from '../utils/inputValidations';
+import P from '../components/P';
 
-const SignIn = ({ navigation }) => {
-	const { login } = useAuth();
-	const [email, setEmail] = useState('');
+const Reauth = ({ navigation, route }) => {
+	const { login, user } = useAuth();
+	const [email, setEmail] = useState(user.email || '');
 	const [password, setPassword] = useState('');
 	const [formError, setFormError] = useState('');
 	const submitLogin = () => {
@@ -25,17 +26,31 @@ const SignIn = ({ navigation }) => {
 			setPassword('');
 		} else {
 			login(email, password);
-			navigation.navigate('Home');
+			if (route.params.newEmail) {
+				navigation.navigate('Account Settings', {
+					newEmail: route.params.newEmail,
+				});
+			} else if (route.params.newPassword) {
+				navigation.navigate('Account Settings', {
+					newPassword: route.params.newPassword,
+				});
+			} else {
+				navigation.navigate('Home');
+			}
 		}
 	};
 
 	return (
 		<TemplateMain
-			style={styles.SignIn}
-			title='Sign In'
+			style={styles.Reauth}
+			title='Secure Sign In'
 			navigation={navigation}
 			carousel={[]}
 		>
+			<P>
+				To keep your account secure, we require you to login before
+				performing this action.
+			</P>
 			<Input
 				label='Email'
 				textContentType='emailAddress'
@@ -56,25 +71,19 @@ const SignIn = ({ navigation }) => {
 					)
 				}
 			/>
-			{formError && <Text style={styles.SignInError}>{formError}</Text>}
-			<Button onPress={() => submitLogin()}>Signin</Button>
-			<Button
-				variant='ghost'
-				onPress={() => navigation.navigate('Create Account')}
-			>
-				Sign up for an account?
-			</Button>
+			{formError && <Text style={styles.ReauthError}>{formError}</Text>}
+			<Button onPress={() => submitLogin()}>Sign In</Button>
 		</TemplateMain>
 	);
 };
 
-export default SignIn;
+export default Reauth;
 
 const styles = StyleSheet.create({
-	SignIn: {
+	Reauth: {
 		// backgroundColor: 'pink',
 	},
-	SignInError: {
+	ReauthError: {
 		color: 'red',
 		fontWeight: 'bold',
 		fontSize: 16,

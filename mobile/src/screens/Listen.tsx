@@ -9,6 +9,7 @@ const Listen = ({ navigation }) => {
 			style={styles.Listen}
 			title='Listen'
 			navigation={navigation}
+			carousel
 		>
 			<Loading />
 		</TemplateMain>

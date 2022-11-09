@@ -21,7 +21,7 @@ export interface IButton {
 	/** Callback function for when the button is pressed */
 	onPress?: () => void;
 	/** The style of button */
-	variant?: 'primary' | 'ghost';
+	variant?: 'primary' | 'ghost' | 'alert';
 }
 
 const Button = ({
@@ -37,7 +37,7 @@ const Button = ({
 	return (
 		<TouchableOpacity
 			onPress={() => {
-				onPress();
+				onPress && onPress();
 				navigation && navigation.navigate(link);
 			}}
 			style={[
@@ -78,8 +78,14 @@ const styles = StyleSheet.create({
 	Button__ghost: {
 		backgroundColor: 'transparent',
 	},
+	Button__alert: {
+		backgroundColor: 'transparent',
+	},
+	ButtonText__alert: {
+		color: 'red',
+	},
 	Button__medium: {
-		paddingVertical: 16,
+		paddingVertical: 12,
 		paddingHorizontal: 24,
 	},
 	ButtonText__medium: {
