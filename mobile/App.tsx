@@ -26,6 +26,14 @@ const App = () => {
 		headerShown: false,
 		gestureEnabled: false,
 	};
+	const headerOptions: any = {
+		headerStyle: {
+			backgroundColor: '#252525',
+			border: 0,
+		},
+		headerTintColor: '#fff',
+		headerTitle: '',
+	};
 	return (
 		<NativeBaseProvider theme={theme()}>
 			<AuthProvider>
