@@ -4,6 +4,7 @@ import NewsArticle, { IArticleContent } from '../components/NewsArticle';
 import VideoArticle, { IVideoArticleContent } from '../components/VideoArticle';
 import { useAuth } from '../providers/AuthProvider';
 import TemplateMain from '../templates/TemplateMain';
+import contentful from '../utils/contentful';
 
 const Home = ({ navigation }) => {
 	const { user } = useAuth();
@@ -13,14 +14,14 @@ const Home = ({ navigation }) => {
 		link: 'Home',
 		videoUrl: 'NmaM5VsZCJM',
 	};
-	const testArticle: IArticleContent = {
-		title: 'Test article',
-		description:
-			'This is a test description that will be displayed below the title',
-		postedDate: Date.now(),
-		link: 'Home',
-		imgUrl: 'https://pbs.twimg.com/profile_images/1379078909631717378/xqOL26hn_400x400.jpg',
-	};
+	useEffect(() => {
+		contentful
+			.get('')
+			.then((res) => {
+				setPosts(res.data);
+			})
+			.catch(console.log);
+	}, []);
 	return (
 		<TemplateMain
 			style={styles.Home}
