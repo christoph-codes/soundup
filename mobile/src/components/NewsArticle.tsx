@@ -1,54 +1,55 @@
 import { NavigationProp } from '@react-navigation/native';
-import { Image, View } from 'native-base';
-import { ViewStyle, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { Image, View, Text } from 'native-base';
+import { ViewStyle, StyleSheet, TouchableOpacity } from 'react-native';
 import TextDate from './TextDate';
-
-export interface IArticleContent {
-	/** Title of the article as a string */
-	title?: string;
-	/** Posted date of the article as a date object */
-	postedDate?: Date | number;
-	/** Small description of the article as a string */
-	description?: string;
-	/** Screen name of the article as a string */
-	link?: string;
-	/** URL or path to the image source to be fetched as a string */
-	imgUrl?: string;
-}
 
 export interface INewsArticleProps {
 	/** Article Content object to be used in the component */
-	article?: IArticleContent;
+	article?: any;
+	/** Featured image of the article */
+	image?: string;
 	/** Style object that will be passed to the View component */
 	style?: ViewStyle;
 	/** Navigation object that is passed from the react navigation router */
 	navigation: NavigationProp<any>;
 }
 
-const NewsArticle = ({ style, article, navigation }: INewsArticleProps) => {
+const NewsArticle = ({
+	style,
+	article,
+	image,
+	navigation,
+}: INewsArticleProps) => {
 	return (
-		<TouchableOpacity onPress={() => navigation.navigate(article?.link)}>
+		<TouchableOpacity
+			onPress={() => {
+				navigation.navigate('News Article Content', { article, image });
+			}}
+		>
 			<View style={[styles.NewsArticle, style]}>
-				{article?.imgUrl && (
+				{image && (
 					<Image
-						source={{ uri: article?.imgUrl }}
+						source={{ uri: `http:${image}` }}
 						alt='Article Image'
 						style={styles.NewsArticleImage}
 					/>
 				)}
 				<View style={styles.NewsArticleContent}>
-					{article?.title && (
+					{article?.fields?.title && (
 						<Text style={styles.NewsArticleTitle}>
-							{article?.title}
+							{article?.fields?.title}
 						</Text>
 					)}
-					{article?.description && (
-						<Text style={styles.NewsArticleDescription}>
-							{article?.description}
+					{article?.fields?.description && (
+						<Text
+							color='#111111'
+							style={styles.NewsArticleDescription}
+						>
+							{article?.fields?.description}
 						</Text>
 					)}
-					{article?.postedDate && (
-						<TextDate date={article?.postedDate} />
+					{article?.sys?.createdAt && (
+						<TextDate date={article?.sys?.createdAt} />
 					)}
 				</View>
 			</View>
@@ -84,9 +85,10 @@ const styles = StyleSheet.create({
 		fontSize: 21,
 		fontWeight: 'bold',
 		marginBottom: 8,
+		color: '#111111',
 	},
 	NewsArticleDescription: {
-		fontSize: 14,
+		fontSize: 16,
 		marginBottom: 8,
 	},
 });
