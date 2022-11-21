@@ -10,6 +10,7 @@ import AuthProvider from './src/providers/AuthProvider';
 import Home from './src/screens/Home';
 import AccountSettings from './src/screens/AccountSettings';
 import News from './src/screens/News';
+import NewsArticleContent from './src/screens/NewsArticleContent';
 import Watch from './src/screens/Watch';
 import Listen from './src/screens/Listen';
 import SignIn from './src/screens/SignIn';
@@ -56,6 +57,11 @@ const App = () => {
 									name='News'
 									component={News}
 									options={globalScreenOptions}
+								/>
+								<Stack.Screen
+									name='News Article Content'
+									component={NewsArticleContent}
+									options={headerOptions}
 								/>
 								<Stack.Screen
 									name='Watch'
