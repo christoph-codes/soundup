@@ -60,11 +60,11 @@ const Carousel = ({ data, style }: ICarouselProps) => {
 		carouselRef?.current?.scrollTo(activeSlide);
 	}, [activeSlide, carouselRef?.current?.getCurrentIndex()]);
 	return (
-		data?.length > 1 && (
+		data?.length >= 1 && (
 			<View style={style}>
 				<GestureHandlerRootView>
 					<ReanimatedCarousel
-						loop
+						loop={data?.length > 1}
 						autoPlay
 						width={width}
 						height={width / 2}
