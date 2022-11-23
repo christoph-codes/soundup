@@ -1,3 +1,4 @@
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { Image, Text } from 'native-base';
 import { useEffect, useRef, useState } from 'react';
 import {
@@ -6,12 +7,17 @@ import {
 	TouchableOpacity,
 	ViewStyle,
 	View,
+	TouchableWithoutFeedback,
 } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import ReanimatedCarousel from 'react-native-reanimated-carousel';
 
 export interface ICarouselProps {
-	data?: string[];
+	data?: {
+		title?: string;
+		image?: string;
+		article?: {};
+	}[];
 	style?: ViewStyle;
 }
 
@@ -20,26 +26,45 @@ const Carousel = ({ data, style }: ICarouselProps) => {
 	const carouselRef = useRef(null);
 	const [activeSlide, setActiveSlide] = useState(0);
 	const renderItem = ({ item }) => {
+		const navigation = useNavigation<NavigationProp<any>>();
 		return (
-			<View style={{ backgroundColor: '#000', height: 200 }}>
-				<Image
-					source={item}
-					width='100%'
-					height={'200'}
-					alt='Carousel Image'
-				/>
-			</View>
+			<TouchableWithoutFeedback
+				onPress={() => {
+					navigation?.navigate('News Article Content', {
+						article: item.article,
+						image: item.image,
+					});
+				}}
+			>
+				<View style={{ height: 200 }}>
+					<Image
+						source={{ uri: `http:${item.image}` }}
+						width='100%'
+						height={'200'}
+						alt='Carousel Image'
+					/>
+					<Text
+						textAlign='center'
+						marginTop='-16'
+						fontWeight='bold'
+						fontSize='2xl'
+						color='white'
+					>
+						{item.title}
+					</Text>
+				</View>
+			</TouchableWithoutFeedback>
 		);
 	};
 	useEffect(() => {
 		carouselRef?.current?.scrollTo(activeSlide);
 	}, [activeSlide, carouselRef?.current?.getCurrentIndex()]);
 	return (
-		data?.length > 1 && (
+		data?.length >= 1 && (
 			<View style={style}>
 				<GestureHandlerRootView>
 					<ReanimatedCarousel
-						loop
+						loop={data?.length > 1}
 						autoPlay
 						width={width}
 						height={width / 2}

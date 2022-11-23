@@ -2,14 +2,12 @@ import { ScrollView, Text, View } from 'native-base';
 import { StyleSheet, ViewStyle } from 'react-native';
 import { useFonts } from 'expo-font';
 import { NavigationProp } from '@react-navigation/native';
-import Carousel from '../components/Carousel';
-import testImage from '../../assets/sliders/testImage.png';
-import testImage2 from '../../assets/sliders/testImage2.png';
-import testImage3 from '../../assets/sliders/testImage3.png';
+import Carousel, { ICarouselProps } from '../components/Carousel';
+import { carouselArticles } from '../utils/mockData/carouselArticles';
 
 export interface TemplateMainProps {
 	navigation?: NavigationProp<any>;
-	carousel?: string[] | boolean;
+	carousel?: ICarouselProps['data'] | boolean;
 	title?: string;
 	children?: any;
 	style?: ViewStyle;
@@ -37,11 +35,7 @@ const TemplateMain = ({
 		>
 			{carousel !== false && (
 				<Carousel
-					data={
-						carousel === true
-							? [testImage, testImage2, testImage3]
-							: carousel
-					}
+					data={carousel === true ? carouselArticles : carousel}
 				/>
 			)}
 			<View style={[styles.Container, style]}>

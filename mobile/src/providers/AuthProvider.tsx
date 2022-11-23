@@ -199,7 +199,6 @@ const AuthProvider = ({ children }: IAuthProviderProps) => {
 			.then(async (deleteUserResult) => {
 				// User deleted.
 				// Query Firestore to delete the user
-				console.log('user info', deleteUserResult);
 				await deleteDoc(doc(db, 'users', user.authId))
 					.then(() => {
 						next();
