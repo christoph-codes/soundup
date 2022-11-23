@@ -21,14 +21,15 @@ const Carousel = ({ data, style }: ICarouselProps) => {
 	const [activeSlide, setActiveSlide] = useState(0);
 	const renderItem = ({ item }) => {
 		return (
-			<View style={{ backgroundColor: '#000', height: 200 }}>
-				<Image
-					source={item}
-					width='100%'
-					height={'200'}
-					alt='Carousel Image'
-				/>
-			</View>
+					<Text
+						textAlign='center'
+						marginTop='-16'
+						fontWeight='bold'
+						fontSize='2xl'
+						color='white'
+					>
+						{item.title}
+					</Text>
 		);
 	};
 	useEffect(() => {
