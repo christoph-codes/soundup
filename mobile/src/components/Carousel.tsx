@@ -1,3 +1,4 @@
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { Image, Text } from 'native-base';
 import { useEffect, useRef, useState } from 'react';
 import {
@@ -6,6 +7,7 @@ import {
 	TouchableOpacity,
 	ViewStyle,
 	View,
+	TouchableWithoutFeedback,
 } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import ReanimatedCarousel from 'react-native-reanimated-carousel';
@@ -21,6 +23,21 @@ const Carousel = ({ data, style }: ICarouselProps) => {
 	const [activeSlide, setActiveSlide] = useState(0);
 	const renderItem = ({ item }) => {
 		return (
+			<TouchableWithoutFeedback
+				onPress={() => {
+					navigation?.navigate('News Article Content', {
+						article: item.article,
+						image: item.image,
+					});
+				}}
+			>
+				<View style={{ height: 200 }}>
+					<Image
+						source={{ uri: `http:${item.image}` }}
+						width='100%'
+						height={'200'}
+						alt='Carousel Image'
+					/>
 					<Text
 						textAlign='center'
 						marginTop='-16'
@@ -30,6 +47,8 @@ const Carousel = ({ data, style }: ICarouselProps) => {
 					>
 						{item.title}
 					</Text>
+				</View>
+			</TouchableWithoutFeedback>
 		);
 	};
 	useEffect(() => {
