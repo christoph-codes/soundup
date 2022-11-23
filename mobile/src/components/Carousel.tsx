@@ -13,7 +13,11 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import ReanimatedCarousel from 'react-native-reanimated-carousel';
 
 export interface ICarouselProps {
-	data?: string[];
+	data?: {
+		title?: string;
+		image?: string;
+		article?: {};
+	}[];
 	style?: ViewStyle;
 }
 
@@ -22,6 +26,7 @@ const Carousel = ({ data, style }: ICarouselProps) => {
 	const carouselRef = useRef(null);
 	const [activeSlide, setActiveSlide] = useState(0);
 	const renderItem = ({ item }) => {
+		const navigation = useNavigation<NavigationProp<any>>();
 		return (
 			<TouchableWithoutFeedback
 				onPress={() => {
