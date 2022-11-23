@@ -21,7 +21,6 @@ const Link = ({ children, link }: ILinkProps) => {
 			<Text
 				onPress={() => {
 					openBrowser();
-					console.log('openinig');
 				}}
 			>
 				{children}
