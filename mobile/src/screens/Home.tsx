@@ -1,6 +1,6 @@
 import { Text } from 'native-base';
-import { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
+import Modal from '../components/Modal';
 import NewsArticle from '../components/NewsArticle';
 import VideoArticle, { IVideoArticleContent } from '../components/VideoArticle';
 import { useArticles } from '../providers/ArticleProvider';
@@ -24,6 +24,7 @@ const Home = ({ navigation }) => {
 			carousel={featuredPosts}
 		>
 			<VideoArticle navigation={navigation} article={testVideoArticle} />
+			<Modal buttonLabel='Open This Thang' />
 			{posts?.items?.map((post, index) => {
 				if (post.sys.contentType.sys.id === 'newsArticle') {
 					return (
