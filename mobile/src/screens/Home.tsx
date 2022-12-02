@@ -1,5 +1,4 @@
 import { Text } from 'native-base';
-import { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import NewsArticle from '../components/NewsArticle';
 import VideoArticle, { IVideoArticleContent } from '../components/VideoArticle';
@@ -9,7 +8,7 @@ import TemplateMain from '../templates/TemplateMain';
 
 const Home = ({ navigation }) => {
 	const { user } = useAuth();
-	const { posts, featuredPosts } = useArticles();
+	const { articles, featuredPosts } = useArticles();
 	const testVideoArticle: IVideoArticleContent = {
 		title: 'Test article',
 		postedDate: Date.now(),
@@ -24,35 +23,16 @@ const Home = ({ navigation }) => {
 			carousel={featuredPosts}
 		>
 			<VideoArticle navigation={navigation} article={testVideoArticle} />
-			{posts?.items?.map((post, index) => {
-				if (post.sys.contentType.sys.id === 'newsArticle') {
-					return (
-						<NewsArticle
-							key={post.sys.id}
-							image={
-								posts['includes']?.Asset[index]?.fields?.file
-									?.url
-							}
-							article={post}
-							navigation={navigation}
-						/>
-					);
-				} else if (post.sys.contentType.sys.id === 'videoArticle') {
-					return (
-						<VideoArticle
-							key={post.sys.id}
-							navigation={navigation}
-							// TODO: Setup video article to show image
-							// image={
-							// 	post['includes']?.Asset[index]?.fields?.file
-							// 		?.url
-							// }
-							article={post}
-						/>
-					);
-				} else null;
+			{articles?.map((post, index) => {
+				return (
+					<NewsArticle
+						key={index}
+						image={post.image}
+						article={post.article}
+						navigation={navigation}
+					/>
+				);
 			})}
-			<Text>Home Content Goes Here</Text>
 		</TemplateMain>
 	);
 };
