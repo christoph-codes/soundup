@@ -1,38 +1,47 @@
 import { useActionSheet } from '@expo/react-native-action-sheet';
+import { ReactElement } from 'react';
 import Button from './Button';
 
 export interface IModalProps {
 	buttonLabel: string;
+	title: string;
+	message: string;
+	successLabel: string;
+	successCallback: () => void;
 }
 
-const Modal = ({ buttonLabel = 'Open Modal' }: IModalProps) => {
+const Modal = ({
+	buttonLabel = 'Open Modal',
+	title,
+	message,
+	successLabel,
+	successCallback,
+}: IModalProps) => {
 	const { showActionSheetWithOptions } = useActionSheet();
 	const toggleModal = () => {
-		const options = ['Jax', 'Save', 'Cancel'];
-		const destructiveButtonIndex = 0;
-		const cancelButtonIndex = 2;
+		const options = [successLabel, 'Cancel'];
+		const successButtonIndex = 0;
+		const destructiveButtonIndex = 1;
 		showActionSheetWithOptions(
 			{
 				options,
-				cancelButtonIndex,
 				destructiveButtonIndex,
+				title,
+				message,
 			},
 			(selectedIndex: number) => {
 				switch (selectedIndex) {
-					case 1:
-						// Save
-						break;
-
-					case destructiveButtonIndex:
+					case successButtonIndex:
+						successCallback();
 						// Delete
 						break;
 
-					case cancelButtonIndex:
-					// Canceled
+					case destructiveButtonIndex:
+						// Canceled
+						break;
 				}
 			},
 		);
-		console.log('hello');
 	};
 	return <Button onPress={() => toggleModal()}>{buttonLabel}</Button>;
 };
