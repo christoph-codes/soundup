@@ -24,6 +24,7 @@ const Home = ({ navigation }) => {
 			carousel={featuredPosts}
 		>
 			<VideoArticle navigation={navigation} article={testVideoArticle} />
+			{/** TODO: Dont forget to delete */}
 			<Modal
 				buttonLabel='Open This Thang'
 				title='This is the title'
