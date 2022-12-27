@@ -8,10 +8,7 @@ export const checkRegex = (value: string, expression: string): boolean => {
 
 export const getImage = async (assetId: string) => {
 	return await axios
-		.get(`https://images.ctfassets.net/spaces/${process.env.REACT_APP_CONTENTFUL_SPACE_ID}/environments/${process.env.REACT_APP_CONTENTFUL_ENVIRONMENT}/assets/${assetId}`)
-		.then(res => {
-			console.log('res.data',res.data.fields);
-			return res.data.fields.file.url
-		})
-		.catch(console.log);
+		.get(`https://cdn.contentful.com/spaces/${process.env.REACT_APP_CONTENTFUL_SPACE_ID}/environments/${process.env.REACT_APP_CONTENTFUL_ENVIRONMENT}/assets/${assetId}?access_token=${process.env.REACT_APP_CONTENTFUL_CONTENT_DELIVERY_ACCESS_TOKEN}`)
+		.then(res => res.data.fields.file.url)
+		.catch(err => console.log('Image Fetch ERROR:', err));
 }
