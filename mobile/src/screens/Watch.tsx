@@ -1,22 +1,33 @@
-import { Text } from 'native-base';
 import { StyleSheet } from 'react-native';
-import VideoArticle, { IVideoArticleContent } from '../components/VideoArticle';
+import VideoArticle, { IVideoProps } from '../components/VideoArticle';
+import { useArticles } from '../providers/ArticleProvider';
 import TemplateMain from '../templates/TemplateMain';
 
 const Watch = ({ navigation }) => {
-	const testArticle: IVideoArticleContent = {
+	const { videos } = useArticles();
+	const featuredVideos = videos.filter((vid) => vid.article.featured);
+	const testArticle: IVideoProps = {
 		title: 'Test article',
-		postedDate: Date.now(),
+		publishDate: Date.now(),
 		link: 'Home',
-		videoUrl: 'NmaM5VsZCJM',
+		youtubeId: 'NmaM5VsZCJM',
 	};
 	return (
 		<TemplateMain
 			style={styles.Watch}
 			title='Watch'
 			navigation={navigation}
-			carousel
+			carousel={featuredVideos}
 		>
+			{videos.map((video, index) => {
+				return (
+					<VideoArticle
+						key={index}
+						navigation={navigation}
+						article={video.article}
+					/>
+				);
+			})}
 			<VideoArticle navigation={navigation} article={testArticle} />
 			<VideoArticle navigation={navigation} article={testArticle} />
 			<VideoArticle navigation={navigation} article={testArticle} />
