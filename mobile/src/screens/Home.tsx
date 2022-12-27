@@ -20,8 +20,8 @@ const Home = ({ navigation }) => {
 	const feed = () => {
 		let adNum = 0;
 		const allArticles = articles.reduce((acc, cv, idx) => {
-			if (idx > 1 && idx % 4 === 0) {
-				acc.push(ads[adNum]);
+			if (idx % 4 === 0 && cv?.sys?.contentType?.sys?.id === 'ads') {
+				acc[idx] = ads[adNum];
 				adNum++;
 			} else {
 				acc.push(cv);
