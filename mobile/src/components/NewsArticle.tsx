@@ -35,17 +35,17 @@ const NewsArticle = ({
 					/>
 				)}
 				<View style={styles.NewsArticleContent}>
-					{article?.fields?.title && (
+					{article?.title && (
 						<Text style={styles.NewsArticleTitle}>
-							{article?.fields?.title}
+							{article?.title}
 						</Text>
 					)}
-					{article?.fields?.description && (
+					{article?.description && (
 						<Text
 							color='#111111'
 							style={styles.NewsArticleDescription}
 						>
-							{article?.fields?.description}
+							{article?.description}
 						</Text>
 					)}
 					{article?.sys?.createdAt && (
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		flexDirection: 'row',
 		backgroundColor: 'white',
-		alignItems: 'center',
+		alignItems: 'flex-start',
 		marginBottom: 16,
 	},
 	NewsArticleImage: {
