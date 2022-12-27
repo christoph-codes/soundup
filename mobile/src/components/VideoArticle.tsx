@@ -39,7 +39,7 @@ const VideoArticle = ({ style, article, navigation }: IVideoArticleProps) => {
 				{article?.youtubeId && (
 					<View style={styles.VideoArticleVideo}>
 						<YoutubePlayer
-							height={200}
+							height={220}
 							videoId={article?.youtubeId}
 						/>
 					</View>
