@@ -1,5 +1,4 @@
 import { NavigationProp } from '@react-navigation/native';
-import { useState } from 'react';
 import {
 	ViewStyle,
 	Text,
@@ -11,20 +10,22 @@ import YoutubePlayer from 'react-native-youtube-iframe';
 import Button from './Button';
 import TextDate from './TextDate';
 
-export interface IVideoArticleContent {
+export interface IVideoProps {
 	/** Title of the article as a string */
 	title?: string;
 	/** Posted date of the article as a date object */
-	postedDate?: Date | number;
+	publishDate?: Date | number;
 	/** Link of the article as a string */
 	link?: string;
 	/** URL or path to the image source to be fetched as a string */
-	videoUrl?: string;
+	youtubeId?: string;
+	/** Dscription of the video */
+	description?: string;
 }
 
 export interface IVideoArticleProps {
 	/** Article Content object to be used in the component */
-	article?: IVideoArticleContent;
+	article?: IVideoProps;
 	/** Style object that will be passed to the View component */
 	style?: ViewStyle;
 	/** Navigation object that is passed from the react navigation router */
@@ -35,36 +36,25 @@ const VideoArticle = ({ style, article, navigation }: IVideoArticleProps) => {
 	return (
 		<>
 			<View style={[styles.VideoArticle, style]}>
-				{article?.videoUrl && (
+				{article?.youtubeId && (
 					<View style={styles.VideoArticleVideo}>
 						<YoutubePlayer
 							height={200}
-							videoId={article?.videoUrl}
+							videoId={article?.youtubeId}
 						/>
 					</View>
 				)}
 
 				<View style={styles.VideoArticleContent}>
-					{article?.title && (
+					{article?.title && article?.publishDate && (
 						<TouchableOpacity
 							onPress={() => navigation.navigate(article?.link)}
 						>
 							<Text style={styles.VideoArticleTitle}>
 								{article?.title}
 							</Text>
-							{article?.postedDate && (
-								<TextDate date={article?.postedDate} />
-							)}
+							<TextDate date={article?.publishDate} />
 						</TouchableOpacity>
-					)}
-					{article?.link && (
-						<Button
-							navigation={navigation}
-							link={article.link}
-							size='small'
-						>
-							Watch
-						</Button>
 					)}
 				</View>
 			</View>
@@ -76,11 +66,14 @@ export default VideoArticle;
 
 const styles = StyleSheet.create({
 	VideoArticle: {
-		paddingVerticaled: 16,
+		paddingBottom: 16,
 		flex: 1,
 		backgroundColor: 'transparent',
 		alignItems: 'center',
 		marginBottom: 32,
+		borderStyleBottom: 'solid',
+		borderBottomColor: '#F1F1F1',
+		borderBottomWidth: 1,
 	},
 	VideoArticleContent: {
 		backgroundColor: 'transparent',
