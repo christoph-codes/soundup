@@ -31,7 +31,7 @@ const Ad = ({ image, article }: IAdProps) => {
 					alt={`${article.name} by ${article.company}`}
 					style={styles.AdImage}
 					width={window.width}
-					height={180}
+					height={190}
 					resizeMode={'contain'}
 				/>
 			</Link>
