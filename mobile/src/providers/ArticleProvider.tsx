@@ -1,7 +1,7 @@
-import axios from 'axios';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { IAdProps } from '../components/Ad';
 import { ICarouselProps } from '../components/Carousel';
+import { IVideoProps } from '../components/VideoArticle';
 import contentful from '../utils/contentful';
 import { getImage } from '../utils/helper';
 
@@ -14,6 +14,7 @@ const ArticleProvider = ({ children }) => {
 	);
 	const [articles, setArticles] = useState<ICarouselProps['data']>([]);
 	const [ads, setAds] = useState<IAdProps[]>([]);
+	const [videos, setVideos] = useState<IVideoProps[]>([]);
 	useEffect(() => {
 		if (posts === null) {
 			contentful('all')
@@ -21,63 +22,70 @@ const ArticleProvider = ({ children }) => {
 				.then((res) => {
 					setPosts(res.data);
 				})
-				.catch(console.log);
+				.catch((err) => console.log('Error!!!!', err));
 		}
 	}, []);
 
 	/* Filtering the posts to only show the featured posts. */
 	useEffect(() => {
 		// FIX: fires twice on initial render and update
-		posts?.items?.forEach(async (cv, idx) => {
-			const contentImage = await getImage(
-				cv?.fields.featuredImage.sys.id,
-			);
-
-			if (cv.sys.contentType.sys.id === 'newsArticle') {
-				if (cv?.fields?.featured) {
-					console.log('cv?.fields', cv?.fields.featuredImage.sys.id);
-					setFeaturedPosts((prev) => {
-						return [
-							...prev,
-							{
-								title: cv?.fields?.title,
-								image: contentImage,
-								article: cv,
-							},
-						];
-					});
-				} else {
-					setArticles((prev) => {
-						return [
-							...prev,
-							{
-								title: cv?.fields?.title,
-								image: posts['includes']?.Asset[idx]?.fields
-									?.file?.url,
-								article: cv,
-							},
-						];
-					});
-				}
-			}
-			if (cv.sys.contentType.sys.id === 'ads') {
-				setAds((prev) => {
+		posts?.items?.forEach(async (cv) => {
+			const contentImage =
+				cv?.sys?.contentType?.sys?.id === 'newsArticle'
+					? await getImage(cv?.fields?.featuredImage?.sys?.id)
+					: cv?.sys?.contentType?.sys?.id === 'ads'
+					? await getImage(cv?.fields?.artwork?.sys?.id)
+					: null;
+			if (cv?.fields?.featured) {
+				setFeaturedPosts((prev) => {
 					return [
 						...prev,
 						{
-							image: posts['includes']?.Asset[idx]?.fields?.file
-								?.url,
-							url: cv.fields.url,
-							name: cv.fields.adName,
-							company: cv.fields.company,
+							image: contentImage,
+							article: cv,
 						},
 					];
 				});
 			}
+			if (cv?.sys?.contentType?.sys?.id === 'ads') {
+				setAds((prev) => {
+					return [
+						...prev,
+						{
+							image: contentImage,
+							article: cv.fields,
+						},
+					];
+				});
+			}
+			if (cv?.sys?.contentType?.sys?.id === 'videoArticle') {
+				setVideos((prev) => {
+					return [
+						...prev,
+						{
+							title: cv.fields.title,
+							article: cv.fields,
+						},
+					];
+				});
+			}
+
+			setArticles((prev) => {
+				return [
+					...prev,
+					{
+						image: contentImage,
+						article: cv.fields,
+					},
+				];
+			});
 		});
 	}, [posts]);
+
 	return (
-		<ArticleContext.Provider value={{ featuredPosts, articles, ads }}>
+		<ArticleContext.Provider
+			value={{ featuredPosts, articles, ads, videos }}
+		>
 			{children}
 		</ArticleContext.Provider>
 	);
