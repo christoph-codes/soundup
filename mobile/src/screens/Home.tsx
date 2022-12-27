@@ -48,7 +48,7 @@ const Home = ({ navigation }) => {
 						/>
 					);
 				}
-				if (post?.article?.adName && user.email) {
+				if (post?.article?.adName && !user.email) {
 					return (
 						<Ad
 							key={index}
