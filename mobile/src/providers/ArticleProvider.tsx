@@ -35,6 +35,8 @@ const ArticleProvider = ({ children }) => {
 					? await getImage(cv?.fields?.featuredImage?.sys?.id)
 					: cv?.sys?.contentType?.sys?.id === 'ads'
 					? await getImage(cv?.fields?.artwork?.sys?.id)
+					: cv?.sys?.contentType?.sys?.id === 'videoArticle'
+					? `//i3.ytimg.com/vi/${cv.fields.youtubeId}/maxresdefault.jpg`
 					: null;
 			if (cv?.fields?.featured) {
 				setFeaturedPosts((prev) => {
@@ -64,6 +66,7 @@ const ArticleProvider = ({ children }) => {
 						...prev,
 						{
 							title: cv.fields.title,
+							image: contentImage,
 							article: cv.fields,
 						},
 					];
