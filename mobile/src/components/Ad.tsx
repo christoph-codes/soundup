@@ -16,7 +16,7 @@ export interface IAdProps {
 const Ad = ({ image, article }: IAdProps) => {
 	const window = Dimensions.get('window');
 	return (
-		<Box marginBottom={4}>
+		<Box marginBottom={4} style={styles.Ad}>
 			<Text
 				fontSize='sm'
 				color='#C0C0C0'
@@ -40,6 +40,14 @@ const Ad = ({ image, article }: IAdProps) => {
 };
 
 const styles = StyleSheet.create({
+	Ad: {
+		paddingBottom: 32,
+		flex: 1,
+		borderStyleBottom: 'solid',
+		borderBottomColor: '#F1F1F1',
+		borderBottomWidth: 1,
+		marginBottom: 32,
+	},
 	AdImage: {},
 	AdLink: {},
 });
