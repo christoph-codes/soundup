@@ -1,43 +1,94 @@
 import { createContext, useContext, useEffect, useState } from 'react';
+import { IAdProps } from '../components/Ad';
 import { ICarouselProps } from '../components/Carousel';
+import { IVideoProps } from '../components/VideoArticle';
 import contentful from '../utils/contentful';
+import { getImage } from '../utils/helper';
 
 const ArticleContext = createContext(null);
 
 const ArticleProvider = ({ children }) => {
-	const [posts, setPosts] = useState<any>({});
+	const [posts, setPosts] = useState<any>(null);
 	const [featuredPosts, setFeaturedPosts] = useState<ICarouselProps['data']>(
 		[],
 	);
+	const [articles, setArticles] = useState<ICarouselProps['data']>([]);
+	const [ads, setAds] = useState<IAdProps[]>([]);
+	const [videos, setVideos] = useState<IVideoProps[]>([]);
 	useEffect(() => {
-		contentful
-			.get('')
-			.then((res) => {
-				setPosts(res.data);
-			})
-			.catch(console.log);
+		if (posts === null) {
+			contentful('all')
+				.get('')
+				.then((res) => {
+					setPosts(res.data);
+				})
+				.catch((err) => console.log('Error!!!!', err));
+		}
 	}, []);
-	/* Filtering the posts to only show the featured posts. */
 
+	/* Filtering the posts to only show the featured posts. */
 	useEffect(() => {
 		// FIX: fires twice on initial render and update
-		const featured = posts?.items?.reduce((acc, cv, idx) => {
+		posts?.items?.forEach(async (cv) => {
+			const contentImage =
+				cv?.sys?.contentType?.sys?.id === 'newsArticle'
+					? await getImage(cv?.fields?.featuredImage?.sys?.id)
+					: cv?.sys?.contentType?.sys?.id === 'ads'
+					? await getImage(cv?.fields?.artwork?.sys?.id)
+					: cv?.sys?.contentType?.sys?.id === 'videoArticle'
+					? `//i3.ytimg.com/vi/${cv.fields.youtubeId}/maxresdefault.jpg`
+					: null;
 			if (cv?.fields?.featured) {
+				setFeaturedPosts((prev) => {
+					return [
+						...prev,
+						{
+							image: contentImage,
+							article: cv,
+						},
+					];
+				});
+			}
+			if (cv?.sys?.contentType?.sys?.id === 'ads') {
+				setAds((prev) => {
+					return [
+						...prev,
+						{
+							image: contentImage,
+							article: cv.fields,
+						},
+					];
+				});
+			}
+			if (cv?.sys?.contentType?.sys?.id === 'videoArticle') {
+				setVideos((prev) => {
+					return [
+						...prev,
+						{
+							title: cv.fields.title,
+							image: contentImage,
+							article: cv.fields,
+						},
+					];
+				});
+			}
+
+			setArticles((prev) => {
 				return [
-					...acc,
+					...prev,
 					{
-						title: cv?.fields?.title,
-						image: posts['includes']?.Asset[idx]?.fields?.file?.url,
-						article: cv,
+						image: contentImage,
+						article: cv.fields,
 					},
 				];
-			}
-			return acc;
-		}, []); // END Reduce function not dependency array
-		() => setFeaturedPosts(featured);
+			});
+		});
 	}, [posts]);
+
 	return (
-		<ArticleContext.Provider value={{ posts, featuredPosts }}>
+		<ArticleContext.Provider
+			value={{ featuredPosts, articles, ads, videos }}
+		>
 			{children}
 		</ArticleContext.Provider>
 	);

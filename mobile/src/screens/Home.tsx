@@ -1,20 +1,34 @@
-import { Text } from 'native-base';
+import { useEffect } from 'react';
 import { StyleSheet } from 'react-native';
+import Ad from '../components/Ad';
 import Modal from '../components/Modal';
 import NewsArticle from '../components/NewsArticle';
-import VideoArticle, { IVideoArticleContent } from '../components/VideoArticle';
+import VideoArticle, { IVideoProps } from '../components/VideoArticle';
 import { useArticles } from '../providers/ArticleProvider';
 import { useAuth } from '../providers/AuthProvider';
 import TemplateMain from '../templates/TemplateMain';
 
 const Home = ({ navigation }) => {
 	const { user } = useAuth();
-	const { posts, featuredPosts } = useArticles();
-	const testVideoArticle: IVideoArticleContent = {
-		title: 'Test article',
-		postedDate: Date.now(),
-		link: 'Home',
-		videoUrl: 'NmaM5VsZCJM',
+	const { articles, featuredPosts, ads } = useArticles();
+
+	/**
+	 * It takes an array of articles and ads, and returns a new array of articles and ads, with ads
+	 * inserted every 4th article
+	 * @returns An array of articles and ads.
+	 */
+	const feed = () => {
+		let adNum = 0;
+		const allArticles = articles.reduce((acc, cv, idx) => {
+			if (idx > 1 && idx % 4 === 0) {
+				acc[idx] = ads[adNum];
+				adNum++;
+			} else {
+				acc.push(cv);
+			}
+			return acc;
+		}, []);
+		return allArticles;
 	};
 	return (
 		<TemplateMain
@@ -23,44 +37,37 @@ const Home = ({ navigation }) => {
 			title={user?.name ? `Hey ${user.name}!` : 'Latest Updates'}
 			carousel={featuredPosts}
 		>
-			<VideoArticle navigation={navigation} article={testVideoArticle} />
-			{/** TODO: Dont forget to delete */}
-			<Modal
-				buttonLabel='Open This Thang'
-				title='This is the title'
-				message='This is the messag to display'
-				successLabel='Good To Go'
-				successCallback={() => console.log('YERP!')}
-			/>
-			{posts?.items?.map((post, index) => {
-				if (post.sys.contentType.sys.id === 'newsArticle') {
-					return (
-						<NewsArticle
-							key={post.sys.id}
-							image={
-								posts['includes']?.Asset[index]?.fields?.file
-									?.url
-							}
-							article={post}
-							navigation={navigation}
-						/>
-					);
-				} else if (post.sys.contentType.sys.id === 'videoArticle') {
+			{/* <VideoArticle navigation={navigation} article={testVideoArticle} /> */}
+			{feed()?.map((post, index) => {
+				if (post?.article?.youtubeId) {
 					return (
 						<VideoArticle
-							key={post.sys.id}
+							key={index}
+							article={post.article}
 							navigation={navigation}
-							// TODO: Setup video article to show image
-							// image={
-							// 	post['includes']?.Asset[index]?.fields?.file
-							// 		?.url
-							// }
-							article={post}
 						/>
 					);
-				} else null;
+				}
+				if (post?.article?.adName && !user.email) {
+					return (
+						<Ad
+							key={index}
+							image={post?.image}
+							article={post?.article}
+						/>
+					);
+				}
+				if (post?.article?.content && post.image) {
+					return (
+						<NewsArticle
+							key={index}
+							image={post?.image}
+							article={post.article}
+							navigation={navigation}
+						/>
+					);
+				}
 			})}
-			<Text>Home Content Goes Here</Text>
 		</TemplateMain>
 	);
 };
