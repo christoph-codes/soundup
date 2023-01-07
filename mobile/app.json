@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "mobile",
+    "name": "soundup-mobile",
     "slug": "soundup",
     "owner": "christoph-codes",
     "version": "1.0.0",
@@ -8,7 +8,7 @@
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
     "splash": {
-      "image": "./assets/splash.gif",
+      "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -24,16 +24,25 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.soundupmedia.soundupmobile",
+      "buildNumber": "1.0.0"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.soundupmedia.soundupmobile",
+      "versionCode": 1
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "16a881e1-5ee8-4193-8ccd-a89888c8e53a"
+      }
     }
   }
 }
