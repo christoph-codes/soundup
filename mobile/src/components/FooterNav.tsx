@@ -1,10 +1,7 @@
 import { View, Text } from 'native-base';
 import { StyleSheet, TouchableHighlight } from 'react-native';
-import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
-import { useAuth } from '../providers/AuthProvider';
 
 const FooterNav = ({ navigation }) => {
-	const { user } = useAuth();
 	const items = [
 		{
 			label: 'Home',
@@ -21,11 +18,11 @@ const FooterNav = ({ navigation }) => {
 			icon: '👀',
 			link: 'Watch',
 		},
-		{
-			label: 'Listen',
-			icon: '🎧',
-			link: 'Listen',
-		},
+		// {
+		// 	label: 'Listen',
+		// 	icon: '🎧',
+		// 	link: 'Listen',
+		// },
 	];
 	const footerLink = (item, index) => (
 		<TouchableHighlight
