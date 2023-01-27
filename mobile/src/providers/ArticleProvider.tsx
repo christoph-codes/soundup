@@ -20,7 +20,7 @@ const ArticleProvider = ({ children }) => {
 			contentful('all')
 				.get('')
 				.then((res) => {
-					setPosts(res.data);
+					setPosts(res.data.slice(0, 25));
 				})
 				.catch((err) => console.log('Error!!!!', err));
 		}
