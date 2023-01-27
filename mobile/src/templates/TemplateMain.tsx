@@ -35,7 +35,11 @@ const TemplateMain = ({
 		>
 			{carousel !== false && (
 				<Carousel
-					data={carousel === true ? carouselArticles : carousel}
+					data={
+						carousel === true
+							? carouselArticles
+							: carousel.slice(0, 5)
+					}
 				/>
 			)}
 			<View style={[styles.Container, style]}>
