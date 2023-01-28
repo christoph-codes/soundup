@@ -1,4 +1,5 @@
 import { NavigationProp } from '@react-navigation/native';
+import { useState } from 'react';
 import {
 	ViewStyle,
 	Text,
@@ -6,8 +7,8 @@ import {
 	StyleSheet,
 	TouchableOpacity,
 } from 'react-native';
+import { WebView } from 'react-native-webview';
 import YoutubePlayer from 'react-native-youtube-iframe';
-import Button from './Button';
 import TextDate from './TextDate';
 
 export interface IVideoProps {
@@ -33,6 +34,10 @@ export interface IVideoArticleProps {
 }
 
 const VideoArticle = ({ style, article, navigation }: IVideoArticleProps) => {
+	const [webViewKey, setWebViewKey] = useState(0);
+	const reload = () => {
+		setWebViewKey((prev) => prev + 1);
+	};
 	return (
 		<>
 			<View style={[styles.VideoArticle, style]}>
@@ -40,7 +45,11 @@ const VideoArticle = ({ style, article, navigation }: IVideoArticleProps) => {
 					<View style={styles.VideoArticleVideo}>
 						<YoutubePlayer
 							height={220}
-							videoId={article?.youtubeId}
+							videoId={article.youtubeId}
+							webViewProps={{
+								onContentProcessDidTerminate: reload,
+								allowsInlineMediaPlayback: true,
+							}}
 						/>
 					</View>
 				)}
