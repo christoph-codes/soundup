@@ -1,4 +1,10 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import {
+	createContext,
+	useContext,
+	useEffect,
+	useState,
+	useCallback,
+} from 'react';
 import { IAdProps } from '../components/Ad';
 import { ICarouselProps } from '../components/Carousel';
 import { IVideoProps } from '../components/VideoArticle';
@@ -8,86 +14,63 @@ import { getImage } from '../utils/helper';
 const ArticleContext = createContext(null);
 
 const ArticleProvider = ({ children }) => {
+	const fetchLimit: number = 10;
 	const [posts, setPosts] = useState<any>(null);
+	const [pagination, setPagination] = useState<number>(1);
 	const [featuredPosts, setFeaturedPosts] = useState<ICarouselProps['data']>(
 		[],
 	);
 	const [articles, setArticles] = useState<ICarouselProps['data']>([]);
 	const [ads, setAds] = useState<IAdProps[]>([]);
 	const [videos, setVideos] = useState<IVideoProps[]>([]);
-	useEffect(() => {
-		if (posts === null) {
-			contentful('all')
-				.get('')
-				.then((res) => {
-					setPosts(res.data.slice(0, 25));
-				})
-				.catch((err) => console.log('Error!!!!', err));
-		}
-	}, []);
 
-	/* Filtering the posts to only show the featured posts. */
-	useEffect(() => {
-		// FIX: fires twice on initial render and update
-		posts?.items?.forEach(async (cv) => {
-			const contentImage =
-				cv?.sys?.contentType?.sys?.id === 'newsArticle'
-					? await getImage(cv?.fields?.featuredImage?.sys?.id)
-					: cv?.sys?.contentType?.sys?.id === 'ads'
-					? await getImage(cv?.fields?.artwork?.sys?.id)
-					: cv?.sys?.contentType?.sys?.id === 'videoArticle'
-					? `//i3.ytimg.com/vi/${cv.fields.youtubeId}/maxresdefault.jpg`
-					: null;
-			if (cv?.fields?.featured) {
-				setFeaturedPosts((prev) => {
-					return [
-						...prev,
-						{
-							image: contentImage,
-							article: cv,
-						},
-					];
+	const getArticles = useCallback(() => {
+		console.log('getting articles');
+		contentful('all', fetchLimit, fetchLimit * pagination)
+			.get('')
+			.then((res) => {
+				const structuredPosts = res.data.items?.forEach(async (cv) => {
+					const contentImage =
+						cv?.sys?.contentType?.sys?.id === 'newsArticle'
+							? await getImage(cv?.fields?.featuredImage?.sys?.id)
+							: cv?.sys?.contentType?.sys?.id === 'ads'
+							? await getImage(cv?.fields?.artwork?.sys?.id)
+							: cv?.sys?.contentType?.sys?.id === 'videoArticle'
+							? `//i3.ytimg.com/vi/${cv.fields.youtubeId}/maxresdefault.jpg`
+							: null;
+					if (contentImage !== null) {
+						setArticles((prev) => {
+							return [
+								...prev,
+								{
+									featured: cv.fields.featured,
+									image: contentImage,
+									article: cv.fields,
+									type: cv?.sys?.contentType?.sys?.id,
+								},
+							];
+						});
+					}
 				});
-			}
-			if (cv?.sys?.contentType?.sys?.id === 'ads') {
-				setAds((prev) => {
-					return [
-						...prev,
-						{
-							image: contentImage,
-							article: cv.fields,
-						},
-					];
-				});
-			}
-			if (cv?.sys?.contentType?.sys?.id === 'videoArticle') {
-				setVideos((prev) => {
-					return [
-						...prev,
-						{
-							title: cv.fields.title,
-							image: contentImage,
-							article: cv.fields,
-						},
-					];
-				});
-			}
+				setPosts(structuredPosts);
+				setPagination(pagination);
+			})
+			.catch((err) => console.log('Error!!!!', err));
+	}, [pagination]);
 
-			setArticles((prev) => {
-				return [
-					...prev,
-					{
-						image: contentImage,
-						article: cv.fields,
-					},
-				];
-			});
-		});
-	}, [posts]);
+	useEffect(() => {
+		getArticles();
+	}, [pagination]);
+
+	const loadMoreArticles = () => {
+		console.log('pagination', pagination);
+		console.log('load more articles');
+		setPagination((prev) => prev + 1);
+	};
 
 	return (
 		<ArticleContext.Provider
-			value={{ featuredPosts, articles, ads, videos }}
+			value={{ featuredPosts, articles, ads, videos, loadMoreArticles }}
 		>
 			{children}
 		</ArticleContext.Provider>
