@@ -1,16 +1,14 @@
-import { useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import Ad from '../components/Ad';
-import Modal from '../components/Modal';
 import NewsArticle from '../components/NewsArticle';
-import VideoArticle, { IVideoProps } from '../components/VideoArticle';
+import VideoArticle from '../components/VideoArticle';
 import { useArticles } from '../providers/ArticleProvider';
 import { useAuth } from '../providers/AuthProvider';
 import TemplateMain from '../templates/TemplateMain';
 
 const Home = ({ navigation }) => {
 	const { user } = useAuth();
-	const { articles, featuredPosts, ads } = useArticles();
+	const { articles, ads, loadMoreArticles } = useArticles();
 
 	/**
 	 * It takes an array of articles and ads, and returns a new array of articles and ads, with ads
@@ -35,7 +33,8 @@ const Home = ({ navigation }) => {
 			style={styles.Home}
 			navigation={navigation}
 			title={user?.name ? `Hey ${user.name}!` : 'Latest Updates'}
-			carousel={featuredPosts}
+			carousel={articles.filter((art) => art.featured)}
+			onRefresh={loadMoreArticles}
 		>
 			{/* <VideoArticle navigation={navigation} article={testVideoArticle} /> */}
 			{feed()?.map((post, index) => {
