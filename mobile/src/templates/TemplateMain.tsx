@@ -1,9 +1,10 @@
 import { ScrollView, Text, View } from 'native-base';
-import { StyleSheet, ViewStyle } from 'react-native';
+import { RefreshControl, StyleSheet, ViewStyle } from 'react-native';
 import { useFonts } from 'expo-font';
 import { NavigationProp } from '@react-navigation/native';
 import Carousel, { ICarouselProps } from '../components/Carousel';
 import { carouselArticles } from '../utils/mockData/carouselArticles';
+import { useState } from 'react';
 
 export interface TemplateMainProps {
 	navigation?: NavigationProp<any>;
@@ -11,6 +12,7 @@ export interface TemplateMainProps {
 	title?: string;
 	children?: any;
 	style?: ViewStyle;
+	onRefresh: () => void;
 }
 
 const TemplateMain = ({
@@ -19,7 +21,27 @@ const TemplateMain = ({
 	carousel,
 	title,
 	style,
+	onRefresh,
 }: TemplateMainProps) => {
+	const [refreshing, setRefreshing] = useState(false);
+	const isCloseToBottom = ({
+		layoutMeasurement,
+		contentOffset,
+		contentSize,
+	}) => {
+		const paddingBottom = 32;
+		return (
+			layoutMeasurement.height + contentOffset.y >=
+			contentSize.height - paddingBottom
+		);
+	};
+	const onRefreshCallback = () => {
+		setRefreshing(true);
+		onRefresh();
+		setTimeout(() => {
+			setRefreshing(false);
+		}, 2000);
+	};
 	const [fontsLoaded] = useFonts({
 		Norwester: require('../../assets/fonts/norwester.otf'),
 	});
@@ -30,8 +52,19 @@ const TemplateMain = ({
 		<ScrollView
 			showsVerticalScrollIndicator={false}
 			width={'100%'}
-			bounces={false}
+			scrollEventThrottle={2}
 			backgroundColor='white'
+			onScrollEndDrag={({ nativeEvent }) => {
+				if (isCloseToBottom(nativeEvent)) {
+					onRefresh();
+				}
+			}}
+			refreshControl={
+				<RefreshControl
+					refreshing={refreshing}
+					onRefresh={() => onRefreshCallback()}
+				/>
+			}
 		>
 			{carousel !== false && (
 				<Carousel
