@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import Ad from '../components/Ad';
 import NewsArticle from '../components/NewsArticle';
@@ -8,7 +9,11 @@ import TemplateMain from '../templates/TemplateMain';
 
 const Home = ({ navigation }) => {
 	const { user } = useAuth();
-	const { articles, ads, loadMoreArticles } = useArticles();
+	const { state, loadMoreArticles, getArticles } = useArticles();
+
+	useEffect(() => {
+		getArticles();
+	}, []);
 
 	/**
 	 * It takes an array of articles and ads, and returns a new array of articles and ads, with ads
@@ -17,9 +22,9 @@ const Home = ({ navigation }) => {
 	 */
 	const feed = () => {
 		let adNum = 0;
-		const allArticles = articles.reduce((acc, cv, idx) => {
+		const allArticles = state?.articles.reduce((acc, cv, idx) => {
 			if (idx > 1 && idx % 4 === 0) {
-				acc[idx] = ads[adNum];
+				acc[idx] = state.ads[adNum];
 				adNum++;
 			} else {
 				acc.push(cv);
@@ -28,16 +33,19 @@ const Home = ({ navigation }) => {
 		}, []);
 		return allArticles;
 	};
+
 	return (
 		<TemplateMain
 			style={styles.Home}
 			navigation={navigation}
 			title={user?.name ? `Hey ${user.name}!` : 'Latest Updates'}
-			carousel={articles.filter((art) => art.featured)}
+			carousel={state.featured.filter((art) => art.featured)}
 			onRefresh={loadMoreArticles}
+			onEndReach={() => console.log('reached end of content')}
 		>
 			{/* <VideoArticle navigation={navigation} article={testVideoArticle} /> */}
 			{feed()?.map((post, index) => {
+				// console.log('POST:', post);
 				if (post?.article?.youtubeId) {
 					return (
 						<VideoArticle
