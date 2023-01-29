@@ -13,6 +13,7 @@ export interface TemplateMainProps {
 	children?: any;
 	style?: ViewStyle;
 	onRefresh: () => void;
+	onEndReach?: () => void;
 }
 
 const TemplateMain = ({
@@ -22,6 +23,7 @@ const TemplateMain = ({
 	title,
 	style,
 	onRefresh,
+	onEndReach,
 }: TemplateMainProps) => {
 	const [refreshing, setRefreshing] = useState(false);
 	const isCloseToBottom = ({
@@ -56,7 +58,7 @@ const TemplateMain = ({
 			backgroundColor='white'
 			onScrollEndDrag={({ nativeEvent }) => {
 				if (isCloseToBottom(nativeEvent)) {
-					onRefresh();
+					onEndReach();
 				}
 			}}
 			refreshControl={
