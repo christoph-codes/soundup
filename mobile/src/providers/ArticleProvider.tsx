@@ -1,14 +1,17 @@
-import { useCallback } from 'react';
-import { createContext, useContext, useState, useReducer } from 'react';
+import { createContext, useContext, useReducer } from 'react';
 import contentReducer from '../reducers/contentReducer';
 import contentful, { TFetchOptions } from '../utils/contentful';
 import { getImage } from '../utils/helper';
 
-export type TStateOptions = 'articles' | 'featured' | 'ads' | 'videos';
+export type TStateOptions = 'articles' | 'featured' | 'ads' | 'videos' | 'all';
 
 const ContentContext = createContext(null);
 
 const initialState = {
+	all: {
+		data: [],
+		pagination: 1,
+	},
 	articles: {
 		data: [],
 		pagination: 1,
@@ -34,59 +37,60 @@ const ContentProvider = ({ children }) => {
 	 * A function that queries Contentful for a number of articles with refetch capabilities
 	 * @param pagination = The number of articles to fetch from contentful
 	 */
-	const getContent = useCallback(
-		(fetchOption: TFetchOptions = 'all', pagination = 1) => {
-			console.log('fetchOption', fetchOption);
-			const fetchLimit = 10;
-			contentful(fetchOption, fetchLimit, fetchLimit * pagination)
-				.get('')
-				.then((res) => {
-					const structuredPosts = res.data.items.map((cv, idx) => {
-						console.log('cv', cv);
+	const getContent = (fetchOption: TFetchOptions = 'all', pagination = 1) => {
+		// console.log('fetchOption', fetchOption);
+		const fetchLimit = 25;
+		contentful(fetchOption, fetchLimit, fetchLimit * pagination)
+			.get('')
+			.then(async (res) => {
+				const structuredPosts = await res.data.items.reduce(
+					(acc, cv, idx) => {
 						// TODO: Convert to switch
 						const contentImage =
 							cv?.sys?.contentType?.sys?.id === 'newsArticle'
-								? getImage(cv?.fields?.featuredImage?.sys?.id)
+								? getImage(cv.fields.featuredImage.sys.id)
 								: cv?.sys?.contentType?.sys?.id === 'ads'
-								? getImage(cv?.fields?.artwork?.sys?.id)
+								? getImage(cv.fields.artwork.sys.id)
 								: cv?.sys?.contentType?.sys?.id ===
 								  'videoArticle'
 								? `//i3.ytimg.com/vi/${cv.fields.youtubeId}/maxresdefault.jpg`
 								: null;
-						console.log('IMAGE', contentImage);
-						if (contentImage !== null) {
-							return {
-								featured: cv.fields.featured,
+
+						if (
+							contentImage !== null &&
+							contentImage !== undefined
+						) {
+							const contentType =
+								cv.sys.contentType.sys.id === 'ads'
+									? 'ads'
+									: cv.sys.contentType.sys.id ===
+									  'videoArticle'
+									? 'videos'
+									: 'articles';
+							console.log('contentImage', contentImage);
+							acc[contentType].data.push({
 								image: contentImage,
 								article: cv.fields,
-								type: cv?.sys?.contentType?.sys?.id,
-							};
+								type: cv.sys.contentType.sys.id,
+							});
+							acc.all.data.push({
+								image: contentImage,
+								article: cv.fields,
+								type: cv.sys.contentType.sys.id,
+							});
+							return acc;
 						}
-					});
+					},
+					initialState,
+				);
 
-					console.log('STRUC', {
-						[fetchOption]: {
-							data: [
-								...state[fetchOption].data,
-								...structuredPosts,
-							],
-							pagination,
-						},
-					});
-					dispatch({
-						[fetchOption]: {
-							data: [
-								...state[fetchOption].data,
-								...structuredPosts,
-							],
-							pagination,
-						},
-					});
-				})
-				.catch((err) => console.log('Error!!!!', err));
-		},
-		[state],
-	);
+				/* Waiting for all the promises to resolve before dispatching the action. */
+				dispatch({
+					...structuredPosts,
+				});
+			})
+			.catch((err) => console.log('Error!!!!', err));
+	};
 
 	const incrementPagination = (
 		content: 'articles' | 'featured' | 'videos' | 'ads',
@@ -99,6 +103,8 @@ const ContentProvider = ({ children }) => {
 			},
 		});
 	};
+
+	console.log('state', state);
 
 	return (
 		<ContentContext.Provider
