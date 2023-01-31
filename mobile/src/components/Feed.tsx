@@ -30,7 +30,6 @@ const Feed = ({ navigation, arrayOfArticles }) => {
 	return (
 		<>
 			{feed()?.map((post, index) => {
-				// console.log('TYPE', post?.type);
 				if (post?.type === 'videoArticle') {
 					return (
 						<VideoArticle
