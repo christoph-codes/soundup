@@ -11,7 +11,7 @@ const Home = ({ navigation }) => {
 	const { state, getContent, incrementPagination } = useContent();
 
 	useEffect(() => {
-		getContent(fetching);
+		getContent(fetching, state[fetching].pagination);
 	}, [state[fetching].pagination]);
 
 	return (
@@ -20,7 +20,7 @@ const Home = ({ navigation }) => {
 			navigation={navigation}
 			title={user?.name ? `Hey ${user.name}!` : 'Latest Updates'}
 			carousel={state.featured.data.filter((art) => art.article.featured)}
-			onRefresh={() => getContent('all', state[fetching].pagination)}
+			onRefresh={() => getContent('all', state.all.pagination)}
 			onEndReach={() => incrementPagination(fetching)}
 		>
 			<Feed
