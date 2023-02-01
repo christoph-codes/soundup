@@ -24,10 +24,10 @@ const NewsArticleContent = ({ navigation, route }) => {
 						{article?.title}
 					</Text>
 				)}
-				{article.content.content.map((node) => {
+				{article.content.content.map((node, index) => {
 					if (node.nodeType === 'paragraph') {
 						return (
-							<P marginBottom={4} fontSize='xl'>
+							<P key={index} marginBottom={4} fontSize='xl'>
 								{node.content[0].value}
 							</P>
 						);
