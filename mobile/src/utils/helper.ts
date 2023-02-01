@@ -6,7 +6,7 @@ export const checkRegex = (value: string, expression: string): boolean => {
 	return isValid;
 };
 
-export const getImage = async (assetId: string) => {
+export const getImage = async (assetId: string): Promise<string> => {
 	return await axios
 		.get(
 			`https://cdn.contentful.com/spaces/${process.env.REACT_APP_CONTENTFUL_SPACE_ID}/environments/${process.env.REACT_APP_CONTENTFUL_ENVIRONMENT}/assets/${assetId}?access_token=${process.env.REACT_APP_CONTENTFUL_CONTENT_DELIVERY_ACCESS_TOKEN}`,
