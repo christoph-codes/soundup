@@ -1,4 +1,4 @@
-import { createContext, useContext, useReducer } from 'react';
+import { createContext, useContext, useReducer, useState } from 'react';
 import contentReducer from '../reducers/contentReducer';
 import contentful, { TFetchOptions } from '../utils/contentful';
 import { getImage } from '../utils/helper';
@@ -38,64 +38,65 @@ const ContentProvider = ({ children }) => {
 	 * @param pagination = The number of articles to fetch from contentful
 	 */
 	const getContent = (fetchOption: TFetchOptions = 'all', pagination = 1) => {
-		// console.log('fetchOption', fetchOption);
-		const fetchLimit = 25;
+		const fetchLimit = 15;
 		contentful(fetchOption, fetchLimit, fetchLimit * pagination)
 			.get('')
-			.then(async (res) => {
-				const structuredPosts = await res.data.items.reduce(
-					(acc, cv, idx) => {
-						// TODO: Convert to switch
-						const contentImage =
-							cv?.sys?.contentType?.sys?.id === 'newsArticle'
-								? getImage(cv.fields.featuredImage.sys.id)
-								: cv?.sys?.contentType?.sys?.id === 'ads'
-								? getImage(cv.fields.artwork.sys.id)
-								: cv?.sys?.contentType?.sys?.id ===
-								  'videoArticle'
-								? `//i3.ytimg.com/vi/${cv.fields.youtubeId}/maxresdefault.jpg`
-								: null;
-
-						if (
-							contentImage !== null &&
-							contentImage !== undefined
-						) {
-							const contentType =
-								cv.sys.contentType.sys.id === 'ads'
-									? 'ads'
-									: cv.sys.contentType.sys.id ===
-									  'videoArticle'
-									? 'videos'
-									: 'articles';
-							console.log('contentImage', contentImage);
-							acc[contentType].data.push({
-								image: contentImage,
-								article: cv.fields,
-								type: cv.sys.contentType.sys.id,
-							});
-							acc.all.data.push({
-								image: contentImage,
-								article: cv.fields,
-								type: cv.sys.contentType.sys.id,
-							});
-							return acc;
+			.then((res) => {
+				const promises = res.data.items.map(async (cv, idx) => {
+					const contentImage = async () => {
+						switch (cv.sys.contentType.sys.id) {
+							case 'newsArticle':
+								const articleImage = getImage(
+									cv.fields.featuredImage.sys.id,
+								);
+								return await articleImage;
+							case 'ads':
+								const image = getImage(
+									cv.fields.artwork.sys.id,
+								);
+								return await image;
+							case 'videoArticle':
+								return `//i3.ytimg.com/vi/${cv.fields.youtubeId}/hqdefault.jpg`;
+							default:
+								return null;
 						}
-					},
-					initialState,
-				);
+					};
+					const imageVariable =
+						(await contentImage()) !== null &&
+						(await contentImage());
 
-				/* Waiting for all the promises to resolve before dispatching the action. */
-				dispatch({
-					...structuredPosts,
+					if (imageVariable !== null) {
+						const contentType =
+							cv.sys.contentType.sys.id === 'ads'
+								? 'ads'
+								: cv.sys.contentType.sys.id === 'videoArticle'
+								? 'videos'
+								: 'articles';
+
+						const newStructure = {
+							image: imageVariable,
+							article: cv.fields,
+							type: cv.sys.contentType.sys.id,
+						};
+						return { contentType, newStructure };
+					}
+				}, initialState);
+				Promise.all(promises).then((resolved) => {
+					const structuredPosts = resolved.reduce((acc, cv) => {
+						const { contentType, newStructure } = cv;
+						acc[contentType].data.push(newStructure);
+						acc.all.data.push(newStructure);
+						return acc;
+					}, initialState);
+					dispatch({ ...structuredPosts });
 				});
 			})
 			.catch((err) => console.log('Error!!!!', err));
 	};
 
 	const incrementPagination = (
-		content: 'articles' | 'featured' | 'videos' | 'ads',
+		content: 'articles' | 'featured' | 'videos' | 'ads' | 'all',
 	) => {
-		console.log('incrementing');
 		dispatch({
 			[content]: {
 				data: [...state[content].data],
@@ -103,8 +104,6 @@ const ContentProvider = ({ children }) => {
 			},
 		});
 	};
-
-	console.log('state', state);
 
 	return (
 		<ContentContext.Provider
