@@ -1,20 +1,30 @@
+import { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Feed from '../components/Feed';
 import { useContent } from '../providers/ArticleProvider';
 import TemplateMain from '../templates/TemplateMain';
 
 const News = ({ navigation }) => {
-	const { articles } = useContent();
+	const { state, getContent, incrementPagination } = useContent();
+
+	useEffect(() => {
+		getContent('articles', state.articles.pagination);
+	}, [state.articles.pagination]);
+
 	return (
 		<TemplateMain
 			style={styles.News}
 			title='News'
 			navigation={navigation}
-			carousel
-			onRefresh={() => console.log('Refreshing')}
+			carousel={state.articles.data.filter((art) => art.fields.featured)}
+			onRefresh={() => getContent('articles')}
+			onEndReach={() => incrementPagination('articles')}
 		>
 			<View>
-				<Feed navigation={navigation} arrayOfArticles={articles} />
+				<Feed
+					navigation={navigation}
+					arrayOfArticles={state.articles.data}
+				/>
 			</View>
 		</TemplateMain>
 	);
