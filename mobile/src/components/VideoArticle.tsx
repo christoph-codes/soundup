@@ -1,4 +1,5 @@
 import { NavigationProp } from '@react-navigation/native';
+import { Image } from 'native-base';
 import { useState } from 'react';
 import {
 	ViewStyle,
@@ -7,8 +8,6 @@ import {
 	StyleSheet,
 	TouchableOpacity,
 } from 'react-native';
-import { WebView } from 'react-native-webview';
-import YoutubePlayer from 'react-native-youtube-iframe';
 import TextDate from './TextDate';
 
 export interface IVideoProps {
@@ -25,6 +24,7 @@ export interface IVideoProps {
 }
 
 export interface IVideoArticleProps {
+	image?: string;
 	/** Article Content object to be used in the component */
 	article?: IVideoProps;
 	/** Style object that will be passed to the View component */
@@ -33,40 +33,57 @@ export interface IVideoArticleProps {
 	navigation: NavigationProp<any>;
 }
 
-const VideoArticle = ({ style, article, navigation }: IVideoArticleProps) => {
-	const [webViewKey, setWebViewKey] = useState(0);
-	const reload = () => {
-		setWebViewKey((prev) => prev + 1);
-	};
+const VideoArticle = ({
+	style,
+	image,
+	article,
+	navigation,
+}: IVideoArticleProps) => {
+	const [error, setError] = useState(false);
+
 	return (
 		<>
-			<View style={[styles.VideoArticle, style]}>
-				{article?.youtubeId && (
-					<View style={styles.VideoArticleVideo}>
-						<YoutubePlayer
-							height={220}
-							videoId={article.youtubeId}
-							webViewProps={{
-								onContentProcessDidTerminate: reload,
-								allowsInlineMediaPlayback: true,
-							}}
-						/>
-					</View>
-				)}
+			{error ? (
+				<Text>Video Thumbnail Didn't Load.</Text>
+			) : (
+				<TouchableOpacity
+					onPress={() => {
+						navigation.navigate('Video Article Content', {
+							article,
+							image,
+						});
+					}}
+				>
+					<View style={[styles.VideoArticle, style]}>
+						{article?.youtubeId && (
+							<View style={styles.VideoArticleImage}>
+								<Image
+									style={styles.VideoArticleImage}
+									source={{ uri: `http:${image}` }}
+									alt='Video Image Thumbnail'
+									onError={(err) => setError(true)}
+									resizeMode='cover'
+								/>
+							</View>
+						)}
 
-				<View style={styles.VideoArticleContent}>
-					{article?.title && article?.publishDate && (
-						<TouchableOpacity
-							onPress={() => navigation.navigate(article?.link)}
-						>
-							<Text style={styles.VideoArticleTitle}>
-								{article?.title}
-							</Text>
-							<TextDate date={article?.publishDate} />
-						</TouchableOpacity>
-					)}
-				</View>
-			</View>
+						<View style={styles.VideoArticleContent}>
+							{article?.title && article?.publishDate && (
+								<TouchableOpacity
+									onPress={() =>
+										navigation.navigate(article?.link)
+									}
+								>
+									<Text style={styles.VideoArticleTitle}>
+										{article?.title}
+									</Text>
+									<TextDate date={article?.publishDate} />
+								</TouchableOpacity>
+							)}
+						</View>
+					</View>
+				</TouchableOpacity>
+			)}
 		</>
 	);
 };
@@ -93,8 +110,9 @@ const styles = StyleSheet.create({
 		marginVertical: 8,
 		width: '100%',
 	},
-	VideoArticleVideo: {
+	VideoArticleImage: {
 		width: '100%',
+		minHeight: 200,
 	},
 	VideoArticleTitle: {
 		fontSize: 21,
