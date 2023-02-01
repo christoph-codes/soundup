@@ -40,14 +40,6 @@ const NewsArticle = ({
 							{article?.title}
 						</Text>
 					)}
-					{article?.description && (
-						<Text
-							color='#111111'
-							style={styles.NewsArticleDescription}
-						>
-							{article?.description}
-						</Text>
-					)}
 					{article?.sys?.createdAt && (
 						<TextDate date={article?.sys?.createdAt} />
 					)}
