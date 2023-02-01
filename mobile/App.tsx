@@ -12,6 +12,7 @@ import Home from './src/screens/Home';
 import AccountSettings from './src/screens/AccountSettings';
 import News from './src/screens/News';
 import NewsArticleContent from './src/screens/NewsArticleContent';
+import VideoArticleContent from './src/screens/VideoArticleContent';
 import Watch from './src/screens/Watch';
 import Listen from './src/screens/Listen';
 import SignIn from './src/screens/SignIn';
@@ -64,6 +65,11 @@ const App = () => {
 										<Stack.Screen
 											name='News Article Content'
 											component={NewsArticleContent}
+											options={headerOptions}
+										/>
+										<Stack.Screen
+											name='Video Article Content'
+											component={VideoArticleContent}
 											options={headerOptions}
 										/>
 										<Stack.Screen
