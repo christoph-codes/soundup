@@ -34,6 +34,7 @@ const Feed = ({ navigation, arrayOfArticles }) => {
 					return (
 						<VideoArticle
 							key={index}
+							image={post.image}
 							article={post.article}
 							navigation={navigation}
 						/>
