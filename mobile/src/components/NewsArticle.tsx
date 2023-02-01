@@ -26,24 +26,17 @@ const NewsArticle = ({
 				navigation.navigate('News Article Content', { article, image });
 			}}
 		>
-			<View style={[styles.NewsArticle, style]}>
-				{image && (
-					<Image
-						source={{ uri: `http:${image}` }}
-						alt='Article Image'
-						style={styles.NewsArticleImage}
-					/>
-				)}
-				<View style={styles.NewsArticleContent}>
-					{article?.title && (
+			<View style={styles.NewsArticleContent}>
+				{article?.title && article?.publishDate && (
+					<TouchableOpacity
+						onPress={() => navigation.navigate(article?.link)}
+					>
 						<Text style={styles.NewsArticleTitle}>
 							{article?.title}
 						</Text>
-					)}
-					{article?.sys?.createdAt && (
-						<TextDate date={article?.sys?.createdAt} />
-					)}
-				</View>
+						<TextDate date={article?.publishDate} />
+					</TouchableOpacity>
+				)}
 			</View>
 		</TouchableOpacity>
 	);
@@ -62,12 +55,10 @@ const styles = StyleSheet.create({
 		marginBottom: 16,
 	},
 	NewsArticleImage: {
-		marginRight: 16,
-		width: 116,
-		height: 116,
+		width: '100%',
+		height: 200,
 	},
 	NewsArticleContent: {
-		flexShrink: 1,
 		backgroundColor: 'transparent',
 		height: 'auto',
 		padding: 0,

@@ -11,12 +11,14 @@ const News = ({ navigation }) => {
 		getContent('articles', state.articles.pagination);
 	}, [state.articles.pagination]);
 
+	console.log('art', state.articles.data);
+
 	return (
 		<TemplateMain
 			style={styles.News}
 			title='News'
 			navigation={navigation}
-			carousel={state.articles.data.filter((art) => art.fields.featured)}
+			carousel={state.articles.data.filter((art) => art.article.featured)}
 			onRefresh={() => getContent('articles')}
 			onEndReach={() => incrementPagination('articles')}
 		>
