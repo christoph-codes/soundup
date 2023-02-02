@@ -22,7 +22,7 @@
 		"ios": {
 			"supportsTablet": true,
 			"bundleIdentifier": "com.soundupmedia.soundupmobile",
-			"buildNumber": "1.0.0"
+			"buildNumber": "1.1.0"
 		},
 		"android": {
 			"adaptiveIcon": {
