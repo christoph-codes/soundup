@@ -12,7 +12,7 @@ export interface TemplateMainProps {
 	title?: string;
 	children?: any;
 	style?: ViewStyle;
-	onRefresh: () => void;
+	onRefresh?: () => void;
 	onEndReach?: () => void;
 }
 
@@ -57,7 +57,7 @@ const TemplateMain = ({
 			scrollEventThrottle={2}
 			backgroundColor='white'
 			onScrollEndDrag={({ nativeEvent }) => {
-				if (isCloseToBottom(nativeEvent)) {
+				if (isCloseToBottom(nativeEvent) && onEndReach) {
 					onEndReach();
 				}
 			}}
