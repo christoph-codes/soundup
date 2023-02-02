@@ -1,29 +1,40 @@
-import { useEffect } from 'react';
+import { Text } from 'native-base';
+import { NavigationProp } from '@react-navigation/native';
 import { useContent } from '../providers/ArticleProvider';
 import { useAuth } from '../providers/AuthProvider';
+import { TFetchOptions } from '../utils/contentful';
 import Ad from './Ad';
 import NewsArticle from './NewsArticle';
 import VideoArticle from './VideoArticle';
 
-const Feed = ({ navigation, arrayOfArticles }) => {
-	const { user } = useAuth();
-	const { state, getContent } = useContent();
+export interface IFeedProps {
+	navigation?: NavigationProp<any>;
+	fetchOption: TFetchOptions;
+}
 
-	useEffect(() => {
-		getContent('ads', state.ads.pagination);
-	}, [state.ads.pagination]);
+const Feed = ({ navigation, fetchOption }: IFeedProps) => {
+	const { user } = useAuth();
+	const { state } = useContent();
 
 	const feed = () => {
 		let adNum = 0;
-		const articlesWithAds = arrayOfArticles.reduce((acc, cv, idx) => {
-			if (idx > 2 && idx % 4 === 0) {
-				acc[idx] = state.ads.data[adNum];
-				adNum++;
-			} else {
-				acc[idx] = cv;
-			}
-			return acc;
-		}, []);
+		/* Taking the data from the state and adding ads to it. */
+		const articlesWithAds = state[fetchOption].data.reduce(
+			(acc, cv, idx) => {
+				if (
+					(idx > 2 && idx % 4 === 0) ||
+					(idx + 1 === state[fetchOption].data.length &&
+						state[fetchOption].data.length <= acc.length + 1)
+				) {
+					acc[idx] = state.ads.data[adNum];
+					adNum++;
+				} else {
+					acc[idx] = cv;
+				}
+				return acc;
+			},
+			[],
+		);
 		return articlesWithAds;
 	};
 
@@ -37,6 +48,7 @@ const Feed = ({ navigation, arrayOfArticles }) => {
 							image={post.image}
 							article={post.article}
 							navigation={navigation}
+							publishDate={post.publishDate}
 						/>
 					);
 				}
@@ -49,17 +61,24 @@ const Feed = ({ navigation, arrayOfArticles }) => {
 						/>
 					);
 				}
-				if (post?.type === 'newsArticle' && post.image) {
+				if (post?.type === 'newsArticle') {
 					return (
 						<NewsArticle
 							key={index}
 							image={post?.image}
 							article={post.article}
 							navigation={navigation}
+							publishDate={post.publishDate}
 						/>
 					);
 				}
 			})}
+			<Text color='#999' textAlign='center'>
+				You are all up to date.
+			</Text>
+			<Text color='#999' textAlign='center'>
+				Be sure to check back for more content!
+			</Text>
 		</>
 	);
 };
