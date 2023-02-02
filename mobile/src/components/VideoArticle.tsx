@@ -24,6 +24,7 @@ export interface IVideoProps {
 }
 
 export interface IVideoArticleProps {
+	publishDate?: Date;
 	image?: string;
 	/** Article Content object to be used in the component */
 	article?: IVideoProps;
@@ -34,9 +35,9 @@ export interface IVideoArticleProps {
 }
 
 const VideoArticle = ({
-	style,
 	image,
 	article,
+	publishDate,
 	navigation,
 }: IVideoArticleProps) => {
 	const [error, setError] = useState(false);
@@ -54,7 +55,7 @@ const VideoArticle = ({
 						});
 					}}
 				>
-					<View style={[styles.VideoArticle, style]}>
+					<View style={[styles.VideoArticle]}>
 						{article?.youtubeId && (
 							<View style={styles.VideoArticleImage}>
 								<Image
@@ -69,16 +70,12 @@ const VideoArticle = ({
 
 						<View style={styles.VideoArticleContent}>
 							{article?.title && article?.publishDate && (
-								<TouchableOpacity
-									onPress={() =>
-										navigation.navigate(article?.link)
-									}
-								>
+								<>
 									<Text style={styles.VideoArticleTitle}>
 										{article?.title}
 									</Text>
-									<TextDate date={article?.publishDate} />
-								</TouchableOpacity>
+									<TextDate date={publishDate} />
+								</>
 							)}
 						</View>
 					</View>
@@ -104,9 +101,6 @@ const styles = StyleSheet.create({
 	VideoArticleContent: {
 		backgroundColor: 'transparent',
 		height: 'auto',
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignItems: 'center',
 		marginVertical: 8,
 		width: '100%',
 	},
