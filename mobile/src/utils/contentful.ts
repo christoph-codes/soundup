@@ -11,12 +11,12 @@ export type TFetchOptions =
 const contentful = (
 	fetchOption: TFetchOptions,
 	paginationLimit: number,
-	skip: number = paginationLimit,
+	skip: number,
 ) => {
 	const contentfulContentType = () => {
 		switch (fetchOption) {
 			case 'featured':
-				return `https://cdn.contentful.com/spaces/${process.env.REACT_APP_CONTENTFUL_SPACE_ID}/environments/${process.env.REACT_APP_CONTENTFUL_ENVIRONMENT}/entries?access_token=${process.env.REACT_APP_CONTENTFUL_CONTENT_DELIVERY_ACCESS_TOKEN}&fields.featured=true`;
+				return `https://cdn.contentful.com/spaces/${process.env.REACT_APP_CONTENTFUL_SPACE_ID}/environments/${process.env.REACT_APP_CONTENTFUL_ENVIRONMENT}/entries?access_token=${process.env.REACT_APP_CONTENTFUL_CONTENT_DELIVERY_ACCESS_TOKEN}&content_type=videoArticle&limit=5&fields.featured=true`;
 			case 'articles':
 				return `https://cdn.contentful.com/spaces/${process.env.REACT_APP_CONTENTFUL_SPACE_ID}/environments/${process.env.REACT_APP_CONTENTFUL_ENVIRONMENT}/entries?access_token=${process.env.REACT_APP_CONTENTFUL_CONTENT_DELIVERY_ACCESS_TOKEN}&content_type=newsArticle`;
 			case 'videos':
