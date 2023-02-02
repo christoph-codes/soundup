@@ -19,14 +19,11 @@ const Home = ({ navigation }) => {
 			style={styles.Home}
 			navigation={navigation}
 			title={user?.name ? `Hey ${user.name}!` : 'Latest Updates'}
-			carousel={state.featured.data.filter((art) => art.article.featured)}
-			onRefresh={() => getContent('all', state.all.pagination)}
+			carousel={state.all.data.filter((post) => post.article.featured)}
+			onRefresh={() => getContent(fetching, state.all.pagination)}
 			onEndReach={() => incrementPagination(fetching)}
 		>
-			<Feed
-				arrayOfArticles={state[fetching].data}
-				navigation={navigation}
-			/>
+			<Feed navigation={navigation} fetchOption={fetching} />
 		</TemplateMain>
 	);
 };
