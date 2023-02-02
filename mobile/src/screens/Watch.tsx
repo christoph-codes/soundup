@@ -1,6 +1,5 @@
-import { useEffect } from 'react';
 import { StyleSheet } from 'react-native';
-import VideoArticle from '../components/VideoArticle';
+import Feed from '../components/Feed';
 import { useContent } from '../providers/ArticleProvider';
 import TemplateMain from '../templates/TemplateMain';
 
@@ -10,10 +9,6 @@ const Watch = ({ navigation }) => {
 		(vid) => vid.article.featured,
 	);
 
-	useEffect(() => {
-		getContent('videos', state.videos.pagination);
-	}, [state.videos.pagination]);
-
 	return (
 		<TemplateMain
 			style={styles.Watch}
@@ -21,18 +16,8 @@ const Watch = ({ navigation }) => {
 			navigation={navigation}
 			carousel={featuredVideos}
 			onRefresh={() => getContent('videos', state.videos.pagination)}
-			onEndReach={() => incrementPagination('videos')}
 		>
-			{state.videos.data.map((video, index) => {
-				return (
-					<VideoArticle
-						key={index}
-						image={video.image}
-						navigation={navigation}
-						article={video.article}
-					/>
-				);
-			})}
+			<Feed fetchOption='videos' navigation={navigation} />
 		</TemplateMain>
 	);
 };
