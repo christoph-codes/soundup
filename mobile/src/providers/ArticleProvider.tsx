@@ -1,99 +1,132 @@
-import { createContext, useContext, useEffect, useState } from 'react';
-import { IAdProps } from '../components/Ad';
-import { ICarouselProps } from '../components/Carousel';
-import { IVideoProps } from '../components/VideoArticle';
-import contentful from '../utils/contentful';
+import { createContext, useContext, useReducer, useState } from 'react';
+import contentReducer from '../reducers/contentReducer';
+import contentful, { TFetchOptions } from '../utils/contentful';
 import { getImage } from '../utils/helper';
 
-const ArticleContext = createContext(null);
+export type TStateOptions = 'articles' | 'featured' | 'ads' | 'videos' | 'all';
 
-const ArticleProvider = ({ children }) => {
-	const [posts, setPosts] = useState<any>(null);
-	const [featuredPosts, setFeaturedPosts] = useState<ICarouselProps['data']>(
-		[],
-	);
-	const [articles, setArticles] = useState<ICarouselProps['data']>([]);
-	const [ads, setAds] = useState<IAdProps[]>([]);
-	const [videos, setVideos] = useState<IVideoProps[]>([]);
-	useEffect(() => {
-		if (posts === null) {
-			contentful('all')
-				.get('')
-				.then((res) => {
-					setPosts(res.data);
-				})
-				.catch((err) => console.log('Error!!!!', err));
-		}
-	}, []);
+const ContentContext = createContext(null);
 
-	/* Filtering the posts to only show the featured posts. */
-	useEffect(() => {
-		// FIX: fires twice on initial render and update
-		posts?.items?.forEach(async (cv) => {
-			const contentImage =
-				cv?.sys?.contentType?.sys?.id === 'newsArticle'
-					? await getImage(cv?.fields?.featuredImage?.sys?.id)
-					: cv?.sys?.contentType?.sys?.id === 'ads'
-					? await getImage(cv?.fields?.artwork?.sys?.id)
-					: cv?.sys?.contentType?.sys?.id === 'videoArticle'
-					? `//i3.ytimg.com/vi/${cv.fields.youtubeId}/maxresdefault.jpg`
-					: null;
-			if (cv?.fields?.featured) {
-				setFeaturedPosts((prev) => {
-					return [
-						...prev,
-						{
-							image: contentImage,
-							article: cv,
-						},
-					];
-				});
-			}
-			if (cv?.sys?.contentType?.sys?.id === 'ads') {
-				setAds((prev) => {
-					return [
-						...prev,
-						{
-							image: contentImage,
+const initialState = {
+	all: {
+		data: [],
+		pagination: 0,
+	},
+	articles: {
+		data: [],
+		pagination: 0,
+	},
+	ads: {
+		data: [],
+		pagination: 0,
+	},
+	videos: {
+		data: [],
+		pagination: 0,
+	},
+	featured: {
+		data: [],
+		pagination: 0,
+	},
+};
+
+const ContentProvider = ({ children }) => {
+	const [state, dispatch] = useReducer(contentReducer, initialState);
+	const [isLoading, setIsLoading] = useState(false);
+
+	/**
+	 * A function that queries Contentful for a number of articles with refetch capabilities
+	 * @param pagination = The number of articles to fetch from contentful
+	 */
+	const getContent = (fetchOption: TFetchOptions = 'all', pagination = 0) => {
+		setIsLoading(true);
+		const fetchLimit = 50;
+		contentful(fetchOption, fetchLimit, fetchLimit * pagination)
+			.get('')
+			.then((res) => {
+				const promises = res.data.items.map(async (cv, idx) => {
+					const contentImage = async () => {
+						switch (cv.sys.contentType.sys.id) {
+							case 'newsArticle':
+								const articleImage = getImage(
+									cv.fields.featuredImage.sys.id,
+								);
+								return await articleImage;
+							case 'ads':
+								const image = getImage(
+									cv.fields.artwork.sys.id,
+								);
+								return await image;
+							case 'videoArticle':
+								return `//i3.ytimg.com/vi/${cv.fields.youtubeId}/hqdefault.jpg`;
+							default:
+								return null;
+						}
+					};
+					const imageVariable =
+						(await contentImage()) !== null &&
+						(await contentImage());
+
+					if (imageVariable !== null) {
+						const contentType =
+							cv.sys.contentType.sys.id === 'ads'
+								? 'ads'
+								: cv.sys.contentType.sys.id === 'videoArticle'
+								? 'videos'
+								: 'articles';
+
+						const newStructure = {
+							image: imageVariable,
 							article: cv.fields,
-						},
-					];
+							type: cv.sys.contentType.sys.id,
+							featured: cv.fields.featured,
+							publishDate: cv.sys.createdAt,
+						};
+						return { contentType, newStructure };
+					}
 				});
-			}
-			if (cv?.sys?.contentType?.sys?.id === 'videoArticle') {
-				setVideos((prev) => {
-					return [
-						...prev,
-						{
-							title: cv.fields.title,
-							image: contentImage,
-							article: cv.fields,
-						},
-					];
+				Promise.all(promises).then((resolved) => {
+					const structuredPosts = resolved.reduce((acc, cv) => {
+						const { contentType, newStructure } = cv;
+						acc[contentType].data.push(newStructure);
+						acc.all.data.push(newStructure);
+						if (newStructure.featured) {
+							acc.featured.data.push(newStructure);
+						}
+						return acc;
+					}, state);
+					dispatch({ ...structuredPosts });
 				});
-			}
+			})
+			.catch((err) => console.log('Error!!!!', err))
+			.finally(() => setIsLoading(false));
+	};
 
-			setArticles((prev) => {
-				return [
-					...prev,
-					{
-						image: contentImage,
-						article: cv.fields,
-					},
-				];
-			});
+	const incrementPagination = (
+		content: 'articles' | 'videos' | 'ads' | 'all',
+	) => {
+		dispatch({
+			[content]: {
+				...state[content],
+				pagination: state[content].pagination + 1,
+			},
 		});
-	}, [posts]);
+	};
 
 	return (
-		<ArticleContext.Provider
-			value={{ featuredPosts, articles, ads, videos }}
+		<ContentContext.Provider
+			value={{
+				state,
+				getContent,
+				incrementPagination,
+				isLoading,
+			}}
 		>
 			{children}
-		</ArticleContext.Provider>
+		</ContentContext.Provider>
 	);
 };
 
-export const useArticles = () => useContext(ArticleContext);
+export const useContent = () => useContext(ContentContext);
 
-export default ArticleProvider;
+export default ContentProvider;

@@ -1,44 +1,23 @@
-import axios from 'axios';
-import { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import NewsArticle from '../components/NewsArticle';
+import Feed from '../components/Feed';
+import { useContent } from '../providers/ArticleProvider';
 import TemplateMain from '../templates/TemplateMain';
 
 const News = ({ navigation }) => {
-	const [articles, setArticles] = useState<any>({});
-	// TODO: Turn this fetch into a reduce that builds the object the proper way instead of breaking out the image and the content
-	// TODO: Turn into Provider to fetch once per app session
-	useEffect(() => {
-		axios
-			.get(
-				`https://cdn.contentful.com/spaces/${process.env.REACT_APP_CONTENTFUL_SPACE_ID}/environments/master/entries?access_token=${process.env.REACT_APP_CONTENTFUL_CONTENT_DELIVERY_ACCESS_TOKEN}&include=1`,
-			)
-			.then((res) => {
-				setArticles(res.data);
-			})
-			.catch((err) => console.log);
-	}, []);
+	const { state, getContent } = useContent();
+
 	return (
 		<TemplateMain
 			style={styles.News}
 			title='News'
 			navigation={navigation}
-			carousel
+			carousel={state.articles.data.filter(
+				(post) => post.article.featured,
+			)}
+			onRefresh={() => getContent('articles')}
 		>
 			<View>
-				{articles?.items?.map((article, index) => {
-					return (
-						<NewsArticle
-							navigation={navigation}
-							image={
-								articles['includes']?.Asset[index]?.fields?.file
-									?.url
-							}
-							article={article}
-							key={index}
-						/>
-					);
-				})}
+				<Feed navigation={navigation} fetchOption='articles' />
 			</View>
 		</TemplateMain>
 	);

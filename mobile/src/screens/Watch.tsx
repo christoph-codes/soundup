@@ -1,37 +1,23 @@
 import { StyleSheet } from 'react-native';
-import VideoArticle, { IVideoProps } from '../components/VideoArticle';
-import { useArticles } from '../providers/ArticleProvider';
+import Feed from '../components/Feed';
+import { useContent } from '../providers/ArticleProvider';
 import TemplateMain from '../templates/TemplateMain';
 
 const Watch = ({ navigation }) => {
-	const { videos } = useArticles();
-	const featuredVideos = videos.filter((vid) => vid.article.featured);
-	const testArticle: IVideoProps = {
-		title: 'Test article',
-		publishDate: Date.now(),
-		link: 'Home',
-		youtubeId: 'NmaM5VsZCJM',
-	};
+	const { state, getContent, incrementPagination } = useContent();
+	const featuredVideos = state.videos.data.filter(
+		(vid) => vid.article.featured,
+	);
+
 	return (
 		<TemplateMain
 			style={styles.Watch}
 			title='Watch'
 			navigation={navigation}
 			carousel={featuredVideos}
+			onRefresh={() => getContent('videos', state.videos.pagination)}
 		>
-			{videos.map((video, index) => {
-				return (
-					<VideoArticle
-						key={index}
-						navigation={navigation}
-						article={video.article}
-					/>
-				);
-			})}
-			<VideoArticle navigation={navigation} article={testArticle} />
-			<VideoArticle navigation={navigation} article={testArticle} />
-			<VideoArticle navigation={navigation} article={testArticle} />
-			<VideoArticle navigation={navigation} article={testArticle} />
+			<Feed fetchOption='videos' navigation={navigation} />
 		</TemplateMain>
 	);
 };

@@ -1,15 +1,11 @@
-import { Image } from 'native-base';
+import { Image, ScrollView, Text, View } from 'native-base';
 import { StyleSheet } from 'react-native';
-import { Text, View } from 'native-base';
+import P from '../components/P';
 
 const NewsArticleContent = ({ navigation, route }) => {
 	const { article, image } = route?.params;
-	console.log('article content', article.fields.content.content);
-	const parseContent = (content: any[]) => {
-		// TODO: Create parser here!
-	};
 	return (
-		<View style={styles.NewsArticleContent}>
+		<ScrollView style={styles.NewsArticleContent}>
 			{image && (
 				<Image
 					style={styles.NewsArticleContentFeaturedImage}
@@ -18,18 +14,28 @@ const NewsArticleContent = ({ navigation, route }) => {
 				/>
 			)}
 			<View backgroundColor='white' paddingX={4}>
-				{article?.fields?.title && (
+				{article?.title && (
 					<Text
 						color='#111111'
 						fontSize='2xl'
-						marginTop={4}
+						marginY={4}
 						fontWeight='bold'
 					>
-						{article?.fields?.title}
+						{article?.title}
 					</Text>
 				)}
+				{article.content.content.map((node, index) => {
+					if (node.nodeType === 'paragraph') {
+						return (
+							<P key={index} marginBottom={4} fontSize='xl'>
+								{node.content[0].value}
+							</P>
+						);
+					}
+					return null;
+				})}
 			</View>
-		</View>
+		</ScrollView>
 	);
 };
 const styles = StyleSheet.create({

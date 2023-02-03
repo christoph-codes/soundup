@@ -30,28 +30,40 @@ const Carousel = ({ data, style }: ICarouselProps) => {
 		return (
 			<TouchableWithoutFeedback
 				onPress={() => {
-					navigation?.navigate('News Article Content', {
-						article: item.article,
-						image: item.image,
-					});
+					navigation?.navigate(
+						`${
+							item.type === 'newsArticle' ? 'News' : 'Video'
+						} Article Content`,
+						{
+							article: item.article,
+							image: item.image,
+						},
+					);
 				}}
 			>
-				<View style={{ height: 200 }}>
+				<View>
+					<Text
+						flex={1}
+						flexDir='column'
+						justifyContent='center'
+						textAlign='center'
+						fontWeight='bold'
+						fontSize='xl'
+						color='white'
+						backgroundColor='transparent'
+						position='absolute'
+						zIndex={2}
+						width='100%'
+						marginTop={2}
+					>
+						{item.article.title}
+					</Text>
 					<Image
 						source={{ uri: `http:${item.image}` }}
 						width='100%'
-						height={'200'}
+						height={200}
 						alt='Carousel Image'
 					/>
-					<Text
-						textAlign='center'
-						marginTop='-16'
-						fontWeight='bold'
-						fontSize='2xl'
-						color='white'
-					>
-						{item.title}
-					</Text>
 				</View>
 			</TouchableWithoutFeedback>
 		);
@@ -67,8 +79,8 @@ const Carousel = ({ data, style }: ICarouselProps) => {
 						loop={data?.length > 1}
 						autoPlay
 						width={width}
-						height={width / 2}
-						data={data}
+						height={width / 1.75}
+						data={data.slice(0, 5)}
 						renderItem={renderItem}
 						autoPlayInterval={5000}
 						ref={carouselRef}
@@ -80,7 +92,7 @@ const Carousel = ({ data, style }: ICarouselProps) => {
 					/>
 				</GestureHandlerRootView>
 				<View style={styles.CarouselDots}>
-					{data.map((_dot: any, idx: number) => (
+					{data.slice(0, 5).map((_dot: any, idx: number) => (
 						<TouchableOpacity
 							key={idx}
 							onPress={() => {
@@ -114,7 +126,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		flexDirection: 'row',
 		justifyContent: 'center',
-		marginTop: -36,
+		marginTop: -56,
 		flexGap: 8,
 	},
 	CarouselDot: {

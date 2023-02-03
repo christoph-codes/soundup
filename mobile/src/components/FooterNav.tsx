@@ -21,11 +21,11 @@ const FooterNav = ({ navigation }) => {
 			icon: '👀',
 			link: 'Watch',
 		},
-		{
-			label: 'Listen',
-			icon: '🎧',
-			link: 'Listen',
-		},
+		// {
+		// 	label: 'Listen',
+		// 	icon: '🎧',
+		// 	link: 'Listen',
+		// },
 	];
 	const footerLink = (item, index) => (
 		<TouchableHighlight

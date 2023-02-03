@@ -1,8 +1,12 @@
 import { StyleSheet } from 'react-native';
 import { Text } from 'native-base';
 
-const P = ({ children }) => {
-	return <Text style={styles.P}>{children}</Text>;
+const P = ({ children, ...rest }) => {
+	return (
+		<Text style={styles.P} {...rest}>
+			{children}
+		</Text>
+	);
 };
 
 const styles = StyleSheet.create({

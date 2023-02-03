@@ -1,9 +1,10 @@
 import { NavigationProp } from '@react-navigation/native';
-import { Image, View, Text } from 'native-base';
+import { View, Text, Image } from 'native-base';
 import { ViewStyle, StyleSheet, TouchableOpacity } from 'react-native';
 import TextDate from './TextDate';
 
 export interface INewsArticleProps {
+	publishDate?: Date;
 	/** Article Content object to be used in the component */
 	article?: any;
 	/** Featured image of the article */
@@ -15,7 +16,7 @@ export interface INewsArticleProps {
 }
 
 const NewsArticle = ({
-	style,
+	publishDate,
 	article,
 	image,
 	navigation,
@@ -26,30 +27,25 @@ const NewsArticle = ({
 				navigation.navigate('News Article Content', { article, image });
 			}}
 		>
-			<View style={[styles.NewsArticle, style]}>
+			<View style={[styles.NewsArticle]}>
 				{image && (
 					<Image
-						source={{ uri: `http:${image}` }}
-						alt='Article Image'
 						style={styles.NewsArticleImage}
+						source={{ uri: `http:${image}` }}
+						alt='Article Image Thumbnail'
+						resizeMode='cover'
 					/>
 				)}
 				<View style={styles.NewsArticleContent}>
 					{article?.title && (
-						<Text style={styles.NewsArticleTitle}>
-							{article?.title}
-						</Text>
-					)}
-					{article?.description && (
-						<Text
-							color='#111111'
-							style={styles.NewsArticleDescription}
+						<TouchableOpacity
+							onPress={() => navigation.navigate(article?.link)}
 						>
-							{article?.description}
-						</Text>
-					)}
-					{article?.sys?.createdAt && (
-						<TextDate date={article?.sys?.createdAt} />
+							<Text style={styles.NewsArticleTitle}>
+								{article?.title}
+							</Text>
+							<TextDate date={publishDate} />
+						</TouchableOpacity>
 					)}
 				</View>
 			</View>
@@ -62,20 +58,16 @@ export default NewsArticle;
 const styles = StyleSheet.create({
 	NewsArticle: {
 		paddingVerticaled: 16,
-		display: 'flex',
-		flex: 1,
-		flexDirection: 'row',
-		backgroundColor: 'white',
-		alignItems: 'flex-start',
 		marginBottom: 16,
+		backgroundColor: 'transparent',
+		flex: 1,
 	},
 	NewsArticleImage: {
-		marginRight: 16,
-		width: 116,
-		height: 116,
+		width: '100%',
+		height: 200,
+		marginBottom: 16,
 	},
 	NewsArticleContent: {
-		flexShrink: 1,
 		backgroundColor: 'transparent',
 		height: 'auto',
 		padding: 0,
