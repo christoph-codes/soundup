@@ -35,7 +35,7 @@ const FooterNav = ({ navigation }) => {
 				item.link && navigation.navigate(item.link);
 			}}
 		>
-			<View>
+			<View backgroundColor={'#161616'}>
 				<Text fontSize={24} lineHeight={28} textAlign={'center'}>
 					{item.icon}
 				</Text>
@@ -44,6 +44,7 @@ const FooterNav = ({ navigation }) => {
 					textTransform={'uppercase'}
 					fontWeight='bold'
 					textAlign={'center'}
+					color='white'
 				>
 					{item.label}
 				</Text>
@@ -70,6 +71,7 @@ const styles = StyleSheet.create({
 		paddingVertical: 16,
 		borderTopWidth: 1,
 		borderTopColor: '#161616',
+		backgroundColor: '#161616',
 	},
 	NavItem: {
 		textAlign: 'center',
