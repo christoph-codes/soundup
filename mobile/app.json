@@ -10,15 +10,19 @@
 		"splash": {
 			"image": "./assets/splash.png",
 			"resizeMode": "contain",
-			"backgroundColor": "#ffffff"
+			"backgroundColor": "#161616"
 		},
 		"packagerOpts": {
-			"sourceExts": ["cjs"]
+			"sourceExts": [
+				"cjs"
+			]
 		},
 		"updates": {
 			"fallbackToCacheTimeout": 0
 		},
-		"assetBundlePatterns": ["**/*"],
+		"assetBundlePatterns": [
+			"**/*"
+		],
 		"ios": {
 			"supportsTablet": true,
 			"bundleIdentifier": "com.soundupmedia.soundupmobile",
@@ -27,7 +31,7 @@
 		"android": {
 			"adaptiveIcon": {
 				"foregroundImage": "./assets/adaptive_icon.png",
-				"backgroundColor": "#111111"
+				"backgroundColor": "#161616"
 			},
 			"package": "com.soundupmedia.soundupmobile",
 			"versionCode": 1
