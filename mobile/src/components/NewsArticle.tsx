@@ -1,6 +1,7 @@
 import { NavigationProp } from '@react-navigation/native';
 import { View, Text, Image } from 'native-base';
 import { ViewStyle, StyleSheet, TouchableOpacity } from 'react-native';
+import Article from './Article';
 import TextDate from './TextDate';
 
 export interface INewsArticleProps {
@@ -22,18 +23,24 @@ const NewsArticle = ({
 	navigation,
 }: INewsArticleProps) => {
 	return (
-		<TouchableOpacity
-			onPress={() => {
-				navigation.navigate('News Article Content', { article, image });
-			}}
-		>
-			<View style={[styles.NewsArticle]}>
+		<Article>
+			<TouchableOpacity
+				style={[styles.NewsArticle]}
+				onPress={() => {
+					navigation.navigate('News Article Content', {
+						article,
+						image,
+					});
+				}}
+			>
 				{image && (
 					<Image
 						style={styles.NewsArticleImage}
 						source={{ uri: `http:${image}` }}
 						alt='Article Image Thumbnail'
 						resizeMode='cover'
+						width='100%'
+						height={200}
 					/>
 				)}
 				<View style={styles.NewsArticleContent}>
@@ -48,8 +55,8 @@ const NewsArticle = ({
 						</TouchableOpacity>
 					)}
 				</View>
-			</View>
-		</TouchableOpacity>
+			</TouchableOpacity>
+		</Article>
 	);
 };
 
@@ -58,8 +65,6 @@ export default NewsArticle;
 const styles = StyleSheet.create({
 	NewsArticle: {
 		paddingVerticaled: 16,
-		marginBottom: 16,
-		backgroundColor: 'transparent',
 		flex: 1,
 	},
 	NewsArticleImage: {
@@ -72,12 +77,15 @@ const styles = StyleSheet.create({
 		height: 'auto',
 		padding: 0,
 		marginBottom: 0,
+		width: '100%',
 	},
 	NewsArticleTitle: {
 		fontSize: 21,
 		fontWeight: 'bold',
 		marginBottom: 8,
 		color: '#111111',
+		textTransform: 'capitalize',
+		lineHeight: 24,
 	},
 	NewsArticleDescription: {
 		fontSize: 16,

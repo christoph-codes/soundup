@@ -1,6 +1,7 @@
-import { StyleSheet, Dimensions } from 'react-native';
-import { Box, Image, Text } from 'native-base';
+import { StyleSheet, Dimensions, View } from 'react-native';
+import { Image, Spacer, Text } from 'native-base';
 import Link from './Link';
+import Article from './Article';
 
 export interface IAd {
 	image: string;
@@ -16,33 +17,34 @@ export interface IAdProps {
 const Ad = ({ image, article }: IAdProps) => {
 	const window = Dimensions.get('window');
 	return (
-		<Box marginBottom={4} style={styles.Ad}>
-			<Text
-				fontSize='sm'
-				color='#C0C0C0'
-				marginBottom={2}
-				textAlign='right'
-			>
-				Sponsored
-			</Text>
-			<Link link={article.url} style={styles.AdLink}>
-				<Image
-					source={{ uri: `http:${image}` }}
-					alt={`${article.name} by ${article.company}`}
-					style={styles.AdImage}
-					width={window.width}
-					height={190}
-					resizeMode={'contain'}
-				/>
-			</Link>
-		</Box>
+		<Article style={styles.Ad}>
+			<View>
+				<Link link={article.url} style={styles.AdLink}>
+					<Image
+						source={{ uri: `http:${image}` }}
+						alt={`${article.name} by ${article.company}`}
+						style={styles.AdImage}
+						width={window.width}
+						height={190}
+						resizeMode={'contain'}
+					/>
+				</Link>
+				<Text
+					fontSize='sm'
+					color='#C0C0C0'
+					marginBottom={2}
+					textAlign='left'
+				>
+					Sponsored
+				</Text>
+			</View>
+		</Article>
 	);
 };
 
 const styles = StyleSheet.create({
 	Ad: {
 		paddingBottom: 32,
-		flex: 1,
 		borderStyleBottom: 'solid',
 		borderBottomColor: '#F1F1F1',
 		borderBottomWidth: 1,
