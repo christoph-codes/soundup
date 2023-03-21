@@ -25,6 +25,7 @@ import ArticleProvider from './src/providers/ArticleProvider';
 
 const App = () => {
 	const navigationRef = useNavigationContainerRef();
+
 	const globalScreenOptions: any = {
 		/** TODO: Delete once top nav is complete */
 		headerShown: false,
@@ -38,6 +39,7 @@ const App = () => {
 		headerTintColor: '#fff',
 		headerTitle: '',
 	};
+
 	return (
 		<NativeBaseProvider theme={theme()}>
 			<ActionSheetProvider>
@@ -45,8 +47,8 @@ const App = () => {
 					<ArticleProvider>
 						<SafeAreaView style={styles.page}>
 							<View style={styles.TemplateMain}>
-								<Header navigation={navigationRef} />
 								<NavigationContainer ref={navigationRef}>
+									<Header navigation={navigationRef} />
 									<StatusBar
 										animated={true}
 										barStyle='light-content'
@@ -108,8 +110,8 @@ const App = () => {
 											options={globalScreenOptions}
 										/>
 									</Stack.Navigator>
+									<FooterNav navigation={navigationRef} />
 								</NavigationContainer>
-								<FooterNav navigation={navigationRef} />
 							</View>
 						</SafeAreaView>
 					</ArticleProvider>
