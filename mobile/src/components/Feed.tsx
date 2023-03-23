@@ -44,7 +44,6 @@ const Feed = ({ navigation, fetchOption }: IFeedProps) => {
 		<>
 			<View style={styles.Feed}>
 				{feed()?.map((post, index) => {
-					<h1>Hello</h1>;
 					if (post?.type === 'videoArticle') {
 						return (
 							<VideoArticle

@@ -5,7 +5,7 @@ const Article = ({ children, ...rest }) => {
 	return (
 		<HStack
 			style={styles.Article}
-			flexBasis={{ base: '100%', md: '49%' }}
+			width={{ base: '100%', md: '49%' }}
 			{...rest}
 		>
 			{children}
