@@ -1,10 +1,14 @@
+import { useEffect, useState } from 'react';
 import { View, Text } from 'native-base';
 import { StyleSheet, TouchableHighlight } from 'react-native';
-import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
-import { useAuth } from '../providers/AuthProvider';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import Link from './Link';
 
 const FooterNav = ({ navigation }) => {
-	const { user } = useAuth();
+	const [currentRoute, setCurrentRoute] = useState();
+	const nav: any = useNavigation();
+	console.log('navigationRef', nav?.getCurrentRoute()?.name);
+
 	const items = [
 		{
 			label: 'Home',
@@ -35,7 +39,7 @@ const FooterNav = ({ navigation }) => {
 				item.link && navigation.navigate(item.link);
 			}}
 		>
-			<View>
+			<View style={styles.NavItemBtn}>
 				<Text fontSize={24} lineHeight={28} textAlign={'center'}>
 					{item.icon}
 				</Text>
@@ -47,6 +51,14 @@ const FooterNav = ({ navigation }) => {
 				>
 					{item.label}
 				</Text>
+
+				{/* <View
+					style={
+						currentRoute === item.link
+							? styles.ActiveNavItemIndicator
+							: styles.NavItemIndicator
+					}
+				/> */}
 			</View>
 		</TouchableHighlight>
 	);
@@ -55,6 +67,30 @@ const FooterNav = ({ navigation }) => {
 			{items.map((item, idx) => {
 				return footerLink(item, idx);
 			})}
+
+			<Link link='http://s5.radio.co/s1797f571a/listen.m3u'>
+				<View style={styles.NavItemBtn}>
+					<Text fontSize={24} lineHeight={28} textAlign={'center'}>
+						🎧
+					</Text>
+					<Text
+						fontSize={10}
+						textTransform={'uppercase'}
+						fontWeight='bold'
+						textAlign={'center'}
+					>
+						Listen
+					</Text>
+
+					{/* <View
+					style={
+						currentRoute === item.link
+							? styles.ActiveNavItemIndicator
+							: styles.NavItemIndicator
+					}
+				/> */}
+				</View>
+			</Link>
 		</View>
 	);
 };
@@ -67,11 +103,36 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-around',
 		alignItems: 'center',
 		height: 70,
-		paddingVertical: 16,
+		paddingVertical: 4,
 		borderTopWidth: 1,
 		borderTopColor: '#161616',
 	},
-	NavItem: {
-		textAlign: 'center',
+	NavItemBtn: {
+		backgroundColor: 'transparent',
+		paddingLeft: 16,
+		paddingRight: 16,
+		paddingTop: 8,
+		borderRadius: 8,
+		display: 'flex',
+		alignItems: 'center',
+		flexDirection: 'column',
+	},
+	NavItemIndicator: {
+		backgroundColor: 'transparent',
+		width: 4,
+		height: 4,
+		borderRadius: 4,
+		marginLeft: 'auto',
+		marginRight: 'auto',
+		marginBottom: 2,
+	},
+	ActiveNavItemIndicator: {
+		backgroundColor: '#8DE9FE',
+		width: 4,
+		height: 4,
+		borderRadius: 4,
+		marginLeft: 'auto',
+		marginRight: 'auto',
+		marginBottom: 2,
 	},
 });

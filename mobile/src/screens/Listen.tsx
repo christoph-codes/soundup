@@ -11,7 +11,7 @@ const Listen = ({ navigation }) => {
 			navigation={navigation}
 			carousel
 		>
-			<Loading />
+			{/* <Script src='https://embed.radio.co/player/3d78cbe.js'></Script> */}
 		</TemplateMain>
 	);
 };
