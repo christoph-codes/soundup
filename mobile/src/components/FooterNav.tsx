@@ -1,13 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useNavigationState } from '@react-navigation/native';
 import { View, Text } from 'native-base';
 import { StyleSheet, TouchableHighlight } from 'react-native';
-import { useNavigation, useRoute } from '@react-navigation/native';
 import Link from './Link';
 
 const FooterNav = ({ navigation }) => {
-	const [currentRoute, setCurrentRoute] = useState();
-	const nav: any = useNavigation();
-	console.log('navigationRef', nav?.getCurrentRoute()?.name);
+	const currentRoute = useNavigationState((state) => {
+		return state?.routeNames[state.index];
+	});
 
 	const items = [
 		{
@@ -25,11 +24,6 @@ const FooterNav = ({ navigation }) => {
 			icon: '👀',
 			link: 'Watch',
 		},
-		// {
-		// 	label: 'Listen',
-		// 	icon: '🎧',
-		// 	link: 'Listen',
-		// },
 	];
 	const footerLink = (item, index) => (
 		<TouchableHighlight
@@ -52,13 +46,15 @@ const FooterNav = ({ navigation }) => {
 					{item.label}
 				</Text>
 
-				{/* <View
-					style={
-						currentRoute === item.link
-							? styles.ActiveNavItemIndicator
-							: styles.NavItemIndicator
-					}
-				/> */}
+				{currentRoute && (
+					<View
+						style={
+							currentRoute === item.link
+								? styles.ActiveNavItemIndicator
+								: styles.NavItemIndicator
+						}
+					/>
+				)}
 			</View>
 		</TouchableHighlight>
 	);
@@ -81,14 +77,6 @@ const FooterNav = ({ navigation }) => {
 					>
 						Listen
 					</Text>
-
-					{/* <View
-					style={
-						currentRoute === item.link
-							? styles.ActiveNavItemIndicator
-							: styles.NavItemIndicator
-					}
-				/> */}
 				</View>
 			</Link>
 		</View>

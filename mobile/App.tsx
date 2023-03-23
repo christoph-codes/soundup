@@ -65,16 +65,6 @@ const App = () => {
 											options={globalScreenOptions}
 										/>
 										<Stack.Screen
-											name='News Article Content'
-											component={NewsArticleContent}
-											options={headerOptions}
-										/>
-										<Stack.Screen
-											name='Video Article Content'
-											component={VideoArticleContent}
-											options={headerOptions}
-										/>
-										<Stack.Screen
 											name='Watch'
 											component={Watch}
 											options={globalScreenOptions}
@@ -83,6 +73,16 @@ const App = () => {
 											name='Listen'
 											component={Listen}
 											options={globalScreenOptions}
+										/>
+										<Stack.Screen
+											name='News Article Content'
+											component={NewsArticleContent}
+											options={headerOptions}
+										/>
+										<Stack.Screen
+											name='Video Article Content'
+											component={VideoArticleContent}
+											options={headerOptions}
 										/>
 										<Stack.Screen
 											name='Create Account'
