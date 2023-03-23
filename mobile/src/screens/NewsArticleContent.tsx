@@ -1,8 +1,9 @@
 import { Image, ScrollView, Text, View } from 'native-base';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, useWindowDimensions } from 'react-native';
 import P from '../components/P';
 
 const NewsArticleContent = ({ navigation, route }) => {
+	const { width } = useWindowDimensions();
 	const { article, image } = route?.params;
 	return (
 		<ScrollView style={styles.NewsArticleContent}>
@@ -11,6 +12,7 @@ const NewsArticleContent = ({ navigation, route }) => {
 					style={styles.NewsArticleContentFeaturedImage}
 					source={{ uri: `http:${image}` }}
 					alt='Article Image'
+					height={width > 400 ? 470 : 220}
 				/>
 			)}
 			<View backgroundColor='white' paddingX={4}>
@@ -42,7 +44,6 @@ const styles = StyleSheet.create({
 	NewsArticleContent: {},
 	NewsArticleContentFeaturedImage: {
 		width: '100%',
-		height: 200,
 	},
 });
 
