@@ -8,6 +8,7 @@ import {
 	ViewStyle,
 	View,
 	TouchableWithoutFeedback,
+	useWindowDimensions,
 } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import ReanimatedCarousel from 'react-native-reanimated-carousel';
@@ -22,7 +23,7 @@ export interface ICarouselProps {
 }
 
 const Carousel = ({ data, style }: ICarouselProps) => {
-	const width = Dimensions.get('window').width;
+	const { width } = useWindowDimensions();
 	const carouselRef = useRef(null);
 	const [activeSlide, setActiveSlide] = useState(0);
 	const renderItem = ({ item }) => {
@@ -61,7 +62,7 @@ const Carousel = ({ data, style }: ICarouselProps) => {
 					<Image
 						source={{ uri: `http:${item.image}` }}
 						width='100%'
-						height={200}
+						height='100%'
 						alt='Carousel Image'
 					/>
 				</View>
@@ -90,29 +91,29 @@ const Carousel = ({ data, style }: ICarouselProps) => {
 							)
 						}
 					/>
+					<View style={styles.CarouselDots}>
+						{data.slice(0, 5).map((_dot: any, idx: number) => (
+							<TouchableOpacity
+								key={idx}
+								onPress={() => {
+									setActiveSlide(idx);
+									carouselRef?.current?.scrollTo({
+										index: idx,
+										animated: true,
+									});
+								}}
+							>
+								<View
+									style={
+										activeSlide === idx
+											? styles.CarouselActiveDot
+											: styles.CarouselDot
+									}
+								/>
+							</TouchableOpacity>
+						))}
+					</View>
 				</GestureHandlerRootView>
-				<View style={styles.CarouselDots}>
-					{data.slice(0, 5).map((_dot: any, idx: number) => (
-						<TouchableOpacity
-							key={idx}
-							onPress={() => {
-								setActiveSlide(idx);
-								carouselRef?.current?.scrollTo({
-									index: idx,
-									animated: true,
-								});
-							}}
-						>
-							<View
-								style={
-									activeSlide === idx
-										? styles.CarouselActiveDot
-										: styles.CarouselDot
-								}
-							/>
-						</TouchableOpacity>
-					))}
-				</View>
 			</View>
 		)
 	);
@@ -126,7 +127,8 @@ const styles = StyleSheet.create({
 		flex: 1,
 		flexDirection: 'row',
 		justifyContent: 'center',
-		marginTop: -56,
+		marginTop: -32,
+		marginBottom: 32,
 		flexGap: 8,
 	},
 	CarouselDot: {

@@ -1,3 +1,4 @@
+import { View } from 'react-native';
 import { Text } from 'native-base';
 import { NavigationProp } from '@react-navigation/native';
 import { useContent } from '../providers/ArticleProvider';
@@ -6,6 +7,7 @@ import { TFetchOptions } from '../utils/contentful';
 import Ad from './Ad';
 import NewsArticle from './NewsArticle';
 import VideoArticle from './VideoArticle';
+import { StyleSheet } from 'react-native';
 
 export interface IFeedProps {
 	navigation?: NavigationProp<any>;
@@ -40,39 +42,41 @@ const Feed = ({ navigation, fetchOption }: IFeedProps) => {
 
 	return (
 		<>
-			{feed()?.map((post, index) => {
-				if (post?.type === 'videoArticle') {
-					return (
-						<VideoArticle
-							key={index}
-							image={post.image}
-							article={post.article}
-							navigation={navigation}
-							publishDate={post.publishDate}
-						/>
-					);
-				}
-				if (post?.type === 'ads' && !user.email) {
-					return (
-						<Ad
-							key={index}
-							image={post?.image}
-							article={post?.article}
-						/>
-					);
-				}
-				if (post?.type === 'newsArticle') {
-					return (
-						<NewsArticle
-							key={index}
-							image={post?.image}
-							article={post.article}
-							navigation={navigation}
-							publishDate={post.publishDate}
-						/>
-					);
-				}
-			})}
+			<View style={styles.Feed}>
+				{feed()?.map((post, index) => {
+					if (post?.type === 'videoArticle') {
+						return (
+							<VideoArticle
+								key={index}
+								image={post.image}
+								article={post.article}
+								navigation={navigation}
+								publishDate={post.publishDate}
+							/>
+						);
+					}
+					if (post?.type === 'ads' && !user.email) {
+						return (
+							<Ad
+								key={index}
+								image={post?.image}
+								article={post?.article}
+							/>
+						);
+					}
+					if (post?.type === 'newsArticle') {
+						return (
+							<NewsArticle
+								key={index}
+								image={post?.image}
+								article={post.article}
+								navigation={navigation}
+								publishDate={post.publishDate}
+							/>
+						);
+					}
+				})}
+			</View>
 			<Text color='#999' textAlign='center'>
 				You are all up to date.
 			</Text>
@@ -84,3 +88,13 @@ const Feed = ({ navigation, fetchOption }: IFeedProps) => {
 };
 
 export default Feed;
+
+const styles = StyleSheet.create({
+	Feed: {
+		display: 'flex',
+		gap: '16px',
+		flexDirection: 'row',
+		flexWrap: 'wrap',
+		justifyContent: 'space-between',
+	},
+});

@@ -1,10 +1,11 @@
 import { Image, ScrollView, Text, View } from 'native-base';
 import { useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, useWindowDimensions } from 'react-native';
 import YoutubePlayer from 'react-native-youtube-iframe';
 import P from '../components/P';
 
 const VideoArticleContent = ({ navigation, route }) => {
+	const { width } = useWindowDimensions();
 	const { article, image } = route?.params;
 	const [webViewKey, setWebViewKey] = useState(0);
 	const [error, setError] = useState(false);
@@ -23,12 +24,17 @@ const VideoArticleContent = ({ navigation, route }) => {
 				/>
 			) : (
 				<YoutubePlayer
-					height={220}
+					height={width > 400 ? 470 : 220}
 					videoId={article.youtubeId}
 					onError={(err) => err && setError(true)}
 					webViewProps={{
 						onContentProcessDidTerminate: reload,
 						allowsInlineMediaPlayback: true,
+					}}
+					initialPlayerParams={{
+						preventFullScreen: false,
+						controls: true,
+						modestbranding: true,
 					}}
 				/>
 			)}

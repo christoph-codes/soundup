@@ -3,34 +3,38 @@
 		"name": "soundup-mobile",
 		"slug": "soundup",
 		"owner": "christoph-codes",
-		"version": "1.1.2",
+		"version": "1.1.4",
 		"orientation": "portrait",
 		"icon": "./assets/app_icon.png",
 		"userInterfaceStyle": "dark",
 		"splash": {
 			"image": "./assets/splash.png",
 			"resizeMode": "contain",
-			"backgroundColor": "#ffffff"
+			"backgroundColor": "#252525"
 		},
 		"packagerOpts": {
-			"sourceExts": ["cjs"]
+			"sourceExts": [
+				"cjs"
+			]
 		},
 		"updates": {
 			"fallbackToCacheTimeout": 0
 		},
-		"assetBundlePatterns": ["**/*"],
+		"assetBundlePatterns": [
+			"**/*"
+		],
 		"ios": {
 			"supportsTablet": true,
 			"bundleIdentifier": "com.soundupmedia.soundupmobile",
-			"buildNumber": "1.1.2"
+			"buildNumber": "1.1.4"
 		},
 		"android": {
 			"adaptiveIcon": {
 				"foregroundImage": "./assets/adaptive_icon.png",
-				"backgroundColor": "#111111"
+				"backgroundColor": "#252525"
 			},
 			"package": "com.soundupmedia.soundupmobile",
-			"versionCode": 1
+			"versionCode": 3
 		},
 		"web": {
 			"favicon": "./assets/favicon.png"

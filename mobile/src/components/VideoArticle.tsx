@@ -1,5 +1,5 @@
 import { NavigationProp } from '@react-navigation/native';
-import { Image } from 'native-base';
+import { Image, Spacer } from 'native-base';
 import { useState } from 'react';
 import {
 	ViewStyle,
@@ -8,6 +8,7 @@ import {
 	StyleSheet,
 	TouchableOpacity,
 } from 'react-native';
+import Article from './Article';
 import TextDate from './TextDate';
 
 export interface IVideoProps {
@@ -43,11 +44,12 @@ const VideoArticle = ({
 	const [error, setError] = useState(false);
 
 	return (
-		<>
+		<Article display='block'>
 			{error ? (
 				<Text>Video Thumbnail Didn't Load.</Text>
 			) : (
 				<TouchableOpacity
+					style={{ width: '100%' }}
 					onPress={() => {
 						navigation.navigate('Video Article Content', {
 							article,
@@ -55,7 +57,7 @@ const VideoArticle = ({
 						});
 					}}
 				>
-					<View style={[styles.VideoArticle]}>
+					<View style={styles.VideoArticle}>
 						{article?.youtubeId && (
 							<View style={styles.VideoArticleImage}>
 								<Image
@@ -67,7 +69,6 @@ const VideoArticle = ({
 								/>
 							</View>
 						)}
-
 						<View style={styles.VideoArticleContent}>
 							{article?.title && article?.publishDate && (
 								<>
@@ -81,7 +82,7 @@ const VideoArticle = ({
 					</View>
 				</TouchableOpacity>
 			)}
-		</>
+		</Article>
 	);
 };
 
@@ -89,14 +90,9 @@ export default VideoArticle;
 
 const styles = StyleSheet.create({
 	VideoArticle: {
-		paddingBottom: 16,
 		flex: 1,
-		backgroundColor: 'transparent',
+		width: '100%',
 		alignItems: 'center',
-		marginBottom: 32,
-		borderStyleBottom: 'solid',
-		borderBottomColor: '#F1F1F1',
-		borderBottomWidth: 1,
 	},
 	VideoArticleContent: {
 		backgroundColor: 'transparent',
