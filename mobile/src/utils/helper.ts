@@ -10,7 +10,18 @@ export const getImage = async (assetId: string): Promise<string> => {
 	return await axios
 		.get(
 			`https://cdn.contentful.com/spaces/${process.env.REACT_APP_CONTENTFUL_SPACE_ID}/environments/${process.env.REACT_APP_CONTENTFUL_ENVIRONMENT}/assets/${assetId}?access_token=${process.env.REACT_APP_CONTENTFUL_CONTENT_DELIVERY_ACCESS_TOKEN}`,
+			{
+				timeout: 5000
+			}
 		)
 		.then((res) => res.data.fields.file.url)
-		.catch((err) => console.log('Image Fetch ERROR:', err));
+		.catch((err) => {
+			if(axios.isCancel(err)) {
+				console.log('Image Fetch ERROR:', err.message)
+			} else if (err.code === 'ECONNABTED') {
+				console.log('Request timed out:', err.message);
+			  } else {
+				console.error(err);
+			  }
+		});
 };
