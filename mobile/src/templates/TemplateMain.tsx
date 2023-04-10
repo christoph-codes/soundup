@@ -17,7 +17,6 @@ export interface TemplateMainProps {
 }
 
 const TemplateMain = ({
-	navigation,
 	children,
 	carousel,
 	title,
@@ -39,7 +38,7 @@ const TemplateMain = ({
 	};
 	const onRefreshCallback = () => {
 		setRefreshing(true);
-		onRefresh();
+		onRefresh && onRefresh();
 		setTimeout(() => {
 			setRefreshing(false);
 		}, 2000);
