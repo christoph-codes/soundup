@@ -22,7 +22,6 @@ import {
 	setDoc,
 	where,
 } from 'firebase/firestore';
-import { NavigationProp } from '@react-navigation/native';
 
 export interface IAuthContext {
 	/* The user object that will be used in the AuthContext. */
@@ -40,7 +39,7 @@ export interface IAuthContext {
 	user with the email and password */
 	login: (email: string, password: string) => void;
 	/* A function that takes in a navigation prop to redirect the user and logs the user out. */
-	logout: (navigation: NavigationProp<any>) => void;
+	logout: () => void;
 	/* Creating a new user function with the given email and password, then adding the user to the database. */
 	createAccountWithEmailAndPassword: (
 		name: string,
@@ -144,14 +143,14 @@ const AuthProvider = ({ children }: IAuthProviderProps) => {
 			});
 	};
 	/**
-	 * It logs the user out and navigates to the sign in screen.
-	 * @param navigation - NavigationProp<any>
+	 * It logs the current user out
+	 * @param next - A function that fires upon successful logout
 	 */
-	const logout = (navigation: NavigationProp<any>) => {
+	const logout = () => {
 		signOut(auth)
 			.then(() => {
 				setUser(DefaultContext['user']);
-				navigation.navigate('Sign In');
+				return;
 			})
 			.catch((err) => {
 				throw new Error(err);
@@ -195,21 +194,21 @@ const AuthProvider = ({ children }: IAuthProviderProps) => {
 	};
 	const deleteAccount = (next: () => void) => {
 		const firebaseUser = auth.currentUser;
-		deleteUser(firebaseUser)
-			.then(async (deleteUserResult) => {
-				// User deleted.
-				// Query Firestore to delete the user
-				await deleteDoc(doc(db, 'users', user.authId))
+		deleteDoc(doc(db, 'users', user.authId))
+			.then(() => {
+				deleteUser(firebaseUser)
 					.then(() => {
-						next();
+						logout();
+						() => next();
 					})
-					.catch((err) => {
-						throw new Error(err);
+					.catch((error) => {
+						// An error ocurred
+						throw new Error(error.message);
 					});
 			})
-			.catch((error) => {
-				// An error ocurred
-				throw new Error(error.message);
+			.catch((err) => {
+				console.log('error deleting document:', err);
+				throw new Error(err);
 			});
 	};
 	return (
