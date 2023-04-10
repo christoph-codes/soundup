@@ -11,7 +11,7 @@ export interface IInputProps {
 	label: string;
 	value: string;
 	setValue: Dispatch<SetStateAction<string>>;
-	validate?: () => boolean;
+	validate?: () => boolean | string;
 	helperText?: string;
 }
 
@@ -25,12 +25,13 @@ const Input = ({
 }: IInputProps & TextInputProps) => {
 	const [focus, setFocus] = useState(false);
 	const [valid, setValid] = useState(null);
+	const error = typeof valid === 'string';
 	return (
 		<View style={styles.Input}>
 			<Text
 				style={[
 					styles.InputLabel,
-					valid === false ? styles.InputLabelError : {},
+					error ? styles.InputErrorTextColor : {},
 				]}
 			>
 				{label}
@@ -38,7 +39,7 @@ const Input = ({
 			<TextInput
 				style={[
 					styles.InputField,
-					valid === false ? styles.InputFieldError : {},
+					error ? styles.InputFieldError : {},
 					focus ? styles.InputFieldFocus : {},
 				]}
 				value={value}
@@ -56,6 +57,9 @@ const Input = ({
 			/>
 			{helperText && focus && (
 				<Text style={styles.InputHelperText}>{helperText}</Text>
+			)}
+			{valid !== null && error && (
+				<Text style={styles.InputErrorTextColor}>{valid}</Text>
 			)}
 		</View>
 	);
@@ -79,7 +83,7 @@ const styles = StyleSheet.create({
 		marginVertical: 4,
 		paddingLeft: 8,
 	},
-	InputLabelError: {
+	InputErrorTextColor: {
 		color: 'red',
 	},
 	InputField: {
