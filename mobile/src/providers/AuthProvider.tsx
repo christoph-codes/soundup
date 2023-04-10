@@ -37,7 +37,7 @@ export interface IAuthContext {
 	error?: string;
 	/* A function that takes in an email and password, and if they are not empty, it will sign in the
 	user with the email and password */
-	login: (email: string, password: string) => void;
+	login: (email: string, password: string) => Promise<void>;
 	/* A function that takes in a navigation prop to redirect the user and logs the user out. */
 	logout: () => void;
 	/* Creating a new user function with the given email and password, then adding the user to the database. */
@@ -60,7 +60,7 @@ export const DefaultContext: IAuthContext = {
 		email: '',
 		authId: '',
 	},
-	login: () => {},
+	login: undefined,
 	logout: () => {},
 	loading: false,
 	createAccountWithEmailAndPassword: () => {},
@@ -124,23 +124,31 @@ const AuthProvider = ({ children }: IAuthProviderProps) => {
 	 * @param {string} email - string - The email address of the user
 	 * @param {string} password - string - The password of the user
 	 */
-	const login = (email: string, password: string) => {
+	const login = async (email: string, password: string) => {
 		if (!email || !password) {
 			throw new Error(
 				'You must complete all fields to properly access your account',
 			);
 		}
-		// TODO: Add login function with firebase for username and password
-		signInWithEmailAndPassword(auth, email, password)
-			.then(async (data) => {
-				if (data.user) {
-					await lookupUser(data.user.uid);
-				}
-			})
-			.catch((err) => {
-				console.log(err);
-				throw new Error(err);
-			});
+		try {
+			await signInWithEmailAndPassword(auth, email, password)
+				.then(async (data) => {
+					if (data.user) {
+						await lookupUser(data.user.uid);
+					}
+				})
+				.catch((err) => {
+					console.log(err);
+					if (err.code === 'auth/wrong-password') {
+						throw new Error(
+							'You have entered incorrect email and password. Try again',
+						);
+					}
+					throw new Error(err.message);
+				});
+		} catch (err) {
+			throw new Error(err.message);
+		}
 	};
 	/**
 	 * It logs the current user out
