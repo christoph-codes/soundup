@@ -24,8 +24,13 @@ const SignIn = ({ navigation }) => {
 			setFormError('You must enter a valid email and password');
 			setPassword('');
 		} else {
-			login(email, password);
-			navigation.navigate('Home');
+			login(email, password)
+				.then(() => {
+					navigation.navigate('Home');
+				})
+				.catch((err) => {
+					setFormError(err.message);
+				});
 		}
 	};
 

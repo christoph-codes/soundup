@@ -11,6 +11,7 @@ import { useAuth } from '../providers/AuthProvider';
 import TemplateMain from '../templates/TemplateMain';
 import { doc, updateDoc } from 'firebase/firestore';
 import inputValidations from '../utils/inputValidations';
+import Modal from '../components/Modal';
 
 const AccountSettings = ({ navigation, route }) => {
 	const { user, logout, deleteAccount } = useAuth();
@@ -93,9 +94,11 @@ const AccountSettings = ({ navigation, route }) => {
 			});
 	};
 	const openModal = () => {
-		// TODO: Add modal component. Existing issue on Github
-		console.log('opening Modal..');
-		deleteAccount(navigation.navigate('Account Deleted'));
+		deleteAccount(navigation.navigate('Home'));
+	};
+	const signOutUser = () => {
+		logout();
+		navigation.navigate('Home');
 	};
 	return (
 		<TemplateMain
@@ -143,7 +146,7 @@ const AccountSettings = ({ navigation, route }) => {
 				Update Password
 			</Button>
 			<HR />
-			<Button onPress={() => logout(navigation)} variant='ghost'>
+			<Button onPress={() => signOutUser()} variant='ghost'>
 				✌🏾 Log Out
 			</Button>
 			<Button
@@ -153,9 +156,14 @@ const AccountSettings = ({ navigation, route }) => {
 				About the App
 			</Button>
 			<HR />
-			<Button onPress={() => openModal()} variant='alert'>
-				Delete Account
-			</Button>
+			<Modal
+				buttonLabel='Delete Account'
+				successCallback={openModal}
+				message="By tapping 'Delete' you will lose access to your Soundup Media account and will have to reregister to gain access to all account features."
+				title='Are You Sure?'
+				successLabel='Delete'
+				buttonVariant='alert'
+			/>
 		</TemplateMain>
 	);
 };

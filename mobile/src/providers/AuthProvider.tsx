@@ -22,7 +22,6 @@ import {
 	setDoc,
 	where,
 } from 'firebase/firestore';
-import { NavigationProp } from '@react-navigation/native';
 
 export interface IAuthContext {
 	/* The user object that will be used in the AuthContext. */
@@ -38,9 +37,9 @@ export interface IAuthContext {
 	error?: string;
 	/* A function that takes in an email and password, and if they are not empty, it will sign in the
 	user with the email and password */
-	login: (email: string, password: string) => void;
+	login: (email: string, password: string) => Promise<void>;
 	/* A function that takes in a navigation prop to redirect the user and logs the user out. */
-	logout: (navigation: NavigationProp<any>) => void;
+	logout: () => void;
 	/* Creating a new user function with the given email and password, then adding the user to the database. */
 	createAccountWithEmailAndPassword: (
 		name: string,
@@ -61,7 +60,7 @@ export const DefaultContext: IAuthContext = {
 		email: '',
 		authId: '',
 	},
-	login: () => {},
+	login: undefined,
 	logout: () => {},
 	loading: false,
 	createAccountWithEmailAndPassword: () => {},
@@ -125,33 +124,41 @@ const AuthProvider = ({ children }: IAuthProviderProps) => {
 	 * @param {string} email - string - The email address of the user
 	 * @param {string} password - string - The password of the user
 	 */
-	const login = (email: string, password: string) => {
+	const login = async (email: string, password: string) => {
 		if (!email || !password) {
 			throw new Error(
 				'You must complete all fields to properly access your account',
 			);
 		}
-		// TODO: Add login function with firebase for username and password
-		signInWithEmailAndPassword(auth, email, password)
-			.then(async (data) => {
-				if (data.user) {
-					await lookupUser(data.user.uid);
-				}
-			})
-			.catch((err) => {
-				console.log(err);
-				throw new Error(err);
-			});
+		try {
+			await signInWithEmailAndPassword(auth, email, password)
+				.then(async (data) => {
+					if (data.user) {
+						await lookupUser(data.user.uid);
+					}
+				})
+				.catch((err) => {
+					console.log(err);
+					if (err.code === 'auth/wrong-password') {
+						throw new Error(
+							'You have entered incorrect email and password. Try again',
+						);
+					}
+					throw new Error(err.message);
+				});
+		} catch (err) {
+			throw new Error(err.message);
+		}
 	};
 	/**
-	 * It logs the user out and navigates to the sign in screen.
-	 * @param navigation - NavigationProp<any>
+	 * It logs the current user out
+	 * @param next - A function that fires upon successful logout
 	 */
-	const logout = (navigation: NavigationProp<any>) => {
+	const logout = () => {
 		signOut(auth)
 			.then(() => {
 				setUser(DefaultContext['user']);
-				navigation.navigate('Sign In');
+				return;
 			})
 			.catch((err) => {
 				throw new Error(err);
@@ -195,21 +202,21 @@ const AuthProvider = ({ children }: IAuthProviderProps) => {
 	};
 	const deleteAccount = (next: () => void) => {
 		const firebaseUser = auth.currentUser;
-		deleteUser(firebaseUser)
-			.then(async (deleteUserResult) => {
-				// User deleted.
-				// Query Firestore to delete the user
-				await deleteDoc(doc(db, 'users', user.authId))
+		deleteDoc(doc(db, 'users', user.authId))
+			.then(() => {
+				deleteUser(firebaseUser)
 					.then(() => {
-						next();
+						logout();
+						() => next();
 					})
-					.catch((err) => {
-						throw new Error(err);
+					.catch((error) => {
+						// An error ocurred
+						throw new Error(error.message);
 					});
 			})
-			.catch((error) => {
-				// An error ocurred
-				throw new Error(error.message);
+			.catch((err) => {
+				console.log('error deleting document:', err);
+				throw new Error(err);
 			});
 	};
 	return (

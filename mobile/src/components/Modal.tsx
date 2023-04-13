@@ -1,6 +1,5 @@
 import { useActionSheet } from '@expo/react-native-action-sheet';
-import { ReactElement } from 'react';
-import Button from './Button';
+import Button, { IButton } from './Button';
 
 export interface IModalProps {
 	buttonLabel: string;
@@ -8,18 +7,22 @@ export interface IModalProps {
 	message: string;
 	successLabel: string;
 	successCallback: () => void;
+	buttonVariant?: IButton['variant'];
+	destroyLabel?: string;
 }
 
 const Modal = ({
 	buttonLabel = 'Open Modal',
 	title,
 	message,
-	successLabel,
+	successLabel = 'Submit',
 	successCallback,
+	buttonVariant,
+	destroyLabel = 'Cancel',
 }: IModalProps) => {
 	const { showActionSheetWithOptions } = useActionSheet();
 	const toggleModal = () => {
-		const options = [successLabel, 'Cancel'];
+		const options = [successLabel, destroyLabel];
 		const successButtonIndex = 0;
 		const destructiveButtonIndex = 1;
 		showActionSheetWithOptions(
@@ -43,7 +46,11 @@ const Modal = ({
 			},
 		);
 	};
-	return <Button onPress={() => toggleModal()}>{buttonLabel}</Button>;
+	return (
+		<Button variant={buttonVariant} onPress={() => toggleModal()}>
+			{buttonLabel}
+		</Button>
+	);
 };
 
 export default Modal;

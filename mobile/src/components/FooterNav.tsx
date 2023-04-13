@@ -64,7 +64,7 @@ const FooterNav = ({ navigation }) => {
 				return footerLink(item, idx);
 			})}
 
-			<Link link='http://s5.radio.co/s1797f571a/listen.m3u'>
+			<Link link='https://www.soundup.media/radio'>
 				<View style={styles.NavItemBtn}>
 					<Text fontSize={24} lineHeight={28} textAlign={'center'}>
 						🎧
