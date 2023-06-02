@@ -24,7 +24,7 @@ const VideoArticleContent = ({ navigation, route }) => {
 				/>
 			) : (
 				<YoutubePlayer
-					height={width > 400 ? 470 : 220}
+					height={width > 420 ? 470 : 220}
 					videoId={article.youtubeId}
 					onError={(err) => err && setError(true)}
 					webViewProps={{
