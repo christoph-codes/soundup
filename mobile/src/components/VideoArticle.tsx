@@ -44,7 +44,7 @@ const VideoArticle = ({
 	const [error, setError] = useState(false);
 
 	return (
-		<Article display='block'>
+		<Article>
 			{error ? (
 				<Text>Video Thumbnail Didn't Load.</Text>
 			) : (

@@ -92,7 +92,7 @@ export default Feed;
 const styles = StyleSheet.create({
 	Feed: {
 		display: 'flex',
-		gap: '16px',
+		flexGap: '16px',
 		flexDirection: 'row',
 		flexWrap: 'wrap',
 		justifyContent: 'space-between',
