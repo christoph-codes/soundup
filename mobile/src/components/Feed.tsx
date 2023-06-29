@@ -1,50 +1,45 @@
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { Text } from 'native-base';
 import { NavigationProp } from '@react-navigation/native';
-import { useContent } from '../providers/ArticleProvider';
 import { useAuth } from '../providers/AuthProvider';
-import { TFetchOptions } from '../utils/contentful';
 import Ad from './Ad';
 import NewsArticle from './NewsArticle';
 import VideoArticle from './VideoArticle';
-import { StyleSheet } from 'react-native';
+import useArticles from '../hooks/useArticles';
 
 export interface IFeedProps {
-	navigation?: NavigationProp<any>;
-	fetchOption: TFetchOptions;
+	navigation: NavigationProp<any>;
+	content: any[];
 }
 
-const Feed = ({ navigation, fetchOption }: IFeedProps) => {
+const Feed = ({ navigation, content }: IFeedProps) => {
 	const { user } = useAuth();
-	const { state } = useContent();
+
+	const ads = useArticles('ads');
 
 	const feed = () => {
 		let adNum = 0;
 		/* Taking the data from the state and adding ads to it. */
-		const articlesWithAds = state[fetchOption].data.reduce(
-			(acc, cv, idx) => {
-				if (
-					(idx > 2 && idx % 4 === 0) ||
-					(idx + 1 === state[fetchOption].data.length &&
-						state[fetchOption].data.length <= acc.length + 1)
-				) {
-					acc[idx] = state.ads.data[adNum];
-					adNum++;
-				} else {
-					acc[idx] = cv;
-				}
-				return acc;
-			},
-			[],
-		);
+		const articlesWithAds = content?.reduce((acc, cv, idx) => {
+			if (
+				(idx > 2 && idx % 4 === 0) ||
+				(idx + 1 === content.length && content.length <= acc.length + 1)
+			) {
+				acc[idx] = ads?.[adNum];
+				adNum++;
+			} else {
+				acc[idx] = cv;
+			}
+			return acc;
+		}, []);
 		return articlesWithAds;
 	};
 
 	return (
 		<>
 			<View style={styles.Feed}>
-				{feed()?.map((post, index) => {
-					if (post?.type === 'videoArticle') {
+				{feed?.()?.map((post, index) => {
+					if (post?.type === 'videos') {
 						return (
 							<VideoArticle
 								key={index}
@@ -75,6 +70,7 @@ const Feed = ({ navigation, fetchOption }: IFeedProps) => {
 							/>
 						);
 					}
+					return null;
 				})}
 			</View>
 			<Text color='#999' textAlign='center'>
