@@ -1,5 +1,5 @@
 import { StyleSheet, Dimensions, View } from 'react-native';
-import { Image, Spacer, Text } from 'native-base';
+import { Image, Text } from 'native-base';
 import Link from './Link';
 import Article from './Article';
 
@@ -19,14 +19,14 @@ const Ad = ({ image, article }: IAdProps) => {
 	return (
 		<Article style={styles.Ad}>
 			<View>
-				<Link link={article.url} style={styles.AdLink}>
+				<Link href={article.url} style={styles.AdLink}>
 					<Image
 						source={{ uri: `http:${image}` }}
 						alt={`${article.name} by ${article.company}`}
 						style={styles.AdImage}
 						width={window.width}
 						height={190}
-						resizeMode={'contain'}
+						resizeMode='contain'
 					/>
 				</Link>
 				<Text
