@@ -4,6 +4,7 @@ import contentful, { TFetchOptions } from './contentful';
 
 export const log = (message: string, value?: any) => {
 	const osPrefix = Platform.OS === 'ios' ? 'iOS' : 'Android';
+	// eslint-disable-next-line no-console
 	console.log(`[${osPrefix}] ${message}`, value || '');
   };
 
@@ -13,46 +14,41 @@ export const checkRegex = (value: string, expression: string): boolean => {
 	return isValid;
 };
 
-export const getImage = async (assetId: string): Promise<string> => {
-	return await axios
+export const getImage = async (assetId: string): Promise<string> => axios
 		.get(
 			`https://cdn.contentful.com/spaces/${process.env.REACT_APP_CONTENTFUL_SPACE_ID}/environments/${process.env.REACT_APP_CONTENTFUL_ENVIRONMENT}/assets/${assetId}?access_token=${process.env.REACT_APP_CONTENTFUL_CONTENT_DELIVERY_ACCESS_TOKEN}`,
 			{
-				timeout: 5000
-			}
+				timeout: 5000,
+			},
 		)
 		.then((res) => res.data.fields.file.url)
 		.catch((err) => {
-			if(axios.isCancel(err)) {
-				log('Image Fetch ERROR:', err.message)
+			if (axios.isCancel(err)) {
+				log('Image Fetch ERROR:', err.message);
 			} else if (err.code === 'ECONNABTED') {
 				log('Request timed out:', err.message);
-			  } else {
-				console.error('getImage', err);
-			  }
+			} else {
+			// eslint-disable-next-line no-console
+			console.error('getImage', err);
+			}
 		});
-};
-
 
 export const getContent = async (fetchOption: TFetchOptions = 'all', pagination = 0) => {
-
 		const fetchLimit = 50;
 		return contentful(fetchOption, fetchLimit, fetchLimit * pagination)
 			.get('')
 			.then((res) => {
-				const promises = res.data.items.map(async (cv, idx) => {
+				const promises = res.data.items.map(async (cv) => {
 					const contentImage = async () => {
 						switch (cv.sys.contentType.sys.id) {
 							case 'newsArticle':
-								const articleImage = getImage(
+								return getImage(
 									cv.fields.featuredImage.sys.id,
 								);
-								return await articleImage;
 							case 'ads':
-								const image = getImage(
+								return getImage(
 									cv.fields.artwork.sys.id,
 								);
-								return await image;
 							case 'videoArticle':
 								return `//i3.ytimg.com/vi/${cv.fields.youtubeId}/hqdefault.jpg`;
 							default:
@@ -79,9 +75,10 @@ export const getContent = async (fetchOption: TFetchOptions = 'all', pagination 
 						};
 						return newStructure;
 					}
+					return null;
 				});
 				return Promise.all(promises).then((resolved) => resolved);
 			})
-			.catch((err) => log('Error!!!!', err))
+			.catch((err) => log('Error!!!!', err));
 			// .finally(() => log('done'));
 };

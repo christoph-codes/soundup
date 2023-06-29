@@ -10,8 +10,8 @@ export type TFetchOptions =
 
 const contentful = (
 	fetchOption: TFetchOptions,
-	paginationLimit: number,
-	skip: number,
+	paginationLimit?: number,
+	skip?: number,
 ) => {
 	const contentfulContentType = () => {
 		switch (fetchOption) {
@@ -27,6 +27,8 @@ const contentful = (
 				return `https://cdn.contentful.com/spaces/${process.env.REACT_APP_CONTENTFUL_SPACE_ID}/environments/${process.env.REACT_APP_CONTENTFUL_ENVIRONMENT}/assets?access_token=${process.env.REACT_APP_CONTENTFUL_CONTENT_DELIVERY_ACCESS_TOKEN}`;
 			case 'all':
 				return `https://cdn.contentful.com/spaces/${process.env.REACT_APP_CONTENTFUL_SPACE_ID}/environments/${process.env.REACT_APP_CONTENTFUL_ENVIRONMENT}/entries?access_token=${process.env.REACT_APP_CONTENTFUL_CONTENT_DELIVERY_ACCESS_TOKEN}&limit=${paginationLimit}&skip=${skip}`;
+			default:
+				return null;
 		}
 	};
 	return axios.create({

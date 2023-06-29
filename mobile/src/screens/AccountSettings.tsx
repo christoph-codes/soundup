@@ -1,19 +1,26 @@
 import { Text } from 'native-base';
 import { updateEmail, updatePassword } from 'firebase/auth';
-import { auth, db } from '../config/firebase';
 import { useState } from 'react';
 import { StyleSheet } from 'react-native';
+import { doc, updateDoc } from 'firebase/firestore';
+import { NavigationProp, Route } from '@react-navigation/native';
+import { auth, db } from '../config/firebase';
 import Button from '../components/Button';
 import ErrorText from '../components/ErrorText';
 import HR from '../components/HR';
 import Input from '../components/Input';
 import { useAuth } from '../providers/AuthProvider';
 import TemplateMain from '../templates/TemplateMain';
-import { doc, updateDoc } from 'firebase/firestore';
 import inputValidations from '../utils/inputValidations';
 import Modal from '../components/Modal';
+import { log } from '../utils/helper';
 
-const AccountSettings = ({ navigation, route }) => {
+export interface IAccountSettings {
+	navigation: NavigationProp<any>;
+	route: Route<any, any>;
+}
+
+const AccountSettings = ({ navigation, route }: IAccountSettings) => {
 	const { user, logout, deleteAccount } = useAuth();
 	const [email, setEmail] = useState(route?.params?.newEmail || user.email);
 	const [successMessage, setSuccessMessage] = useState('');
@@ -33,7 +40,7 @@ const AccountSettings = ({ navigation, route }) => {
 			setEmailError('This is your current email. You are good to go!');
 			return;
 		}
-		if (!inputValidations['email'](email)) {
+		if (!inputValidations.email(email)) {
 			setEmailError('You must enter a valid email and password');
 			setEmail('');
 			return;
@@ -52,7 +59,7 @@ const AccountSettings = ({ navigation, route }) => {
 					});
 			})
 			.catch((err) => {
-				console.log('err:', err);
+				log('err:', err);
 				if (err.message === 'Firebase: Error (auth/invalid-email).') {
 					setEmailError('You must enter a valid email and password');
 				} else if (
@@ -94,7 +101,7 @@ const AccountSettings = ({ navigation, route }) => {
 			});
 	};
 	const openModal = () => {
-		deleteAccount(navigation.navigate('Home'));
+		deleteAccount(() => navigation.navigate('Home'));
 	};
 	const signOutUser = () => {
 		logout();
@@ -125,7 +132,7 @@ const AccountSettings = ({ navigation, route }) => {
 				placeholder='••••••••••'
 				secureTextEntry
 				validate={() =>
-					inputValidations['password'](
+					inputValidations.password(
 						newPassword.trim().replaceAll(' ', ''),
 					)
 				}
