@@ -40,5 +40,6 @@ module.exports = {
 		'implicit-arrow-linebreak': 0,
 		'react/jsx-no-constructed-context-values': 0,
 		'react/jsx-curly-newline': 0,
+		'react/require-default-props': 0,
 	},
 };
