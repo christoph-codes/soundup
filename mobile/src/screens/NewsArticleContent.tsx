@@ -2,9 +2,13 @@ import { Image, ScrollView, Text, View } from 'native-base';
 import { StyleSheet, useWindowDimensions } from 'react-native';
 import P from '../components/P';
 
-const NewsArticleContent = ({ navigation, route }) => {
+export interface INewsArticleContent {
+	route: any;
+}
+
+const NewsArticleContent = ({ route }: INewsArticleContent) => {
 	const { width } = useWindowDimensions();
-	const { article, image } = route?.params;
+	const { article, image } = route.params;
 	return (
 		<ScrollView style={styles.NewsArticleContent}>
 			{image && (

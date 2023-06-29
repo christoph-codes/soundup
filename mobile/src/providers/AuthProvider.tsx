@@ -12,7 +12,6 @@ import {
 	signInWithEmailAndPassword,
 	signOut,
 } from 'firebase/auth';
-import { auth, db } from '../config/firebase';
 import {
 	collection,
 	deleteDoc,
@@ -22,6 +21,8 @@ import {
 	setDoc,
 	where,
 } from 'firebase/firestore';
+import { auth, db } from '../config/firebase';
+import { log } from '../utils/helper';
 
 export interface IAuthContext {
 	/* The user object that will be used in the AuthContext. */
@@ -37,15 +38,21 @@ export interface IAuthContext {
 	error?: string;
 	/* A function that takes in an email and password, and if they are not empty, it will sign in the
 	user with the email and password */
+	// eslint-disable-next-line no-unused-vars
 	login: (email: string, password: string) => Promise<void>;
 	/* A function that takes in a navigation prop to redirect the user and logs the user out. */
 	logout: () => void;
-	/* Creating a new user function with the given email and password, then adding the user to the database. */
+	/* Creating a new user function with the given email and password, then adding the user
+	to the database. */
 	createAccountWithEmailAndPassword: (
+		// eslint-disable-next-line no-unused-vars
 		name: string,
+		// eslint-disable-next-line no-unused-vars
 		email: string,
+		// eslint-disable-next-line no-unused-vars
 		password: string,
 	) => void;
+	// eslint-disable-next-line no-unused-vars
 	deleteAccount: (next: () => void) => void;
 }
 
@@ -75,9 +82,7 @@ const AuthContext = createContext<IAuthContext>(DefaultContext);
  * @returns The AuthProvider is being returned.
  */
 const AuthProvider = ({ children }: IAuthProviderProps) => {
-	const [user, setUser] = useState<IAuthContext['user']>(
-		DefaultContext['user'],
-	);
+	const [user, setUser] = useState<IAuthContext['user']>(DefaultContext.user);
 	const [loading, setLoading] = useState<IAuthContext['loading']>();
 	const [error, setError] = useState<IAuthContext['error']>('');
 
@@ -91,10 +96,10 @@ const AuthProvider = ({ children }: IAuthProviderProps) => {
 		const storedUser = query(userRef, where('authId', '==', uid));
 		const userGetter = await getDocs(storedUser);
 		if (userGetter.empty) {
-			setUser(DefaultContext['user']);
+			setUser(DefaultContext.user);
 		} else {
-			userGetter.forEach((doc) => {
-				setUser(doc.data());
+			userGetter.forEach((fbdoc) => {
+				setUser(fbdoc.data());
 			});
 		}
 	};
@@ -112,15 +117,15 @@ const AuthProvider = ({ children }: IAuthProviderProps) => {
 			}
 			setLoading(false);
 		});
-		() => {
-			auth.currentUser && auth.currentUser.getIdToken();
+		return () => {
+			auth.currentUser?.getIdToken();
 			unsubscribe();
 		};
 	}, []);
 
 	/**
-	 * The login function takes in an email and password, and if they are not empty, it will sign in the
-	 * user with the email and password
+	 * The login function takes in an email and password, and if they are not empty,
+	 * it will sign in the user with the email and password
 	 * @param {string} email - string - The email address of the user
 	 * @param {string} password - string - The password of the user
 	 */
@@ -138,7 +143,7 @@ const AuthProvider = ({ children }: IAuthProviderProps) => {
 					}
 				})
 				.catch((err) => {
-					console.log(err);
+					log('login error', err);
 					if (err.code === 'auth/wrong-password') {
 						throw new Error(
 							'You have entered incorrect email and password. Try again',
@@ -157,8 +162,7 @@ const AuthProvider = ({ children }: IAuthProviderProps) => {
 	const logout = () => {
 		signOut(auth)
 			.then(() => {
-				setUser(DefaultContext['user']);
-				return;
+				setUser(DefaultContext.user);
 			})
 			.catch((err) => {
 				throw new Error(err);
@@ -181,14 +185,14 @@ const AuthProvider = ({ children }: IAuthProviderProps) => {
 					// Create a user in the database using the authid and email
 					await setDoc(doc(db, 'users', data.user.uid), {
 						authId: data.user.uid,
-						name: name,
+						name,
 						type: 'default',
 						email: data.user.email,
 					})
 						.then(() => {
 							setUser({
 								authId: data.user.uid,
-								name: name,
+								name,
 								type: 'default',
 								email: data.user.email,
 							});
@@ -198,6 +202,7 @@ const AuthProvider = ({ children }: IAuthProviderProps) => {
 						});
 				}
 			})
+			// eslint-disable-next-line no-console
 			.catch((err) => console.warn('err:', err));
 	};
 	const deleteAccount = (next: () => void) => {
@@ -207,18 +212,19 @@ const AuthProvider = ({ children }: IAuthProviderProps) => {
 				deleteUser(firebaseUser)
 					.then(() => {
 						logout();
-						() => next();
+						next();
 					})
-					.catch((error) => {
+					.catch((deleteAccountError) => {
 						// An error ocurred
-						throw new Error(error.message);
+						throw new Error(deleteAccountError.message);
 					});
 			})
 			.catch((err) => {
-				console.log('error deleting document:', err);
+				log('error deleting document:', err);
 				throw new Error(err);
 			});
 	};
+
 	return (
 		<AuthContext.Provider
 			value={{
