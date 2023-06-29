@@ -22,6 +22,7 @@ import {
 	setDoc,
 	where,
 } from 'firebase/firestore';
+import { log } from '../utils/helper';
 
 export interface IAuthContext {
 	/* The user object that will be used in the AuthContext. */
@@ -138,7 +139,7 @@ const AuthProvider = ({ children }: IAuthProviderProps) => {
 					}
 				})
 				.catch((err) => {
-					console.log(err);
+					log('login error', err);
 					if (err.code === 'auth/wrong-password') {
 						throw new Error(
 							'You have entered incorrect email and password. Try again',
@@ -215,7 +216,7 @@ const AuthProvider = ({ children }: IAuthProviderProps) => {
 					});
 			})
 			.catch((err) => {
-				console.log('error deleting document:', err);
+				log('error deleting document:', err);
 				throw new Error(err);
 			});
 	};
