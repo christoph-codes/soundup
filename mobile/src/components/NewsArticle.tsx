@@ -1,17 +1,15 @@
 import { NavigationProp } from '@react-navigation/native';
 import { View, Text, Image } from 'native-base';
-import { ViewStyle, StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import Article from './Article';
 import TextDate from './TextDate';
 
 export interface INewsArticleProps {
-	publishDate?: Date;
+	publishDate: Date;
 	/** Article Content object to be used in the component */
-	article?: any;
+	article: any;
 	/** Featured image of the article */
-	image?: string;
-	/** Style object that will be passed to the View component */
-	style?: ViewStyle;
+	image: string;
 	/** Navigation object that is passed from the react navigation router */
 	navigation: NavigationProp<any>;
 }
@@ -21,44 +19,40 @@ const NewsArticle = ({
 	article,
 	image,
 	navigation,
-}: INewsArticleProps) => {
-	return (
-		<Article>
-			<TouchableOpacity
-				style={[styles.NewsArticle]}
-				onPress={() => {
-					navigation.navigate('News Article Content', {
-						article,
-						image,
-					});
-				}}
-			>
-				{image && (
-					<Image
-						style={styles.NewsArticleImage}
-						source={{ uri: `http:${image}` }}
-						alt='Article Image Thumbnail'
-						resizeMode='cover'
-						width='100%'
-						height={200}
-					/>
+}: INewsArticleProps) => (
+	<Article>
+		<TouchableOpacity
+			style={[styles.NewsArticle]}
+			onPress={() => {
+				navigation.navigate('News Article Content', {
+					article,
+					image,
+				});
+			}}
+		>
+			{image && (
+				<Image
+					style={styles.NewsArticleImage}
+					source={{ uri: `http:${image}` }}
+					alt='Article Image Thumbnail'
+					resizeMode='cover'
+					width='100%'
+					height={200}
+				/>
+			)}
+			<View style={styles.NewsArticleContent}>
+				{article?.title && (
+					<>
+						<Text style={styles.NewsArticleTitle}>
+							{article?.title}
+						</Text>
+						<TextDate date={publishDate} />
+					</>
 				)}
-				<View style={styles.NewsArticleContent}>
-					{article?.title && (
-						<TouchableOpacity
-							onPress={() => navigation.navigate(article?.link)}
-						>
-							<Text style={styles.NewsArticleTitle}>
-								{article?.title}
-							</Text>
-							<TextDate date={publishDate} />
-						</TouchableOpacity>
-					)}
-				</View>
-			</TouchableOpacity>
-		</Article>
-	);
-};
+			</View>
+		</TouchableOpacity>
+	</Article>
+);
 
 export default NewsArticle;
 
