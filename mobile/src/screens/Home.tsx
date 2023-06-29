@@ -1,29 +1,25 @@
-import { useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import Feed from '../components/Feed';
-import { useContent } from '../providers/ArticleProvider';
 import { useAuth } from '../providers/AuthProvider';
 import TemplateMain from '../templates/TemplateMain';
+import useArticles from '../hooks/useArticles';
 
 const Home = ({ navigation }) => {
-	const fetching = 'all';
 	const { user } = useAuth();
-	const { state, getContent, incrementPagination } = useContent();
 
-	useEffect(() => {
-		getContent(fetching, state[fetching].pagination);
-	}, [state[fetching].pagination]);
+	const { articles, reFetch } = useArticles('all');
 
 	return (
 		<TemplateMain
 			style={styles.Home}
 			navigation={navigation}
 			title={user?.name ? `Hey ${user.name}!` : 'Latest Updates'}
-			carousel={state.all.data.filter((post) => post.article.featured)}
-			onRefresh={() => getContent(fetching, state.all.pagination)}
-			onEndReach={() => incrementPagination(fetching)}
+			// @ts-ignore
+			carousel={articles?.filter((post) => post.article.featured)}
+			onRefresh={() => reFetch()}
+			// onEndReach={() => incrementPagination(fetching)}
 		>
-			<Feed navigation={navigation} fetchOption={fetching} />
+			<Feed navigation={navigation} content={articles} />
 		</TemplateMain>
 	);
 };

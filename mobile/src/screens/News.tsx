@@ -1,23 +1,24 @@
 import { StyleSheet, View } from 'react-native';
 import Feed from '../components/Feed';
-import { useContent } from '../providers/ArticleProvider';
 import TemplateMain from '../templates/TemplateMain';
+import useArticles from '../hooks/useArticles';
+import { log } from '../utils/helper';
 
 const News = ({ navigation }) => {
-	const { state, getContent } = useContent();
+	const { articles, reFetch } = useArticles('articles');
+
+	log('hello');
 
 	return (
 		<TemplateMain
 			style={styles.News}
 			title='News'
 			navigation={navigation}
-			carousel={state.articles.data.filter(
-				(post) => post.article.featured,
-			)}
-			onRefresh={() => getContent('articles')}
+			carousel={articles?.filter((post) => post.featured)}
+			onRefresh={() => reFetch()}
 		>
 			<View>
-				<Feed navigation={navigation} fetchOption='articles' />
+				<Feed navigation={navigation} content={articles} />
 			</View>
 		</TemplateMain>
 	);

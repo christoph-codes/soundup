@@ -1,23 +1,20 @@
 import { StyleSheet } from 'react-native';
 import Feed from '../components/Feed';
-import { useContent } from '../providers/ArticleProvider';
 import TemplateMain from '../templates/TemplateMain';
+import useArticles from '../hooks/useArticles';
 
 const Watch = ({ navigation }) => {
-	const { state, getContent, incrementPagination } = useContent();
-	const featuredVideos = state.videos.data.filter(
-		(vid) => vid.article.featured,
-	);
+	const { articles, reFetch } = useArticles('videos');
 
 	return (
 		<TemplateMain
 			style={styles.Watch}
 			title='Watch'
 			navigation={navigation}
-			carousel={featuredVideos}
-			onRefresh={() => getContent('videos', state.videos.pagination)}
+			carousel={articles?.filter((post) => post.featured)}
+			onRefresh={() => reFetch()}
 		>
-			<Feed fetchOption='videos' navigation={navigation} />
+			<Feed content={articles} navigation={navigation} />
 		</TemplateMain>
 	);
 };
