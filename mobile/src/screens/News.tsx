@@ -1,10 +1,11 @@
 import { StyleSheet, View } from 'react-native';
+import { NavigationProp } from '@react-navigation/native';
 import Feed from '../components/Feed';
 import TemplateMain from '../templates/TemplateMain';
 import useArticles from '../hooks/useArticles';
 import { log } from '../utils/helper';
 
-const News = ({ navigation }) => {
+const News = (navigation: NavigationProp<any>) => {
 	const { articles, reFetch } = useArticles('articles');
 
 	log('hello');

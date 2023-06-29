@@ -1,20 +1,17 @@
-import { Text } from 'native-base';
 import { StyleSheet } from 'react-native';
+import { NavigationProp } from '@react-navigation/native';
 import TemplateMain from '../templates/TemplateMain';
-import Loading from '../components/Loading';
 
-const Listen = ({ navigation }) => {
-	return (
-		<TemplateMain
-			style={styles.Listen}
-			title='Listen'
-			navigation={navigation}
-			carousel
-		>
-			{/* <Script src='https://embed.radio.co/player/3d78cbe.js'></Script> */}
-		</TemplateMain>
-	);
-};
+const Listen = (navigation: NavigationProp<any>) => (
+	<TemplateMain
+		style={styles.Listen}
+		title='Listen'
+		navigation={navigation}
+		carousel
+	>
+		{/* <Script src='https://embed.radio.co/player/3d78cbe.js'></Script> */}
+	</TemplateMain>
+);
 
 export default Listen;
 

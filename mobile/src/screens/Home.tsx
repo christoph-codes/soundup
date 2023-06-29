@@ -1,10 +1,11 @@
 import { StyleSheet } from 'react-native';
+import { NavigationProp } from '@react-navigation/native';
 import Feed from '../components/Feed';
 import { useAuth } from '../providers/AuthProvider';
 import TemplateMain from '../templates/TemplateMain';
 import useArticles from '../hooks/useArticles';
 
-const Home = ({ navigation }) => {
+const Home = (navigation: NavigationProp<any>) => {
 	const { user } = useAuth();
 
 	const { articles, reFetch } = useArticles('all');
