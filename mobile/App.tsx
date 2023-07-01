@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import { NativeBaseProvider, StatusBar, View } from 'native-base';
 import {
 	NavigationContainer,
@@ -18,10 +19,11 @@ import Listen from './src/screens/Listen';
 import SignIn from './src/screens/SignIn';
 import Reauth from './src/screens/Reauth';
 import CreateAccount from './src/screens/CreateAccount';
-import FooterNav from './src/components/FooterNav';
+import FooterNav from './src/components/FooterNav/legacy';
 import Header from './src/components/Header';
 import About from './src/screens/About';
 import ArticleProvider from './src/providers/ArticleProvider';
+import { BottomTabs } from './src/components/FooterNav/navigator';
 
 const App = () => {
 	const navigationRef = useNavigationContainerRef();
@@ -53,37 +55,7 @@ const App = () => {
 									animated={true}
 									barStyle='light-content'
 								/>
-								<Stack.Navigator initialRouteName='Home'>
-									<Stack.Screen
-										name='Home'
-										component={Home}
-										options={globalScreenOptions}
-									/>
-									<Stack.Screen
-										name='News'
-										component={News}
-										options={globalScreenOptions}
-									/>
-									<Stack.Screen
-										name='Watch'
-										component={Watch}
-										options={globalScreenOptions}
-									/>
-									<Stack.Screen
-										name='Listen'
-										component={Listen}
-										options={globalScreenOptions}
-									/>
-									<Stack.Screen
-										name='News Article Content'
-										component={NewsArticleContent}
-										options={headerOptions}
-									/>
-									<Stack.Screen
-										name='Video Article Content'
-										component={VideoArticleContent}
-										options={headerOptions}
-									/>
+								<Stack.Navigator initialRouteName='Dashboard'>
 									<Stack.Screen
 										name='Create Account'
 										component={CreateAccount}
@@ -109,6 +81,11 @@ const App = () => {
 										component={About}
 										options={globalScreenOptions}
 									/>
+									<Stack.Screen
+										name='Dashboard'
+									>
+										{(props) => <BottomTabs {...props} options={globalScreenOptions} />}
+									</Stack.Screen>
 								</Stack.Navigator>
 								<FooterNav navigation={navigationRef} />
 							</NavigationContainer>
@@ -139,3 +116,33 @@ const styles = StyleSheet.create({
 		paddingBottom: 16,
 	},
 });
+/* <Stack.Screen
+name='Home'
+component={Home}
+options={globalScreenOptions}
+/>
+<Stack.Screen
+name='News'
+component={News}
+options={globalScreenOptions}
+/>
+<Stack.Screen
+name='Watch'
+component={Watch}
+options={globalScreenOptions}
+/>
+<Stack.Screen
+name='Listen'
+component={Listen}
+options={globalScreenOptions}
+/>
+<Stack.Screen
+name='News Article Content'
+component={NewsArticleContent}
+options={headerOptions}
+/>
+<Stack.Screen
+name='Video Article Content'
+component={VideoArticleContent}
+options={headerOptions}
+/> */
