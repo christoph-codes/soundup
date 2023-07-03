@@ -1,14 +1,11 @@
 import { StyleSheet, View } from 'react-native';
-import { NavigationProp } from '@react-navigation/native';
 import Feed from '../components/Feed';
 import TemplateMain from '../templates/TemplateMain';
 import useArticles from '../hooks/useArticles';
-import { log } from '../utils/helper';
+import { INavigationOnly } from '../types/globalTypes';
 
-const News = (navigation: NavigationProp<any>) => {
+const News = ({ navigation }: INavigationOnly) => {
 	const { articles, reFetch } = useArticles('articles');
-
-	log('hello');
 
 	return (
 		<TemplateMain
