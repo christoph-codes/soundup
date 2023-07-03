@@ -41,5 +41,8 @@ module.exports = {
 		'react/jsx-no-constructed-context-values': 0,
 		'react/jsx-curly-newline': 0,
 		'react/require-default-props': 0,
+		'react/destructuring-assignment': 0,
+		'react/no-unstable-nested-components': 0,
+		'react/jsx-props-no-spreading': 0,
 	},
 };

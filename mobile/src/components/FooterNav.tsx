@@ -1,13 +1,21 @@
-import { useNavigationState } from '@react-navigation/native';
 import { View, Text } from 'native-base';
-import { StyleSheet, TouchableHighlight } from 'react-native';
+import { StyleSheet } from 'react-native';
+import {
+	BottomTabBarProps,
+	createBottomTabNavigator,
+} from '@react-navigation/bottom-tabs';
 import Link from './Link';
+import Listen from '../screens/Listen';
+import WatchNavigation from '../navigators/WatchNavigation';
+import NewsNavigation from '../navigators/NewsNavigation';
+import Home from '../screens/Home';
+import FooterLink from './FooterLink';
+import AccountSettings from '../screens/AccountSettings';
+import { globalScreenOptions } from '../utils/globalScreenOptions';
 
-const FooterNav = ({ navigation }) => {
-	const currentRoute = useNavigationState((state) => {
-		return state?.routeNames[state.index];
-	});
+const Tab = createBottomTabNavigator();
 
+const FooterNav = () => {
 	const items = [
 		{
 			label: 'Home',
@@ -17,69 +25,79 @@ const FooterNav = ({ navigation }) => {
 		{
 			label: 'News',
 			icon: '📰',
-			link: 'News',
+			link: 'News Navigation',
 		},
 		{
 			label: 'Watch',
 			icon: '👀',
-			link: 'Watch',
+			link: 'Watch Navigation',
 		},
 	];
-	const footerLink = (item, index) => (
-		<TouchableHighlight
-			key={index}
-			onPress={() => {
-				item.onClick && item.onClick();
-				item.link && navigation.navigate(item.link);
-			}}
-		>
-			<View style={styles.NavItemBtn}>
-				<Text fontSize={24} lineHeight={28} textAlign={'center'}>
-					{item.icon}
-				</Text>
-				<Text
-					fontSize={10}
-					textTransform={'uppercase'}
-					fontWeight='bold'
-					textAlign={'center'}
-				>
-					{item.label}
-				</Text>
 
-				{currentRoute && (
-					<View
-						style={
-							currentRoute === item.link
-								? styles.ActiveNavItemIndicator
-								: styles.NavItemIndicator
-						}
-					/>
-				)}
-			</View>
-		</TouchableHighlight>
-	);
 	return (
-		<View style={styles.FooterNav}>
-			{items.map((item, idx) => {
-				return footerLink(item, idx);
-			})}
+		<Tab.Navigator
+			initialRouteName='Home'
+			tabBar={(props: BottomTabBarProps) => (
+				<View style={styles.FooterNav}>
+					{items.map((item, idx) => (
+						<FooterLink
+							key={idx}
+							item={item}
+							navigation={props.navigation}
+							currentRoute={props.state.index === idx}
+							{...props}
+						/>
+					))}
 
-			<Link link='https://www.soundup.media/radio'>
-				<View style={styles.NavItemBtn}>
-					<Text fontSize={24} lineHeight={28} textAlign={'center'}>
-						🎧
-					</Text>
-					<Text
-						fontSize={10}
-						textTransform={'uppercase'}
-						fontWeight='bold'
-						textAlign={'center'}
-					>
-						Listen
-					</Text>
+					<Link href='https://www.soundup.media/radio'>
+						<View style={styles.NavItemBtn}>
+							<Text
+								fontSize={24}
+								lineHeight={28}
+								textAlign='center'
+							>
+								🎧
+							</Text>
+							<Text
+								fontSize={10}
+								textTransform='uppercase'
+								fontWeight='bold'
+								textAlign='center'
+							>
+								Listen
+							</Text>
+							<View style={styles.NavItemIndicator} />
+						</View>
+					</Link>
 				</View>
-			</Link>
-		</View>
+			)}
+		>
+			<Tab.Screen
+				name='Home'
+				component={Home}
+				options={globalScreenOptions}
+			/>
+			<Tab.Screen
+				name='News Navigation'
+				component={NewsNavigation}
+				options={globalScreenOptions}
+			/>
+			<Tab.Screen
+				name='Watch Navigation'
+				component={WatchNavigation}
+				options={globalScreenOptions}
+			/>
+			<Tab.Screen
+				name='Listen'
+				component={Listen}
+				options={globalScreenOptions}
+			/>
+			<Tab.Screen
+				name='Settings'
+				component={AccountSettings}
+				options={globalScreenOptions}
+			/>
+		</Tab.Navigator>
 	);
 };
 
@@ -107,15 +125,6 @@ const styles = StyleSheet.create({
 	},
 	NavItemIndicator: {
 		backgroundColor: 'transparent',
-		width: 4,
-		height: 4,
-		borderRadius: 4,
-		marginLeft: 'auto',
-		marginRight: 'auto',
-		marginBottom: 2,
-	},
-	ActiveNavItemIndicator: {
-		backgroundColor: '#8DE9FE',
 		width: 4,
 		height: 4,
 		borderRadius: 4,

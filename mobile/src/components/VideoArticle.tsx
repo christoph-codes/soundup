@@ -1,13 +1,7 @@
 import { NavigationProp } from '@react-navigation/native';
-import { Image, Spacer } from 'native-base';
+import { Image } from 'native-base';
 import { useState } from 'react';
-import {
-	ViewStyle,
-	Text,
-	View,
-	StyleSheet,
-	TouchableOpacity,
-} from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import Article from './Article';
 import TextDate from './TextDate';
 
@@ -29,8 +23,6 @@ export interface IVideoArticleProps {
 	image?: string;
 	/** Article Content object to be used in the component */
 	article?: IVideoProps;
-	/** Style object that will be passed to the View component */
-	style?: ViewStyle;
 	/** Navigation object that is passed from the react navigation router */
 	navigation: NavigationProp<any>;
 }
@@ -46,6 +38,7 @@ const VideoArticle = ({
 	return (
 		<Article>
 			{error ? (
+				// eslint-disable-next-line react/no-unescaped-entities
 				<Text>Video Thumbnail Didn't Load.</Text>
 			) : (
 				<TouchableOpacity
@@ -64,7 +57,7 @@ const VideoArticle = ({
 									style={styles.VideoArticleImage}
 									source={{ uri: `http:${image}` }}
 									alt='Video Image Thumbnail'
-									onError={(err) => setError(true)}
+									onError={() => setError(true)}
 									resizeMode='cover'
 								/>
 							</View>
