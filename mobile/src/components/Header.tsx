@@ -1,9 +1,11 @@
+/* eslint-disable global-require */
 import { Image, View, Text } from 'native-base';
 import { StyleSheet, TouchableHighlight } from 'react-native';
 import { useAuth } from '../providers/AuthProvider';
 
-const Header = ({ navigation }) => {
+const Header = ({ navigation }: any) => {
 	const { user } = useAuth();
+
 	return (
 		<View style={styles.Header}>
 			<TouchableHighlight onPress={() => navigation.navigate('Home')}>
