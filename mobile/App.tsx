@@ -1,58 +1,80 @@
-import { NativeBaseProvider, StatusBar, View } from 'native-base';
+import { NativeBaseProvider, View } from 'native-base';
 import {
 	NavigationContainer,
 	useNavigationContainerRef,
 } from '@react-navigation/native';
 import { ActionSheetProvider } from '@expo/react-native-action-sheet';
+import { SafeAreaView, StyleSheet, StatusBar } from 'react-native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import theme from './src/theme';
-import Stack from './src/navigation';
-import { SafeAreaView, StyleSheet } from 'react-native';
 import AuthProvider from './src/providers/AuthProvider';
-import Home from './src/screens/Home';
 import AccountSettings from './src/screens/AccountSettings';
-import News from './src/screens/News';
-import NewsArticleContent from './src/screens/NewsArticleContent';
-import VideoArticleContent from './src/screens/VideoArticleContent';
-import Watch from './src/screens/Watch';
-import Listen from './src/screens/Listen';
+// import NewsArticleContent from './src/screens/NewsArticleContent';
 import SignIn from './src/screens/SignIn';
 import Reauth from './src/screens/Reauth';
 import CreateAccount from './src/screens/CreateAccount';
 import FooterNav from './src/components/FooterNav';
 import Header from './src/components/Header';
 import About from './src/screens/About';
-import ArticleProvider from './src/providers/ArticleProvider';
+import {
+	globalScreenOptions,
+	headerOptions,
+} from './src/utils/globalScreenOptions';
+
+const Stack = createNativeStackNavigator();
 
 const App = () => {
 	const navigationRef = useNavigationContainerRef();
-
-	const globalScreenOptions: any = {
-		/** TODO: Delete once top nav is complete */
-		headerShown: false,
-		gestureEnabled: false,
-	};
-	const headerOptions: any = {
-		headerStyle: {
-			backgroundColor: '#252525',
-			border: 0,
-		},
-		headerTintColor: '#fff',
-		headerTitle: '',
-	};
 
 	return (
 		<NativeBaseProvider theme={theme()}>
 			<ActionSheetProvider>
 				<AuthProvider>
-					{/* <ArticleProvider> */}
 					<SafeAreaView style={styles.page}>
 						<View style={styles.TemplateMain}>
+							<Header navigation={navigationRef} />
+							<StatusBar animated barStyle='light-content' />
 							<NavigationContainer ref={navigationRef}>
+								<Stack.Navigator>
+									<Stack.Screen
+										name='FooterNav'
+										component={FooterNav}
+										options={{ headerShown: false }}
+									/>
+									<Stack.Screen
+										name='Create Account'
+										component={CreateAccount}
+										options={{
+											...headerOptions,
+											headerShown: true,
+											headerTitle: 'Sign In',
+										}}
+									/>
+									<Stack.Screen
+										name='Account Settings'
+										component={AccountSettings}
+										options={globalScreenOptions}
+									/>
+									<Stack.Screen
+										name='Sign In'
+										component={SignIn}
+										options={globalScreenOptions}
+									/>
+									<Stack.Screen
+										name='Reauth'
+										component={Reauth}
+										options={globalScreenOptions}
+									/>
+									<Stack.Screen
+										name='About'
+										component={About}
+										options={globalScreenOptions}
+									/>
+								</Stack.Navigator>
+							</NavigationContainer>
+							{/* <NavigationContainer ref={navigationRef}>
 								<Header navigation={navigationRef} />
-								<StatusBar
-									animated={true}
-									barStyle='light-content'
-								/>
+								<StatusBar animated barStyle='light-content' />
 								<Stack.Navigator initialRouteName='Home'>
 									<Stack.Screen
 										name='Home'
@@ -111,10 +133,9 @@ const App = () => {
 									/>
 								</Stack.Navigator>
 								<FooterNav navigation={navigationRef} />
-							</NavigationContainer>
+							</NavigationContainer> */}
 						</View>
 					</SafeAreaView>
-					{/* </ArticleProvider> */}
 				</AuthProvider>
 			</ActionSheetProvider>
 		</NativeBaseProvider>
