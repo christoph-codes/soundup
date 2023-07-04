@@ -4,18 +4,18 @@ import {
 	BottomTabBarProps,
 	createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs';
-import Link from './Link';
+import Link from '../components/Link';
 import Listen from '../screens/Listen';
-import WatchNavigation from '../navigators/WatchNavigation';
-import NewsNavigation from '../navigators/NewsNavigation';
+import WatchNavigation from './WatchNavigation';
+import NewsNavigation from './NewsNavigation';
 import Home from '../screens/Home';
-import FooterLink from './FooterLink';
+import FooterLink from '../components/FooterLink';
 import AccountSettings from '../screens/AccountSettings';
 import { globalScreenOptions } from '../utils/globalScreenOptions';
 
 const Tab = createBottomTabNavigator();
 
-const FooterNav = () => {
+const AuthNavigation = () => {
 	const items = [
 		{
 			label: 'Home',
@@ -38,7 +38,7 @@ const FooterNav = () => {
 		<Tab.Navigator
 			initialRouteName='Home'
 			tabBar={(props: BottomTabBarProps) => (
-				<View style={styles.FooterNav}>
+				<View style={styles.AuthNavigation}>
 					{items.map((item, idx) => (
 						<FooterLink
 							key={idx}
@@ -95,16 +95,16 @@ const FooterNav = () => {
 			<Tab.Screen
 				name='Settings'
 				component={AccountSettings}
-				options={globalScreenOptions}
+				options={{ ...globalScreenOptions }}
 			/>
 		</Tab.Navigator>
 	);
 };
 
-export default FooterNav;
+export default AuthNavigation;
 
 const styles = StyleSheet.create({
-	FooterNav: {
+	AuthNavigation: {
 		flexDirection: 'row',
 		justifyContent: 'space-around',
 		alignItems: 'center',
