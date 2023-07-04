@@ -23,7 +23,7 @@
 		},
 		"android": {
 			"adaptiveIcon": {
-				"foregroundImage": "./assets/adaptive_icon.png",
+				"foregroundImage": "./assets/app_icon.png",
 				"backgroundColor": "#252525"
 			},
 			"package": "com.soundupmedia.soundupmobile",
