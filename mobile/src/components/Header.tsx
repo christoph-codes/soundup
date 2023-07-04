@@ -7,35 +7,34 @@ const Header = ({ navigation }: any) => {
 	const { user } = useAuth();
 
 	return (
-		<View style={styles.Header}>
-			<TouchableHighlight onPress={() => navigation.navigate('Home')}>
+		<View
+			style={[styles.Header, !user.authId ? styles.Header__centered : {}]}
+		>
+			<TouchableHighlight
+				onPress={() => {
+					if (user.authId) {
+						navigation.navigate('AuthNavigation');
+					} else {
+						navigation.navigate('Sign In');
+					}
+				}}
+			>
 				<Image
 					source={require('../../assets/soundup_logo.png')}
 					alt='Sound Up Logo'
 				/>
 			</TouchableHighlight>
 
-			{user.name ? (
+			{user.name && (
 				<TouchableHighlight
 					style={styles.HeaderProfileIcon}
 					onPress={() => {
-						navigation.navigate('Account Settings');
+						navigation.navigate('Settings');
 					}}
 				>
 					<Text style={styles.HeaderProfileIconText}>
 						{user.name.slice(0, 1)}
 					</Text>
-				</TouchableHighlight>
-			) : (
-				<TouchableHighlight
-					onPress={() => {
-						navigation.navigate('Sign In');
-					}}
-				>
-					<Image
-						source={require('../../assets/cog.png')}
-						alt='Settings cog'
-					/>
 				</TouchableHighlight>
 			)}
 		</View>
@@ -56,6 +55,9 @@ const styles = StyleSheet.create({
 		backgroundColor: '#252525',
 		borderBottomWidth: 1,
 		borderBottomColor: '#161616',
+	},
+	Header__centered: {
+		justifyContent: 'center',
 	},
 	HeaderProfileIcon: {
 		backgroundColor: '#8DE9FE',
