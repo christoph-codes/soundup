@@ -2,7 +2,6 @@ import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { Image, Text } from 'native-base';
 import { useEffect, useRef, useState } from 'react';
 import {
-	Dimensions,
 	StyleSheet,
 	TouchableOpacity,
 	ViewStyle,
@@ -56,6 +55,8 @@ const Carousel = ({ data, style }: ICarouselProps) => {
 						zIndex={2}
 						width='100%'
 						marginTop={2}
+						numberOfLines={2}
+						ellipsizeMode='tail'
 					>
 						{item.article.title}
 					</Text>
