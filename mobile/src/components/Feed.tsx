@@ -50,7 +50,7 @@ const Feed = ({ navigation, content }: IFeedProps) => {
 							/>
 						);
 					}
-					if (post?.type === 'ads' && !user.email) {
+					if (post?.type === 'ads' && user.type === 'default') {
 						return (
 							<Ad
 								key={index}
