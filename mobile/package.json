@@ -12,6 +12,7 @@
     "submit": "eas submit"
   },
   "dependencies": {
+    "@expo/metro-config": "^0.7.1",
     "@expo/react-native-action-sheet": "^4.0.1",
     "@react-navigation/bottom-tabs": "^6.5.8",
     "@react-navigation/native": "^6.0.12",

@@ -6,7 +6,7 @@ import { INavigationOnly } from '../types/globalTypes';
 import AuthWrapper from '../components/AuthWrapper';
 
 const News = ({ navigation }: INavigationOnly) => {
-	const { articles, reFetch } = useArticles('articles');
+	const { articles, reFetch, isLoading } = useArticles('articles');
 
 	return (
 		<AuthWrapper navigation={navigation}>
@@ -18,7 +18,11 @@ const News = ({ navigation }: INavigationOnly) => {
 				onRefresh={() => reFetch()}
 			>
 				<View>
-					<Feed navigation={navigation} content={articles} />
+					<Feed
+						navigation={navigation}
+						content={articles}
+						loading={isLoading}
+					/>
 				</View>
 			</TemplateMain>
 		</AuthWrapper>

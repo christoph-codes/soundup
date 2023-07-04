@@ -12,17 +12,10 @@
 			"resizeMode": "contain",
 			"backgroundColor": "#252525"
 		},
-		"packagerOpts": {
-			"sourceExts": [
-				"cjs"
-			]
-		},
 		"updates": {
 			"fallbackToCacheTimeout": 0
 		},
-		"assetBundlePatterns": [
-			"**/*"
-		],
+		"assetBundlePatterns": ["**/*"],
 		"ios": {
 			"supportsTablet": true,
 			"bundleIdentifier": "com.soundupmedia.soundupmobile",
@@ -30,7 +23,7 @@
 		},
 		"android": {
 			"adaptiveIcon": {
-				"foregroundImage": "./assets/adaptive_icon.png",
+				"foregroundImage": "./assets/app_icon.png",
 				"backgroundColor": "#252525"
 			},
 			"package": "com.soundupmedia.soundupmobile",
