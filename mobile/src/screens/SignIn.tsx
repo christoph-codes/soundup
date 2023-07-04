@@ -1,14 +1,16 @@
 import { Text } from 'native-base';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import Button from '../components/Button';
 import Input from '../components/Input';
 import { useAuth } from '../providers/AuthProvider';
 import TemplateMain from '../templates/TemplateMain';
 import inputValidations from '../utils/inputValidations';
+import { INavigationOnly } from '../types/globalTypes';
+import P from '../components/P';
 
-const SignIn = ({ navigation }) => {
-	const { login } = useAuth();
+const SignIn = ({ navigation }: INavigationOnly) => {
+	const { login, user } = useAuth();
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [formError, setFormError] = useState('');
@@ -17,22 +19,25 @@ const SignIn = ({ navigation }) => {
 		if (!email || !password) {
 			setFormError('All fields must be provided');
 			setPassword('');
-		} else if (
-			!inputValidations['email'](email) ||
-			!inputValidations['password'](password)
-		) {
+		} else if (!inputValidations.email(email)) {
 			setFormError('You must enter a valid email and password');
 			setPassword('');
 		} else {
 			login(email, password)
 				.then(() => {
-					navigation.navigate('Home');
+					navigation.navigate('AuthNavigation');
 				})
 				.catch((err) => {
 					setFormError(err.message);
 				});
 		}
 	};
+
+	useEffect(() => {
+		if (user.authId) {
+			navigation.navigate('AuthNavigation');
+		}
+	}, [user.authId, navigation]);
 
 	return (
 		<TemplateMain
@@ -41,13 +46,17 @@ const SignIn = ({ navigation }) => {
 			navigation={navigation}
 			carousel={[]}
 		>
+			<P>
+				Unlock your exclusive SoundUp Media content by signing in to
+				your account
+			</P>
 			<Input
 				label='Email'
 				textContentType='emailAddress'
 				value={email.trim().replaceAll(' ', '')}
 				setValue={setEmail}
 				placeholder='john@doe.com'
-				validate={() => inputValidations['email'](email)}
+				validate={() => inputValidations.email(email)}
 			/>
 			<Input
 				label='Password'
@@ -55,11 +64,6 @@ const SignIn = ({ navigation }) => {
 				secureTextEntry
 				setValue={setPassword}
 				placeholder='••••••••••'
-				validate={() =>
-					inputValidations['password'](
-						password.trim().replaceAll(' ', ''),
-					)
-				}
 			/>
 			{formError && <Text style={styles.SignInError}>{formError}</Text>}
 			<Button onPress={() => submitLogin()}>Signin</Button>

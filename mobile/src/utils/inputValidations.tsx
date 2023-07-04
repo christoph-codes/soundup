@@ -4,16 +4,14 @@ export default {
 	notEmpty: (val: any) => {
 		if (val !== '') {
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	},
 	email: (val: string): boolean | string => {
 		if (checkRegex(val, '[^@ \t\r\n]+@[^@ \t\r\n]+.[^@ \t\r\n]+')) {
 			return true;
-		} else {
-			return 'Please enter a valid email address';
 		}
+		return 'Please enter a valid email address';
 	},
 	password: (val: string) => {
 		if (
@@ -23,8 +21,7 @@ export default {
 			)
 		) {
 			return true;
-		} else {
-			return 'Please enter a valid password.';
 		}
+		return 'Please enter a valid password.';
 	},
 };
