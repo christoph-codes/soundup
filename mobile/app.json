@@ -12,17 +12,10 @@
 			"resizeMode": "contain",
 			"backgroundColor": "#252525"
 		},
-		"packagerOpts": {
-			"sourceExts": [
-				"cjs"
-			]
-		},
 		"updates": {
 			"fallbackToCacheTimeout": 0
 		},
-		"assetBundlePatterns": [
-			"**/*"
-		],
+		"assetBundlePatterns": ["**/*"],
 		"ios": {
 			"supportsTablet": true,
 			"bundleIdentifier": "com.soundupmedia.soundupmobile",
