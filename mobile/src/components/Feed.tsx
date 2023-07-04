@@ -6,16 +6,18 @@ import Ad from './Ad';
 import NewsArticle from './NewsArticle';
 import VideoArticle from './VideoArticle';
 import useArticles from '../hooks/useArticles';
+import Loading from './Loading';
 
 export interface IFeedProps {
 	navigation: NavigationProp<any>;
 	content: any[];
+	loading: boolean;
 }
 
-const Feed = ({ navigation, content }: IFeedProps) => {
+const Feed = ({ navigation, content, loading }: IFeedProps) => {
 	const { user } = useAuth();
 
-	const ads = useArticles('ads');
+	const { articles: ads, isLoading: isAdsLoading } = useArticles('ads');
 
 	const feed = () => {
 		let adNum = 0;
@@ -34,6 +36,10 @@ const Feed = ({ navigation, content }: IFeedProps) => {
 		}, []);
 		return articlesWithAds;
 	};
+
+	if (loading || isAdsLoading) {
+		return <Loading />;
+	}
 
 	return (
 		<>
