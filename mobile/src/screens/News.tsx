@@ -3,22 +3,25 @@ import Feed from '../components/Feed';
 import TemplateMain from '../templates/TemplateMain';
 import useArticles from '../hooks/useArticles';
 import { INavigationOnly } from '../types/globalTypes';
+import AuthWrapper from '../components/AuthWrapper';
 
 const News = ({ navigation }: INavigationOnly) => {
 	const { articles, reFetch } = useArticles('articles');
 
 	return (
-		<TemplateMain
-			style={styles.News}
-			title='News'
-			navigation={navigation}
-			carousel={articles?.filter((post) => post.featured)}
-			onRefresh={() => reFetch()}
-		>
-			<View>
-				<Feed navigation={navigation} content={articles} />
-			</View>
-		</TemplateMain>
+		<AuthWrapper navigation={navigation}>
+			<TemplateMain
+				style={styles.News}
+				title='News'
+				navigation={navigation}
+				carousel={articles?.filter((post) => post.featured)}
+				onRefresh={() => reFetch()}
+			>
+				<View>
+					<Feed navigation={navigation} content={articles} />
+				</View>
+			</TemplateMain>
+		</AuthWrapper>
 	);
 };
 

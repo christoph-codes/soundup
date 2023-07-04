@@ -6,8 +6,10 @@ import Input from '../components/Input';
 import { useAuth } from '../providers/AuthProvider';
 import TemplateMain from '../templates/TemplateMain';
 import inputValidations from '../utils/inputValidations';
+import { INavigationOnly } from '../types/globalTypes';
+import P from '../components/P';
 
-const CreateAccount = ({ navigation }) => {
+const CreateAccount = ({ navigation }: INavigationOnly) => {
 	const { createAccountWithEmailAndPassword } = useAuth();
 	const [name, setName] = useState<string>('');
 	const [email, setEmail] = useState<string>('');
@@ -21,8 +23,8 @@ const CreateAccount = ({ navigation }) => {
 			setFormError('All fields must be provided');
 			setPassword('');
 		} else if (
-			!inputValidations['email'](email) ||
-			!inputValidations['password'](password)
+			!inputValidations.email(email) ||
+			!inputValidations.password(password)
 		) {
 			setFormError('You must enter a valid email and password');
 			setPassword('');
@@ -43,13 +45,14 @@ const CreateAccount = ({ navigation }) => {
 			navigation={navigation}
 			carousel={[]}
 		>
+			<P>Create an account to access exclusive SoundUp Media content!</P>
 			<Input
 				label='Name'
 				textContentType='name'
 				value={name}
 				setValue={setName}
 				placeholder='John Doe'
-				validate={() => inputValidations['notEmpty'](name)}
+				validate={() => inputValidations.notEmpty(name)}
 			/>
 			<Input
 				label='Email'
@@ -57,7 +60,7 @@ const CreateAccount = ({ navigation }) => {
 				value={email.trim().replaceAll(' ', '')}
 				setValue={setEmail}
 				placeholder='john@doe.com'
-				validate={() => inputValidations['email'](email)}
+				validate={() => inputValidations.email(email)}
 			/>
 			<Input
 				label='Password'
@@ -66,7 +69,7 @@ const CreateAccount = ({ navigation }) => {
 				setValue={setPassword}
 				placeholder='••••••••••'
 				validate={() =>
-					inputValidations['password'](
+					inputValidations.password(
 						password.trim().replaceAll(' ', ''),
 					)
 				}
@@ -79,7 +82,7 @@ const CreateAccount = ({ navigation }) => {
 				setValue={setConfirmPassword}
 				placeholder='••••••••••'
 				validate={() =>
-					inputValidations['notEmpty'](
+					inputValidations.notEmpty(
 						confirmPassword.trim().replaceAll(' ', ''),
 					)
 				}

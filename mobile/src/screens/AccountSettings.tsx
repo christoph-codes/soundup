@@ -14,6 +14,7 @@ import TemplateMain from '../templates/TemplateMain';
 import inputValidations from '../utils/inputValidations';
 import Modal from '../components/Modal';
 import { log } from '../utils/helper';
+import AuthWrapper from '../components/AuthWrapper';
 
 export interface IAccountSettings {
 	navigation: NavigationProp<any>;
@@ -101,77 +102,79 @@ const AccountSettings = ({ navigation, route }: IAccountSettings) => {
 			});
 	};
 	const openModal = () => {
-		deleteAccount(() => navigation.navigate('Home'));
+		deleteAccount(() => navigation.navigate('Sign In'));
 	};
 	const signOutUser = () => {
 		logout();
-		navigation.navigate('Home');
+		navigation.navigate('Sign In');
 	};
 	return (
-		<TemplateMain
-			style={styles.AccountSettings}
-			title='Settings'
-			carousel={[]}
-			navigation={navigation}
-		>
-			{successMessage && (
-				<Text style={styles.SuccessMessage}>{successMessage}</Text>
-			)}
-			<Input value={email} setValue={setEmail} label='Email' />
-			{emailError && <ErrorText>{emailError}</ErrorText>}
-			<Button
-				style={[styles.UpdateButton]}
-				onPress={() => updateUserEmail()}
+		<AuthWrapper navigation={navigation}>
+			<TemplateMain
+				style={styles.AccountSettings}
+				title='Settings'
+				carousel={[]}
+				navigation={navigation}
 			>
-				Update Email
-			</Button>
-			<Input
-				value={newPassword}
-				setValue={setNewPassword}
-				label='New Password'
-				placeholder='••••••••••'
-				secureTextEntry
-				validate={() =>
-					inputValidations.password(
-						newPassword.trim().replaceAll(' ', ''),
-					)
-				}
-				helperText='Minimum eight characters. At least one upper case English letter. One lower case English letter. One number and one special character.'
-			/>
-			<Input
-				value={confirmNewPassword}
-				setValue={setConfirmNewPassword}
-				label='Confirm New Password'
-				placeholder='••••••••••'
-				secureTextEntry
-			/>
-			{passwordError && <ErrorText>{passwordError}</ErrorText>}
-			<Button
-				style={[styles.UpdateButton]}
-				onPress={() => updateUserPassword()}
-			>
-				Update Password
-			</Button>
-			<HR />
-			<Button onPress={() => signOutUser()} variant='ghost'>
-				✌🏾 Log Out
-			</Button>
-			<Button
-				onPress={() => navigation.navigate('About')}
-				variant='ghost'
-			>
-				About the App
-			</Button>
-			<HR />
-			<Modal
-				buttonLabel='Delete Account'
-				successCallback={openModal}
-				message="By tapping 'Delete' you will lose access to your Soundup Media account and will have to reregister to gain access to all account features."
-				title='Are You Sure?'
-				successLabel='Delete'
-				buttonVariant='alert'
-			/>
-		</TemplateMain>
+				{successMessage && (
+					<Text style={styles.SuccessMessage}>{successMessage}</Text>
+				)}
+				<Input value={email} setValue={setEmail} label='Email' />
+				{emailError && <ErrorText>{emailError}</ErrorText>}
+				<Button
+					style={[styles.UpdateButton]}
+					onPress={() => updateUserEmail()}
+				>
+					Update Email
+				</Button>
+				<Input
+					value={newPassword}
+					setValue={setNewPassword}
+					label='New Password'
+					placeholder='••••••••••'
+					secureTextEntry
+					validate={() =>
+						inputValidations.password(
+							newPassword.trim().replaceAll(' ', ''),
+						)
+					}
+					helperText='Minimum eight characters. At least one upper case English letter. One lower case English letter. One number and one special character.'
+				/>
+				<Input
+					value={confirmNewPassword}
+					setValue={setConfirmNewPassword}
+					label='Confirm New Password'
+					placeholder='••••••••••'
+					secureTextEntry
+				/>
+				{passwordError && <ErrorText>{passwordError}</ErrorText>}
+				<Button
+					style={[styles.UpdateButton]}
+					onPress={() => updateUserPassword()}
+				>
+					Update Password
+				</Button>
+				<HR />
+				<Button onPress={() => signOutUser()} variant='ghost'>
+					✌🏾 Log Out
+				</Button>
+				<Button
+					onPress={() => navigation.navigate('About')}
+					variant='ghost'
+				>
+					About the App
+				</Button>
+				<HR />
+				<Modal
+					buttonLabel='Delete Account'
+					successCallback={openModal}
+					message="By tapping 'Delete' you will lose access to your Soundup Media account and will have to reregister to gain access to all account features."
+					title='Are You Sure?'
+					successLabel='Delete'
+					buttonVariant='alert'
+				/>
+			</TemplateMain>
+		</AuthWrapper>
 	);
 };
 

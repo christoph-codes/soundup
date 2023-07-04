@@ -4,6 +4,7 @@ import { useAuth } from '../providers/AuthProvider';
 import TemplateMain from '../templates/TemplateMain';
 import useArticles from '../hooks/useArticles';
 import { INavigationOnly } from '../types/globalTypes';
+import AuthWrapper from '../components/AuthWrapper';
 
 const Home = ({ navigation }: INavigationOnly) => {
 	const { user } = useAuth();
@@ -11,17 +12,18 @@ const Home = ({ navigation }: INavigationOnly) => {
 	const { articles, reFetch } = useArticles('all');
 
 	return (
-		<TemplateMain
-			style={styles.Home}
-			navigation={navigation}
-			title={user?.name ? `Hey ${user.name}!` : 'Latest Updates'}
-			// @ts-ignore
-			carousel={articles?.filter((post) => post.article.featured)}
-			onRefresh={() => reFetch()}
-			// onEndReach={() => incrementPagination(fetching)}
-		>
-			<Feed navigation={navigation} content={articles} />
-		</TemplateMain>
+		<AuthWrapper navigation={navigation}>
+			<TemplateMain
+				style={styles.Home}
+				navigation={navigation}
+				title={user?.name ? `Hey ${user.name}!` : 'Latest Updates'}
+				// @ts-ignore
+				carousel={articles?.filter((post) => post.article.featured)}
+				onRefresh={() => reFetch()}
+			>
+				<Feed navigation={navigation} content={articles} />
+			</TemplateMain>
+		</AuthWrapper>
 	);
 };
 
