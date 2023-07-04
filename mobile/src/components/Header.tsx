@@ -13,7 +13,7 @@ const Header = ({ navigation }: any) => {
 			<TouchableHighlight
 				onPress={() => {
 					if (user.authId) {
-						navigation.navigate('AuthNavigation');
+						navigation.navigate('Home');
 					} else {
 						navigation.navigate('Sign In');
 					}
