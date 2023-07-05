@@ -9,7 +9,8 @@
     "web": "expo start --web",
     "pushenv": "eas secret:push",
     "build": "eas build",
-    "submit": "eas submit"
+    "submit": "eas submit",
+    "upgrade": "npm install -g eas-cli"
   },
   "dependencies": {
     "@expo/metro-config": "^0.7.1",
