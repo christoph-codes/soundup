@@ -1,41 +1,47 @@
 {
-	"expo": {
-		"name": "Sound Up",
-		"slug": "soundup",
-		"owner": "christoph-codes",
-		"version": "1.1.5",
-		"orientation": "portrait",
-		"icon": "./assets/app_icon.png",
-		"userInterfaceStyle": "dark",
-		"splash": {
-			"image": "./assets/splash.png",
-			"resizeMode": "contain",
-			"backgroundColor": "#252525"
-		},
-		"updates": {
-			"fallbackToCacheTimeout": 0
-		},
-		"assetBundlePatterns": ["**/*"],
-		"ios": {
-			"supportsTablet": true,
-			"bundleIdentifier": "com.soundupmedia.soundupmobile",
-			"buildNumber": "1.1.5"
-		},
-		"android": {
-			"adaptiveIcon": {
-				"foregroundImage": "./assets/app_icon.png",
-				"backgroundColor": "#252525"
-			},
-			"package": "com.soundupmedia.soundupmobile",
-			"versionCode": 6
-		},
-		"web": {
-			"favicon": "./assets/favicon.png"
-		},
-		"extra": {
-			"eas": {
-				"projectId": "16a881e1-5ee8-4193-8ccd-a89888c8e53a"
-			}
-		}
-	}
+  "expo": {
+    "name": "Sound Up",
+    "slug": "soundup",
+    "owner": "christoph-codes",
+    "version": "1.1.6",
+    "orientation": "portrait",
+    "icon": "./assets/app_icon.png",
+    "userInterfaceStyle": "dark",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#252525"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0,
+      "url": "https://u.expo.dev/16a881e1-5ee8-4193-8ccd-a89888c8e53a"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.soundupmedia.soundupmobile",
+      "buildNumber": "1.1.6"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/app_icon.png",
+        "backgroundColor": "#252525"
+      },
+      "package": "com.soundupmedia.soundupmobile",
+      "versionCode": 7
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "16a881e1-5ee8-4193-8ccd-a89888c8e53a"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "sdkVersion"
+    }
+  }
 }
