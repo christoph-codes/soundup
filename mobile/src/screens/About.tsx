@@ -10,7 +10,10 @@ const About = ({ navigation }: INavigationOnly) => (
 		navigation={navigation}
 		style={styles.About}
 	>
-		<P>Copyright @ 2022. Sound Up Media. All Rights Reserved.</P>
+		<P>
+			Copyright @ {new Date().getFullYear()}. Sound Up Media. All Rights
+			Reserved.
+		</P>
 		<P>Version 1.1.6.</P>
 		<P>
 			Created with ❤️ by{' '}
