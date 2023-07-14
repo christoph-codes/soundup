@@ -12,6 +12,7 @@ import Home from '../screens/Home';
 import FooterLink from '../components/FooterLink';
 import AccountSettings from '../screens/AccountSettings';
 import { globalScreenOptions } from '../utils/globalScreenOptions';
+import About from '../screens/About';
 
 const Tab = createBottomTabNavigator();
 
@@ -96,6 +97,13 @@ const AuthNavigation = () => {
 				name='Settings'
 				component={AccountSettings}
 				options={{ ...globalScreenOptions }}
+			/>
+			<Tab.Screen
+				name='About'
+				component={About}
+				options={{
+					...globalScreenOptions,
+				}}
 			/>
 		</Tab.Navigator>
 	);
