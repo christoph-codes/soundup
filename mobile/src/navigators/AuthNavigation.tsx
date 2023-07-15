@@ -13,6 +13,8 @@ import FooterLink from '../components/FooterLink';
 import AccountSettings from '../screens/AccountSettings';
 import { globalScreenOptions } from '../utils/globalScreenOptions';
 import About from '../screens/About';
+import VideoArticleContent from '../screens/VideoArticleContent';
+import NewsArticleContent from '../screens/NewsArticleContent';
 
 const Tab = createBottomTabNavigator();
 
@@ -86,6 +88,16 @@ const AuthNavigation = () => {
 			<Tab.Screen
 				name='Watch Navigation'
 				component={WatchNavigation}
+				options={globalScreenOptions}
+			/>
+			<Tab.Screen
+				name='Video Article Content'
+				component={VideoArticleContent}
+				options={globalScreenOptions}
+			/>
+			<Tab.Screen
+				name='News Article Content'
+				component={NewsArticleContent}
 				options={globalScreenOptions}
 			/>
 			<Tab.Screen
