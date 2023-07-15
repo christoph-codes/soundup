@@ -7,7 +7,7 @@ import { INavigationOnly } from '../types/globalTypes';
 import AuthWrapper from '../components/AuthWrapper';
 
 const Home = ({ navigation }: INavigationOnly) => {
-	const { user } = useAuth();
+	const { user, loading } = useAuth();
 
 	const { articles, reFetch } = useArticles('all');
 
@@ -21,7 +21,11 @@ const Home = ({ navigation }: INavigationOnly) => {
 				carousel={articles?.filter((post) => post.article.featured)}
 				onRefresh={() => reFetch()}
 			>
-				<Feed navigation={navigation} content={articles} />
+				<Feed
+					navigation={navigation}
+					content={articles}
+					loading={loading}
+				/>
 			</TemplateMain>
 		</AuthWrapper>
 	);
