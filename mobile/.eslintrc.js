@@ -46,5 +46,6 @@ module.exports = {
 		'react/jsx-props-no-spreading': 0,
 		'react/jsx-no-useless-fragment': 0,
 		'react/jsx-one-expression-per-line': 0,
+		'function-paren-newline': 0,
 	},
 };
