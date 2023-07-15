@@ -8,7 +8,6 @@ import {
 import {
 	createUserWithEmailAndPassword,
 	deleteUser,
-	onAuthStateChanged,
 	signInWithEmailAndPassword,
 	signOut,
 } from 'firebase/auth';
@@ -22,7 +21,7 @@ import {
 	where,
 } from 'firebase/firestore';
 import { auth, db } from '../config/firebase';
-import { log } from '../utils/helper';
+import { log, storage } from '../utils/helper';
 
 export interface IAuthContext {
 	/* The user object that will be used in the AuthContext. */
@@ -86,12 +85,25 @@ const AuthProvider = ({ children }: IAuthProviderProps) => {
 	const [loading, setLoading] = useState<IAuthContext['loading']>();
 	const [error, setError] = useState<IAuthContext['error']>('');
 
+	useEffect(() => {
+		setLoading(true);
+		const unsubscribe = async () => {
+			const loggedInUser = await storage.get('soundupUser');
+			if (loggedInUser.authId) {
+				setUser(loggedInUser);
+			}
+			setLoading(false);
+		};
+		unsubscribe();
+	}, []);
+
 	/**
 	 * It takes a user id, looks up the user in the database, and returns the user if it exists
 	 * @param {string} uid - The user's unique ID from the authentication provider.
 	 * @returns The user object is being returned.
 	 */
 	const lookupUser = async (uid: string) => {
+		setLoading(true);
 		const userRef = collection(db, 'users');
 		const storedUser = query(userRef, where('authId', '==', uid));
 		const userGetter = await getDocs(storedUser);
@@ -102,26 +114,12 @@ const AuthProvider = ({ children }: IAuthProviderProps) => {
 				setUser(fbdoc.data());
 			});
 		}
+		setLoading(false);
 	};
 
-	/* Checking to see if the user is authenticated. If they are, it will set the user to the
-	authenticated user. If not, it will set the error to the error message. */
 	useEffect(() => {
-		const unsubscribe = onAuthStateChanged(auth, async (fireUser) => {
-			if (fireUser != null) {
-				await lookupUser(fireUser.uid);
-			} else {
-				setError(
-					'There is no user in our database with these credentials.',
-				);
-			}
-			setLoading(false);
-		});
-		return () => {
-			auth.currentUser?.getIdToken();
-			unsubscribe();
-		};
-	}, []);
+		(async () => storage.set('soundupUser', user))();
+	}, [user]);
 
 	/**
 	 * The login function takes in an email and password, and if they are not empty,
@@ -145,10 +143,14 @@ const AuthProvider = ({ children }: IAuthProviderProps) => {
 				.catch((err) => {
 					log('login error', err);
 					if (err.code === 'auth/wrong-password') {
+						setError(
+							'You have entered incorrect email and password. Try again',
+						);
 						throw new Error(
 							'You have entered incorrect email and password. Try again',
 						);
 					}
+					setError(err.message);
 					throw new Error(err.message);
 				});
 		} catch (err) {
