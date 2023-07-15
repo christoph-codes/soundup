@@ -6,7 +6,6 @@ export const globalScreenOptions: any = {
 export const headerOptions: any = {
 	headerStyle: {
 		backgroundColor: '#252525',
-		border: 0,
 	},
 	headerTintColor: '#fff',
 };
