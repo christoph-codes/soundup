@@ -2,16 +2,22 @@ import { Image, ScrollView, Text, View } from 'native-base';
 import { useState } from 'react';
 import { StyleSheet, useWindowDimensions } from 'react-native';
 import YoutubePlayer from 'react-native-youtube-iframe';
+import { RouteProp } from '@react-navigation/native';
 import P from '../components/P';
+import { IVideoProps } from '../components/VideoArticle';
 
-const VideoArticleContent = ({ navigation, route }) => {
+export interface IVideoArticleContentProps {
+	route: RouteProp<
+		{ params: { article: IVideoProps; image: string } },
+		'params'
+	>;
+}
+
+const VideoArticleContent = ({ route }: IVideoArticleContentProps) => {
 	const { width } = useWindowDimensions();
-	const { article, image } = route?.params;
-	const [webViewKey, setWebViewKey] = useState(0);
+	const { article, image } = route.params;
 	const [error, setError] = useState(false);
-	const reload = () => {
-		setWebViewKey((prev) => prev + 1);
-	};
+
 	return (
 		<ScrollView style={styles.VideoArticleContent}>
 			{error ? (
@@ -28,7 +34,6 @@ const VideoArticleContent = ({ navigation, route }) => {
 					videoId={article.youtubeId}
 					onError={(err) => err && setError(true)}
 					webViewProps={{
-						onContentProcessDidTerminate: reload,
 						allowsInlineMediaPlayback: true,
 					}}
 					initialPlayerParams={{

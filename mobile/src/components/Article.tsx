@@ -1,17 +1,20 @@
-import { HStack } from 'native-base';
+import { HStack, IBoxProps } from 'native-base';
+import { ReactNode } from 'react';
 import { StyleSheet } from 'react-native';
 
-const Article = ({ children, ...rest }) => {
-	return (
-		<HStack
-			style={styles.Article}
-			width={{ base: '100%', md: '49%' }}
-			{...rest}
-		>
-			{children}
-		</HStack>
-	);
-};
+export interface IArticle {
+	children: ReactNode;
+}
+
+const Article = ({ children, ...rest }: IArticle & IBoxProps) => (
+	<HStack
+		style={styles.Article}
+		width={{ base: '100%', md: '49%' }}
+		{...rest}
+	>
+		{children}
+	</HStack>
+);
 
 export default Article;
 
