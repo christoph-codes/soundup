@@ -14,7 +14,7 @@ const About = ({ navigation }: INavigationOnly) => (
 			Copyright @ {new Date().getFullYear()}. Sound Up Media. All Rights
 			Reserved.
 		</P>
-		<P>Version 1.1.6.</P>
+		<P>Version 1.1.7.</P>
 		<P>
 			Created with ❤️ by{' '}
 			<Link href='https://thekirkconcept.com'>The Kirk Concept</Link>

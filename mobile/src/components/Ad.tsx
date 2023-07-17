@@ -1,4 +1,4 @@
-import { StyleSheet, Dimensions, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Image, Text } from 'native-base';
 import Link from './Link';
 import Article from './Article';
