@@ -1,14 +1,13 @@
 import { ReactNode } from 'react';
-import { Text, StyleProp } from 'react-native';
 import * as WebBrowser from 'expo-web-browser';
+import { Pressable, IPressableProps } from 'native-base';
 
 export interface ILinkProps {
 	children: ReactNode;
 	href: string;
-	style?: StyleProp<any>;
 }
 
-const Link = ({ children, href, style = false }: ILinkProps) => {
+const Link = ({ children, href, ...rest }: ILinkProps & IPressableProps) => {
 	const openBrowser = async () => {
 		await WebBrowser.openBrowserAsync(href, {
 			toolbarColor: '#252525',
@@ -18,14 +17,14 @@ const Link = ({ children, href, style = false }: ILinkProps) => {
 		});
 	};
 	return (
-		<Text
-			style={{ ...style }}
+		<Pressable
 			onPress={() => {
 				openBrowser();
 			}}
+			{...rest}
 		>
 			{children}
-		</Text>
+		</Pressable>
 	);
 };
 

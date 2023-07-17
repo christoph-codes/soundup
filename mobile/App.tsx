@@ -29,7 +29,7 @@ const App = () => {
 							<Header navigation={navigationRef} />
 							<StatusBar animated barStyle='light-content' />
 							<NavigationContainer ref={navigationRef}>
-								<Stack.Navigator initialRouteName='Sign In'>
+								<Stack.Navigator initialRouteName='Home'>
 									<Stack.Screen
 										name='AuthNavigation'
 										component={AuthNavigation}
