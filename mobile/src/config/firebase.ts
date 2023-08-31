@@ -17,4 +17,4 @@ export const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 export const auth = getAuth(app);
 // TODO: Uncomment to implement analytics
-// export const analytics = getAnalytics(app);
+export const analytics = getAnalytics(app);
